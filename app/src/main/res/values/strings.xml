@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">FoodAdvisor</string>
+    <string name="whoare">Please identify</string>
+    <string name="observer">User</string>
+    <string name="tracker">Tracker</string>
+        <string name="title_activity_login">Login</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password </string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_sign_in_short">Login</string>
+    <string name="error_invalid_email">Email non valida</string>
+    <string name="error_invalid_password">La password è troppo corta</string>
+    <string name="error_incorrect_password">Password non corretta </string>
+    <string name="error_field_required">Questo campo è richiesto</string>
+    <string name="permission_rationale">"Per proseguire è necessaria l'autorizzazione."</string>
 </resources>
