@@ -34,13 +34,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    /*connection to obtain the array  of positions*/
+
+    private static String[][] getCoordinates(){
+        /*{latitudine, longitudine}*/
+        String [][] test={{"45.465454","9.186515999999983"},{"41.9027835","12.496365500000024"}};
+        return test;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        String[][] coordinates=getCoordinates();
+        Integer a;
         mMap = googleMap;
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(Double.parseDouble(coordinates[0][0]), Double.parseDouble(coordinates[0][1])))
+                .title("Start point"));
+        for(a = 0; a < coordinates.length; a++){
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(Double.parseDouble(coordinates[a][0]), Double.parseDouble(coordinates[a][1])))
+                    .title("Point " + a.toString()));
+        }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
