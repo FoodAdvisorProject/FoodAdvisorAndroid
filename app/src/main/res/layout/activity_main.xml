@@ -7,7 +7,7 @@
 
     <TextView
         android:text="@string/whoare"
-        android:layout_width="220dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:textSize="30sp"
@@ -15,8 +15,9 @@
         android:layout_weight="0.52"
         android:layout_gravity="center"
         android:paddingTop="30dp"
-        android:textColor="@color/strings"
+        android:textColor="@color/strings_white"
         />
+
     <ImageView
         android:layout_width="224dp"
         android:layout_height="87dp"
@@ -25,7 +26,7 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:layout_weight="0"/>
+        android:layout_weight="0.16"/>
 
 
     <TextView
@@ -36,9 +37,9 @@
         android:id="@+id/Observer"
         android:fontFamily="sans-serif"
         android:textSize="30sp"
-        android:layout_weight="0.61"
+        android:layout_weight="0.36"
         android:layout_gravity="center"
-        android:textColor="@color/strings"
+        android:textColor="@color/strings_white"
         />
 
 
@@ -55,13 +56,13 @@
 
     <TextView
         android:text="@string/tracker"
-        android:layout_width="120dp"
-        android:layout_height="148dp"
+        android:layout_width="wrap_content"
+        android:layout_height="110dp"
         android:id="@+id/Tracker"
         android:fontFamily="sans-serif"
         android:textSize="30sp"
         android:layout_gravity="center"
-        android:textColor="@color/strings"
+        android:textColor="@color/strings_white"
         android:layout_marginTop="10dp"/>
 
 </LinearLayout>

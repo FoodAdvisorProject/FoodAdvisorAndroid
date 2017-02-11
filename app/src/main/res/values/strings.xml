@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">FoodAdvisor</string>
-    <string name="whoare">Please identify</string>
-    <string name="observer">User</string>
+    <string name="whoare">Dicci chi sei</string>
+    <string name="observer">Utente</string>
     <string name="tracker">Tracker</string>
-        <string name="title_activity_login">Login</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_settings">Impostazioni</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -15,4 +16,9 @@
     <string name="error_incorrect_password">Password non corretta </string>
     <string name="error_field_required">Questo campo è richiesto</string>
     <string name="permission_rationale">"Per proseguire è necessaria l'autorizzazione."</string>
+    <string name="action_register">Registrati</string>
+    <string name="title_activity_maps">Tracciamento</string>
+    <string name="track_description">"Se sei vicino ad uno dei nostri prodotti puoi iniziare a tracciare il cibo premendo qui sotto. Ti verrà mostrata una mappa con tutto il percorso che il cibo ha fatto da produttore a consumatore."</string>
+    <string name="app_description">Descrizione app</string>
+
 </resources>
