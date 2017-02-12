@@ -2,6 +2,7 @@ package pro.rane.myapplication;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,10 +11,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    private String info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +26,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Bundle b = getIntent().getExtras();
+        if(b != null)
+            info = b.getString("qrCodeInformation");
     }
 
 
@@ -35,15 +42,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     /*connection to obtain the array  of positions*/
-
     private static String[][] getCoordinates(){
+        String resive="";
+        /*use string info for get request*/
+        try{
+            // Create http cliient object to send request to server
+            HttpClient Client = new DefaultHttpClient();
+            // Create URL string
+            String URL = "qui va http://... seguito dalla richiesta con il codice" ;
+            //Log.i("httpget", URL);
+            try
+            {
+                String SetServerString = "";
+
+                // Create Request to server and get response
+
+                HttpGet httpget = new HttpGet(URL);
+                ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                SetServerString = Client.execute(httpget, responseHandler);
+
+                // Show response on activity
+
+                resive=SetServerString;
+            }
+            catch(Exception ex)
+            {
+                Log.i("Fail!","Fail!");
+            }
+        }
+        catch(UnsupportedEncodingException ex)
+        {
+            Log.i("Fail","Fail!");
+        }
+        /*conversion from resive to two dimentional array string*/
         /*{latitudine, longitudine}*/
-        String [][] test={{"45.465454","9.186515999999983"},{"41.9027835","12.496365500000024"}};
-        return test;
+
+        String [][] coordinates={{"45.465454","9.186515999999983"},{"41.9027835","12.496365500000024"}};
+        return coordinates;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         String[][] coordinates=getCoordinates();
         Integer a;
         mMap = googleMap;
