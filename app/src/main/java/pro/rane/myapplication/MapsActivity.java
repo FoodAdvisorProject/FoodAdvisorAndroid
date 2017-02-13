@@ -11,6 +11,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -45,34 +51,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static String[][] getCoordinates(){
         String resive="";
         /*use string info for get request*/
-        try{
-            // Create http cliient object to send request to server
-            HttpClient Client = new DefaultHttpClient();
-            // Create URL string
-            String URL = "qui va http://... seguito dalla richiesta con il codice" ;
-            //Log.i("httpget", URL);
-            try
-            {
-                String SetServerString = "";
-
-                // Create Request to server and get response
-
-                HttpGet httpget = new HttpGet(URL);
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                SetServerString = Client.execute(httpget, responseHandler);
-
-                // Show response on activity
-
-                resive=SetServerString;
-            }
-            catch(Exception ex)
-            {
-                Log.i("Fail!","Fail!");
-            }
-        }
-        catch(UnsupportedEncodingException ex)
+        // Create http cliient object to send request to server
+        HttpClient Client = new DefaultHttpClient();
+        // Create URL string
+        String URL = "qui va http://... seguito dalla richiesta con il codice" ;
+        //Log.i("httpget", URL);
+        try
         {
-            Log.i("Fail","Fail!");
+            String SetServerString = "";
+
+            // Create Request to server and get response
+
+            HttpGet httpget = new HttpGet(URL);
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            SetServerString = Client.execute(httpget, responseHandler);
+
+            // Show response on activity
+
+            resive=SetServerString;
+        }
+        catch(Exception ex)
+        {
+            Log.i("Fail!","Fail!");
         }
         /*conversion from resive to two dimentional array string*/
         /*{latitudine, longitudine}*/

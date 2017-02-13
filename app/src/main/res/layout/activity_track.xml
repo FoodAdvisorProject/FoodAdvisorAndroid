@@ -26,13 +26,4 @@
         android:layout_above="@+id/trackbutton"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="@string/app_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/textView"
-        android:layout_alignParentEnd="true" />
 </RelativeLayout>
