@@ -26,7 +26,8 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:layout_weight="0.16"/>
+        android:layout_weight="0.16"
+        android:onClick="userPath"/>
 
 
     <TextView
@@ -40,6 +41,7 @@
         android:layout_weight="0.36"
         android:layout_gravity="center"
         android:textColor="@color/strings_white"
+        android:onClick="userPath"
         />
 
 
@@ -52,6 +54,7 @@
         android:layout_gravity="center"
         android:paddingTop="10dp"
         android:layout_weight="0"
+        android:onClick="producerPath"
         />
 
     <TextView
@@ -63,6 +66,8 @@
         android:textSize="30sp"
         android:layout_gravity="center"
         android:textColor="@color/strings_white"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:onClick="producerPath"
+        />
 
 </LinearLayout>

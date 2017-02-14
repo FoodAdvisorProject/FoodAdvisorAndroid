@@ -23,7 +23,7 @@ import java.net.URLEncoder;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private String info;
+   // private String info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,16 +49,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     /*connection to obtain the array  of positions*/
     private static String[][] getCoordinates(){
-        String resive="";
+        String receive;
         /*use string info for get request*/
-        // Create http cliient object to send request to server
+        // Create http client object to send request to server
         HttpClient Client = new DefaultHttpClient();
         // Create URL string
         String URL = "qui va http://... seguito dalla richiesta con il codice" ;
         //Log.i("httpget", URL);
         try
         {
-            String SetServerString = "";
+            String SetServerString;
 
             // Create Request to server and get response
 
@@ -68,16 +68,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // Show response on activity
 
-            resive=SetServerString;
+            receive=SetServerString;
         }
         catch(Exception ex)
         {
             Log.i("Fail!","Fail!");
         }
-        /*conversion from resive to two dimentional array string*/
+        /*conversion from receive to two dimensional array string*/
         /*{latitudine, longitudine}*/
 
+        //TODO CONVERTIRE LA STRINGA, LA TOKENIZZAZIONE VA FATTA IN BASE ALLE RESPONSE AL SERVER, vedere GET /getArticleTravel
+
+        //Esempio
         String [][] coordinates={{"45.465454","9.186515999999983"},{"41.9027835","12.496365500000024"}};
+
         return coordinates;
     }
 
