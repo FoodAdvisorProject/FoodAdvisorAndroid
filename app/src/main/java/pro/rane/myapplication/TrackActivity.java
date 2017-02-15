@@ -8,24 +8,54 @@ import android.view.View;
 import android.widget.Button;
 
 
-/*qui va implementata la parte di lettura da parte di una applicazione in questo caso una app esterna
-quella della zxing
- */
 public class TrackActivity extends AppCompatActivity {
-    Button btn = (Button) findViewById(R.id.trackbutton);
+    Button scan = (Button) findViewById(R.id.trackbutton);
+    String info="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_track);
-    }
-    public void onClick(View v){
-        Intent intent = new Intent(
-                "com.google.zxing.client.android.SCAN");
-        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-        startActivityForResult(intent, 1);
+        setContentView(R.layout.activity_main);
 
+
+        scan.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                //"SCAN_MODE","SCAN_MODE" --> Permette lo scanner dei BarCode
+                //"SCAN_MODE","QR_CODE_MODE" -->Permette lo scanner dei qrcode
+                startActivityForResult(intent, 0);
+            }
+        });
     }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                info=contents;
+
+                // Handle successful scan
+
+            } else if (resultCode == RESULT_CANCELED) {
+               // Log.i("App","Scan unsuccessful");
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
