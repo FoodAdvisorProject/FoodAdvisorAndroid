@@ -20,5 +20,7 @@
     <string name="title_activity_maps">Tracciamento</string>
     <string name="track_description">"Se sei vicino ad uno dei nostri prodotti puoi iniziare a tracciare il cibo premendo qui sotto. Ti verrà mostrata una mappa con tutto il percorso che il cibo ha fatto da produttore a consumatore."</string>
     <string name="app_description">Descrizione app</string>
+    <string name="pref_title_sync_frequency">sda</string>
+    <string name="pref_title_system_sync_settings">title</string>
 
 </resources>
