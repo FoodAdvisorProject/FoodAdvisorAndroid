@@ -2,4 +2,6 @@
 <resources>
     <string-array name="pref_sync_frequency_titles">sad</string-array>
     <string-array name="pref_sync_frequency_values">ads</string-array>
+    <string-array name="pref_example_list_titles">pref_example_list_titles</string-array>
+    <string-array name="pref_example_list_values">pref_example_list_values</string-array>
 </resources>
