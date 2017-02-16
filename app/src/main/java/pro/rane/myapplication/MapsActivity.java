@@ -72,7 +72,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     /*connection to obtain the array  of positions*/
-    private static String[][] getCoordinates(/*String tran_id  in attesa del lettoreQR*/) throws JSONException {
+
+    //TODO Riscrivere adeguatamente la funzione in modo che il programma si blocchi (magari mostrando una progress bar) finchè  la chiamata HTTP non è stata evasa correttamente
+    private static String[][] getCoordinates(String tran_id) throws JSONException {
 
         String dummy_tran_id = "1";
 
@@ -84,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         request.setHeader("Content-type", "application/json");
 
         InputStream inputStream = null;
-        String result = null;
+        String result = "";
         try {
             HttpResponse response = httpclient.execute(request);
             HttpEntity entity = response.getEntity();
@@ -100,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             result = sb.toString();
         } catch (Exception e) {
-            // Oops
+            Log.i("Errore http request",""+e.getMessage());
         } finally {
             try {
                 if (inputStream != null) inputStream.close();
@@ -140,9 +142,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        String[][] coordinates = new String[0][];
+        String[][] coordinates  = {{"45.465454", "9.186515999999983"}, {"41.9027835", "12.496365500000024"}}; //= null;
         try {
-            coordinates = getCoordinates();
+            coordinates = getCoordinates(info);
         } catch (JSONException e) {
             e.printStackTrace();
         }

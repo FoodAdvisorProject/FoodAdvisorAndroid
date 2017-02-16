@@ -74,11 +74,10 @@ public class TrackActivity extends AppCompatActivity {
             }
         });
         /*fine fase aler*/
-        /*richiamo a maps
-         Intent intent = new Intent(this, MapsActivity.class);
-     intent.putExtra("qrCodeInformation", info);
-     startActivity(intent);
-     */
+        /*richiamo a maps*/
+         Intent startMapsActivity = new Intent(this, MapsActivity.class);
+         startMapsActivity.putExtra("qrCodeInformation", info);
+         startActivity(startMapsActivity);
     }
 
 
