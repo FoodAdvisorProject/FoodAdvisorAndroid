@@ -1,12 +1,15 @@
 package pro.rane.myapplication;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class TrackActivity extends AppCompatActivity {
@@ -34,14 +37,14 @@ public class TrackActivity extends AppCompatActivity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
 
-                String contents = intent.getStringExtra("SCAN_RESULT");
+                final String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                goToMapsActivity(contents);
 
-                // Handle successful scan
+              goToMapsActivity(contents);
+
 
             } else if (resultCode == RESULT_CANCELED) {
-               Log.i("App","Scan unsuccessful");
+             //  Log.i("App","Scan unsuccessful");
             }
         }
     }
@@ -49,9 +52,33 @@ public class TrackActivity extends AppCompatActivity {
 
 
     private void goToMapsActivity(String info){
-        Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra("qrCodeInformation", info);
-        startActivity(intent);
+
+        /*fase di alert (questo va cancellato*/
+        final String prova=info;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (!isFinishing()){
+                    new AlertDialog.Builder(TrackActivity.this)
+                            .setTitle("Your Alert")
+                            .setMessage(prova)
+                            .setCancelable(false)
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Whatever...
+                                }
+                            }).show();
+                }
+            }
+        });
+        /*fine fase aler*/
+        /*richiamo a maps
+         Intent intent = new Intent(this, MapsActivity.class);
+     intent.putExtra("qrCodeInformation", info);
+     startActivity(intent);
+     */
     }
 
 

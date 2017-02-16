@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void userPath(View view){
         Intent startTrackActivity = new Intent(this,TrackActivity.class);
-
         startActivity(startTrackActivity);
     }
 
