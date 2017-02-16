@@ -23,7 +23,7 @@ public class TrackActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+
                 Intent intent = new Intent("com.google.zxing.client.android.SCAN");
                 intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
                 //"SCAN_MODE","SCAN_MODE" --> Permette lo scanner dei BarCode
@@ -48,10 +48,7 @@ public class TrackActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
+    
 
 
 
