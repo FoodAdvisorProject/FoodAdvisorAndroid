@@ -16,7 +16,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/trackbutton"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="scanQR"
+        />
 
     <TextView
         android:text="@string/track_description"

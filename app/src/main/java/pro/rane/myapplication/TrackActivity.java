@@ -9,28 +9,27 @@ import android.widget.Button;
 
 
 public class TrackActivity extends AppCompatActivity {
-    Button scan = (Button) findViewById(R.id.trackbutton);
+    Button scan ;
     String info="";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_track);
 
-
-        scan.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                //"SCAN_MODE","SCAN_MODE" --> Permette lo scanner dei BarCode
-                //"SCAN_MODE","QR_CODE_MODE" -->Permette lo scanner dei qrcode
-                startActivityForResult(intent, 0);
-            }
-        });
+        scan =  (Button) findViewById(R.id.trackbutton);
     }
+
+
+    public void scanQR(View v) {
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        //"SCAN_MODE","SCAN_MODE" --> Permette lo scanner dei BarCode
+        //"SCAN_MODE","QR_CODE_MODE" -->Permette lo scanner dei qrcode
+        startActivityForResult(intent, 0);
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
@@ -46,7 +45,6 @@ public class TrackActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
 

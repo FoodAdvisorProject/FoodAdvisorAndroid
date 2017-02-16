@@ -33,6 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".TrackActivity"/>
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
             android:screenOrientation="landscape"
