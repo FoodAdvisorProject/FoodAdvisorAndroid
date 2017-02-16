@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 
 public class TrackActivity extends AppCompatActivity {
     Button scan ;
-    String info="";
 
 
     @Override
@@ -36,12 +36,12 @@ public class TrackActivity extends AppCompatActivity {
 
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                info=contents;
+                goToMapsActivity(contents);
 
                 // Handle successful scan
 
             } else if (resultCode == RESULT_CANCELED) {
-               // Log.i("App","Scan unsuccessful");
+               Log.i("App","Scan unsuccessful");
             }
         }
     }
