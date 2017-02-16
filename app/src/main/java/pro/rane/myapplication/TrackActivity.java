@@ -48,22 +48,9 @@ public class TrackActivity extends AppCompatActivity {
         }
     }
 
+
+
     
-
-
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1)
-            if (resultCode == Activity.RESULT_OK) {
-                String contents = data.getStringExtra("SCAN_RESULT");
-                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-                goToMapsActivity(contents);
-            }
-    }
-
     private void goToMapsActivity(String info){
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("qrCodeInformation", info);
