@@ -53,7 +53,7 @@ public class TrackActivity extends AppCompatActivity {
 
     private void goToMapsActivity(String info){
 
-        /*fase di alert (questo va cancellato*/
+        /*fase di alert (questo va cancellato
         final String prova=info;
         runOnUiThread(new Runnable() {
             @Override
@@ -73,7 +73,7 @@ public class TrackActivity extends AppCompatActivity {
                 }
             }
         });
-        /*fine fase aler*/
+        fine fase aler*/
         /*richiamo a maps*/
          Intent startMapsActivity = new Intent(this, MapsActivity.class);
          startMapsActivity.putExtra("qrCodeInformation", info);
