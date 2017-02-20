@@ -1,4 +1,4 @@
-package pro.rane.myapplication;
+package pro.rane.foodadvisor;
 
 import org.junit.Test;
 

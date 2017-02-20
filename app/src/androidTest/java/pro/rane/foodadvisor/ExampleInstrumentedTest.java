@@ -1,4 +1,4 @@
-package pro.rane.myapplication;
+package pro.rane.foodadvisor;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("pro.rane.myapplication", appContext.getPackageName());
+        assertEquals("pro.rane.foodadvisor", appContext.getPackageName());
     }
 }

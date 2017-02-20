@@ -1,4 +1,4 @@
-package pro.rane.myapplication;
+package pro.rane.foodadvisor;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

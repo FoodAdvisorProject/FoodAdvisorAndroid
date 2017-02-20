@@ -4,7 +4,7 @@ android {
     compileSdkVersion 'Google Inc.:Google APIs:24'
     buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "pro.rane.myapplication"
+        applicationId "pro.rane.foodadvisor"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
