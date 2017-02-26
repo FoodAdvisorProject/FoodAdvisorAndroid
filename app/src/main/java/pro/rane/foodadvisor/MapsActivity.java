@@ -40,11 +40,10 @@ import java.io.InputStreamReader;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private static final String LATITUDE = "latitude";
-    private static final String LONGITUDE = "longitude";
 
     private GoogleMap mMap;
     private String info;
+    private String[][] coordinates;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -55,12 +54,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
         Bundle b = getIntent().getExtras();
         if (b != null)
             info = b.getString("qrCodeInformation");
+        GetCoordinates query = new GetCoordinates(info);
+        query.execute();
+        query.setOnFinishListener(new GetCoordinates.OnFinishListener(){
+            @Override
+            public void onFinish(String[][] result){
+               coordinates = result;
+            }
+        });
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -80,81 +90,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /*connection to obtain the array  of positions*/
 
-    //TODO Riscrivere adeguatamente la funzione in modo che il programma si blocchi (magari mostrando una progress bar) finchè  la chiamata HTTP non è stata evasa correttamente
-    private static String[][] getCoordinates(String tran_id) throws JSONException {
 
-        String dummy_tran_id = "1";
-
-        String richiesta = "http://foodadvisor.rane.pro:8080/getArticleTravel?tran_id=" + dummy_tran_id;
-
-        DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
-        HttpGet request = new HttpGet(richiesta);
-        // Depends on your web service
-        request.setHeader("Content-type", "application/json");
-
-        InputStream inputStream = null;
-        String result = "";
-        try {
-            HttpResponse response = httpclient.execute(request);
-            HttpEntity entity = response.getEntity();
-
-            inputStream = entity.getContent();
-            // json is UTF-8 by default
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-            StringBuilder sb = new StringBuilder();
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            result = sb.toString();
-        } catch (Exception e) {
-            Log.i("Errore http request",""+e.getMessage());
-        } finally {
-            try {
-                if (inputStream != null) inputStream.close();
-            } catch (Exception squish) {
-                Log.i(squish.getMessage(), squish.getMessage());
-            }
-        }
-
-        JSONArray jObject;
-        String[][] coordinates;
-
-        jObject = new JSONArray(result);
-        String[] latitude = new String[jObject.length()];
-        String[] longitude = new String[jObject.length()];
-
-        for (int i = 0; i < jObject.length(); i++) {
-
-            latitude[i] = jObject.getJSONObject(i).getString(LATITUDE);
-            longitude[i] = jObject.getJSONObject(i).getString(LONGITUDE);
-        }
-
-        /* Decommentare ad implementazione finita
-        coordinates = new String[latitude.length][longitude.length];
-
-            for(int i =0; i < latitude.length;i++){
-                coordinates[i][0] = latitude[i];
-                coordinates[i][1] = longitude[i];
-            }
-            */
-
-        String[][] dummy_coordinates = {{"45.465454", "9.186515999999983"}, {"41.9027835", "12.496365500000024"}};
-
-        //return coordinates;
-        return dummy_coordinates;
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        String[][] coordinates  = {{"45.465454", "9.186515999999983"}, {"41.9027835", "12.496365500000024"},{"40.9027835", "15.496365500000024"}}; //= null;
-        try {
-            coordinates = getCoordinates(info);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        //String[][] dummy_coordinates  = {{"45.465454", "9.186515999999983"}, {"41.9027835", "12.496365500000024"},{"40.9027835", "15.496365500000024"}};
+
 
         Integer a;
         mMap = googleMap;
