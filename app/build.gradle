@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'Google Inc.:Google APIs:24'
+    //compileSdkVersion 'Google Inc.:Google APIs:24' //windows
+    compileSdkVersion 24//ubuntu
     buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "pro.rane.foodadvisor"
