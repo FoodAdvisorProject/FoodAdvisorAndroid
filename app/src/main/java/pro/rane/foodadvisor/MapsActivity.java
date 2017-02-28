@@ -9,10 +9,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,26 +25,22 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
 
     private GoogleMap mMap;
     private String info;
     private String[][] coordinates;
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -57,15 +54,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Bundle b = getIntent().getExtras();
         if (b != null)
-            info = b.getString("qrCodeInformation");
-        GetCoordinates query = new GetCoordinates(info);
-        query.execute();
-        query.setOnFinishListener(new GetCoordinates.OnFinishListener(){
-            @Override
-            public void onFinish(String[][] result){
-               coordinates = result;
+            info = b.getString("coordinates");
+
+        try {
+            JSONArray trip = new JSONArray(info);
+            coordinates = new String[trip.length()][2];
+            for (int i = 0;i<trip.length();i++){
+                coordinates[i][0] = trip.getJSONObject(i).getString(LATITUDE);
+                coordinates[i][1] = trip.getJSONObject(i).getString(LONGITUDE);
             }
-        });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -86,10 +87,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-
-
-    /*connection to obtain the array  of positions*/
-
 
 
     @Override

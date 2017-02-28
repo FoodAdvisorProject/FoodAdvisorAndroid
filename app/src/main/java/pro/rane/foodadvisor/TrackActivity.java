@@ -39,6 +39,7 @@ public class TrackActivity extends AppCompatActivity {
 
 
             } else if (resultCode == RESULT_CANCELED) {
+                // TODO: 01/03/2017 rimandare a schermata iniziale
              //  Log.i("App","Scan unsuccessful");
             }
         }
@@ -70,9 +71,9 @@ public class TrackActivity extends AppCompatActivity {
         });
         fine fase aler*/
         /*richiamo a maps*/
-         Intent startMapsActivity = new Intent(this, MapsActivity.class);
-         startMapsActivity.putExtra("qrCodeInformation", info);
-         startActivity(startMapsActivity);
+         Intent startSplashScreen = new Intent(this, SplashScreen.class);
+         startSplashScreen.putExtra("qrCodeInformation", info);
+         startActivity(startSplashScreen);
     }
 
 
