@@ -16,7 +16,7 @@ import com.android.volley.toolbox.Volley;
 
 public class SplashScreen extends AppCompatActivity {
     private String scan_res;
-    private int timeout =5000;
+    private int timeout =1000;
     private String tran_id;
     private String res;
 

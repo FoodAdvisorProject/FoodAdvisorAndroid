@@ -5,6 +5,7 @@
     <string name="tracker">Tracker</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_settings">Impostazioni</string>
+    <string name="loading">Caricamento in corso...</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
