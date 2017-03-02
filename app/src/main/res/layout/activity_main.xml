@@ -3,32 +3,31 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
-
-    <TextView
-        android:text="@string/whoare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textSize="30sp"
-        android:id="@+id/whoare"
-        android:layout_weight="0.52"
-        android:layout_gravity="center"
-        android:paddingTop="30dp"
-        android:textColor="@color/strings_white"
-        />
+    android:background="@color/colorPrimary"
+    >
 
     <ImageView
-        android:layout_width="224dp"
-        android:layout_height="87dp"
-        android:src="@drawable/user"
-        android:id="@+id/imageUtente"
+        android:layout_width="394dp"
+        android:layout_height="124dp"
+        android:src="@drawable/logo"
+        android:id="@+id/logo"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:layout_weight="0.16"
-        android:onClick="userPath"/>
+        android:onClick="userPath"
+        android:layout_weight="1"
+        android:contentDescription="Main logo of the app" />
 
+
+    <TextView
+        android:text="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleView"
+        android:textSize="30sp"
+        android:textColor="@color/contents_text"
+        android:layout_weight="1"
+        android:textAlignment="center" />
 
     <TextView
         android:text="@string/observer"
@@ -38,24 +37,12 @@
         android:id="@+id/Observer"
         android:fontFamily="sans-serif"
         android:textSize="30sp"
-        android:layout_weight="0.36"
+        android:layout_weight="1"
         android:layout_gravity="center"
         android:textColor="@color/strings_white"
         android:onClick="userPath"
         />
 
-
-    <ImageView
-        android:layout_width="268dp"
-        android:layout_height="102dp"
-        android:src="@drawable/farmer"
-        android:id="@+id/imageProduttore"
-        android:layout_marginBottom="15dp"
-        android:layout_gravity="center"
-        android:paddingTop="10dp"
-        android:layout_weight="0"
-        android:onClick="producerPath"
-        />
 
     <TextView
         android:text="@string/tracker"
@@ -63,11 +50,13 @@
         android:layout_height="110dp"
         android:id="@+id/Tracker"
         android:fontFamily="sans-serif"
-        android:textSize="30sp"
+        android:textSize="18sp"
+        android:autoLink="all"
+        android:clickable="true"
         android:layout_gravity="center"
         android:textColor="@color/strings_white"
         android:layout_marginTop="10dp"
         android:onClick="producerPath"
-        />
+        android:layout_weight="1" />
 
 </LinearLayout>
