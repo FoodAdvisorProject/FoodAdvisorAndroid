@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void producerPath(View view){
-        return;
+        Intent startLoginActivity = new Intent(this,LoginActivity.class);
+        startActivity(startLoginActivity);
     }
 
 
