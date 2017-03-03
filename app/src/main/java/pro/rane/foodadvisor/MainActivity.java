@@ -1,13 +1,11 @@
 package pro.rane.foodadvisor;
 
-import android.app.ActionBar;
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -15,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // TODO: 02/03/2017 in competizione diretta con il tema xml, decidere in base a User experience and feedback (entro fine weekend si risolve) 
         //Remove title bar
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
