@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,84 +11,155 @@
     tools:context="pro.rane.foodadvisor.RegisterActivity">
 
 
-    <EditText
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/registration_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Username Azienda"
-        android:ems="10"
-        android:layout_alignParentTop="true"
-        android:id="@+id/aziendaText"
-        android:textSize="18sp" />
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
 
-    <EditText
+    <ScrollView
+        android:id="@+id/registration_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Nome Titolare"
-        android:ems="10"
-        android:layout_below="@+id/aziendaText"
-        android:layout_alignParentStart="true"
-        android:id="@+id/nomeText" />
+        android:layout_height="wrap_content">
 
-    <EditText
+    <LinearLayout
+        android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/emailText"
-        android:text="Email"
-        android:layout_below="@+id/cognomeText"
-        android:layout_alignParentStart="true" />
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_below="@+id/emailText"
-        android:layout_alignParentStart="true"
-        android:id="@+id/passText"
-        android:text="Password" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Cognome Titolare"
-        android:ems="10"
-        android:id="@+id/cognomeText"
-        android:layout_below="@+id/nomeText"
-        android:layout_alignParentStart="true" />
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/phoneText"
-        android:text="Telefono"
-        android:layout_below="@+id/passText"
-        android:layout_alignParentStart="true" />
+        android:layout_height="wrap_content">
 
-    <EditText
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/username_azienda"
+            android:ems="10"
+            android:layout_alignParentTop="true"
+            android:id="@+id/aziendaText"
+            android:textSize="18sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="P. IVA"
-        android:ems="10"
-        android:id="@+id/ivaText"
-        android:layout_below="@+id/phoneText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/nome_titolare"
+            android:ems="10"
+            android:layout_below="@+id/aziendaText"
+            android:layout_alignParentStart="true"
+            android:id="@+id/nomeText" />
+    </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="@string/cognome_titolare"
+                android:ems="10"
+                android:id="@+id/cognomeText"
+                android:layout_below="@+id/nomeText"
+                android:layout_alignParentStart="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <EditText
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:inputType="textEmailAddress"
+           android:ems="10"
+           android:id="@+id/emailText"
+           android:hint="@string/email"
+           android:layout_below="@+id/cognomeText"
+           android:layout_alignParentStart="true" />
+   </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:layout_below="@+id/emailText"
+            android:layout_alignParentStart="true"
+            android:id="@+id/passText"
+            android:hint="@string/password" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/passConfirmText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/emailText"
+            android:ems="10"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/phoneText"
+            android:hint="@string/telefono"
+            android:layout_below="@+id/passText"
+            android:layout_alignParentStart="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/iva_code"
+            android:ems="10"
+            android:id="@+id/ivaText"
+            android:layout_below="@+id/phoneText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:text="Registrati"
+        android:text="@string/registrati"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button"
-        android:layout_below="@+id/ivaText"
-        android:layout_alignParentStart="true"
         android:onClick="register"/>
 
-</RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -16,7 +16,7 @@
         android:layout_marginBottom="10dp"
         android:onClick="userPath"
         android:layout_weight="1"
-        android:contentDescription="Main logo of the app" />
+        android:contentDescription="@string/main_logo_app" />
 
 
     <TextView
