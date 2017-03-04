@@ -157,7 +157,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button"
-        android:onClick="register"/>
+        android:onClick="register"
+        android:textStyle="bold"
+        style="?android:textAppearanceSmall" />
 
     </LinearLayout>
     </ScrollView>
