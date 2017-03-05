@@ -81,21 +81,21 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+
+
+        } else if (id == R.id.nav_gallery) {
+            ScanFragment fragment = new ScanFragment();
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
+
+        } else if (id == R.id.profile){
             ProfileFragment fragment = new ProfileFragment();
 
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            ScanFragment fragment = new ScanFragment();
-
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,fragment);
-            fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
