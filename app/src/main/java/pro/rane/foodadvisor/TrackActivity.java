@@ -25,10 +25,10 @@ public class TrackActivity extends AppCompatActivity
 
     private ViewGroup mainLayout;
 
-
+    private TextView resultTextView;
     private QRCodeReaderView qrCodeReaderView;
     private CheckBox flashlightCheckBox;
-
+    private PointsOverlayView pointsOverlayView;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +80,10 @@ public class TrackActivity extends AppCompatActivity
     // "text" : the text encoded in QR
     // "points" : points where QR control points are placed
     @Override public void onQRCodeRead(String text, PointF[] points) {
-        goToMapsActivity(text);
-
+        resultTextView.setText(text);
+        pointsOverlayView.setPoints(points);
+       //todo decommentare la parte sottostante per lavvio della mappa
+        //goToMapsActivity(text);
     }
 
     private void requestCameraPermission() {
@@ -107,8 +109,9 @@ public class TrackActivity extends AppCompatActivity
         View content = getLayoutInflater().inflate(R.layout.content_decoder, mainLayout, true);
 
         qrCodeReaderView = (QRCodeReaderView) content.findViewById(R.id.qrdecoderview);
-
+        resultTextView = (TextView) content.findViewById(R.id.result_text_view);
         flashlightCheckBox = (CheckBox) content.findViewById(R.id.flashlight_checkbox);
+        pointsOverlayView = (PointsOverlayView) content.findViewById(R.id.points_overlay_view);
 
 
 
