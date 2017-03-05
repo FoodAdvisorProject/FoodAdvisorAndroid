@@ -51,9 +51,7 @@
     <string name="action_settings">Impostazioni</string>
     <string name="main_logo_app">Main logo of the app</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="empty" />
+    <string name="empty"/>
     <string name="name_producer">Nome Azienda</string>
     <string name="mail_producer">user@host.com</string>
     <string name="suggest">Consiglia</string>
