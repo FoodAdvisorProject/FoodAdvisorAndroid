@@ -43,7 +43,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/observer" />
+            android:text="@string/observer"
+            android:textStyle="bold"
+            style="?android:textAppearanceSmall"/>
 
 
         <Button
@@ -51,7 +53,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/tracker" />
+            android:text="@string/tracker"
+            android:textStyle="bold"
+            style="?android:textAppearanceSmall"/>
 
 
 </LinearLayout>

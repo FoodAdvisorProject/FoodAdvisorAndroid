@@ -62,6 +62,8 @@
     <string name="my_products">I miei prodotti</string>
     <string name="track">Traccia</string>
     <string name="my_profile">Profilo</string>
+    <string name="fragment_scan_info">Scan fragment</string>
+    <string name="bug_report">Segnala un bug</string>
 
 
 </resources>
