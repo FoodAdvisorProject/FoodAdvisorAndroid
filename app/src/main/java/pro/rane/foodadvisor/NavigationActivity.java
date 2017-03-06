@@ -81,28 +81,35 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            ScanFragment fragment = new ScanFragment();
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.commit();
+
+        } else if (id == R.id.nav_gallery) {
+            // TODO: 05/03/2017 creare attività i miei prodotti 
+
+
+        } else if (id == R.id.profile){
             ProfileFragment fragment = new ProfileFragment();
 
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
 
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            ScanFragment fragment = new ScanFragment();
+        } else if (id == R.id.nav_manage) {
+            // TODO: 05/03/2017 creare attività di impostazioni 
+
+        } else if (id == R.id.nav_share) {
+            // TODO: 05/03/2017 creare attività condivisione prodotto 
+        } else if (id == R.id.nav_bug_report){
+            // TODO: 05/03/2017 creare attività con form di report bug alla nostra mail 
+            ProfileFragment fragment = new ProfileFragment();
 
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
