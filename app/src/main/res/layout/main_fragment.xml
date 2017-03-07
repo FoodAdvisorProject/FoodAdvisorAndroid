@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/titleView"
         android:textSize="30sp"
-        android:textColor="@color/contents_text"
+        android:textColor="@color/strings"
         android:layout_weight="1"
         android:textAlignment="center" />
 

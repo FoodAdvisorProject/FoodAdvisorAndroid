@@ -82,8 +82,8 @@ public class TrackActivity extends AppCompatActivity
     @Override public void onQRCodeRead(String text, PointF[] points) {
         resultTextView.setText(text);
         pointsOverlayView.setPoints(points);
-       //todo decommentare la parte sottostante per lavvio della mappa
-        //goToMapsActivity(text);
+       //passo i dati per la richiesta al server
+        goToMapsActivity(text);
     }
 
     private void requestCameraPermission() {
@@ -129,50 +129,7 @@ public class TrackActivity extends AppCompatActivity
     }
 
 
-  /*  public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-
-                final String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-
-              goToMapsActivity(contents);
-
-
-            } else if (resultCode == RESULT_CANCELED) {
-                // TODO: 01/03/2017 rimandare a schermata iniziale
-             //  Log.i("App","Scan unsuccessful");
-            }
-        }
-    }
-*/
-
-
     private void goToMapsActivity(String info){
-
-        /*fase di alert (questo va cancellato
-        final String prova=info;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                if (!isFinishing()){
-                    new AlertDialog.Builder(TrackActivity.this)
-                            .setTitle("Your Alert")
-                            .setMessage(prova)
-                            .setCancelable(false)
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Whatever...
-                                }
-                            }).show();
-                }
-            }
-        });
-        fine fase aler*/
-        /*richiamo a maps*/
-
          Intent startSplashScreen = new Intent(this, SplashScreen.class);
          startSplashScreen.putExtra("qrCodeInformation", info);
          startActivity(startSplashScreen);
