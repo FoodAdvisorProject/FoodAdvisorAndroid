@@ -16,6 +16,11 @@ public class RegisterActivity extends AppCompatActivity {
     // TODO: 03/03/2017 scrivere la logica di check information + la chiamata API di registrazione del con eventuale risposta positiva o negativa
     // TODO: 05/03/2017 la call è /addUser
 
+    public boolean checkData(View view){
+
+        return true;
+    }
+
 
     public void register(View view) {
 
