@@ -54,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Bundle b = getIntent().getExtras();
         if (b != null)
-            info = b.getString("coordinates");
+            info = b.getString("info");
 
         try {
             JSONArray trip = new JSONArray(info);

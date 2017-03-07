@@ -13,29 +13,39 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+/*NOTA:quando viene invocato splashScreen bisogno inserire due put extra
+uno contenente le info un l'altro contenente l'url a cui fare la richiesta.
+
+es:
+in Track Activity:
+         Intent startSplashScreen = new Intent(this, SplashScreen.class);
+         startSplashScreen.putExtra("info", "pro.rane.foodadvisor.MapsActivity");<--- si passo il nome del activity a cui passare poi le info come fosse una stringa
+         startSplashScreen.putExtra("url", "http://foodadvisor.rane.pro:8080/getArticleTravel?tran_id="+codice);
+         startActivity(startSplashScreen);
+ in MapsActivity:
+  Bundle b = getIntent().getExtras();
+        if (b != null)
+            info = b.getString("info"); <--- da qui lui prende la risposta che è stata data dal server
+ */
 
 public class SplashScreen extends AppCompatActivity {
-    private String scan_res;
+    private String nameActivity;
     private int timeout =2000;
-    private String tran_id;
     private String res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-
+        String url;
         Bundle b = getIntent().getExtras();
         if (b != null)
-            scan_res = b.getString("qrCodeInformation");
-
-        Log.d(this.getClass().getSimpleName() ,"SCAN_RES: "+scan_res);
+            nameActivity = b.getString("info");
+            url = b.getString("url");
+      //  Log.d(this.getClass().getSimpleName() ,"SCAN_RES: "+scan_res);
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        tran_id = scan_res;
-
-        String url = "http://foodadvisor.rane.pro:8080/getArticleTravel?tran_id=" + tran_id;
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -70,7 +80,11 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 }
                 // TODO: 01/03/2017 ripetere scannerizzazione qr in caso di valore di merda NB usare metodo goScanActivity
-                goToMapsActivity(res);
+                try {
+                    goToActivity(res);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 finish();
             }
         }, timeout);
@@ -78,10 +92,18 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-    private void goToMapsActivity(String coordinates){
-        Intent startMapsActivity = new Intent(this, MapsActivity.class);
-        startMapsActivity.putExtra("coordinates", coordinates);
-        startActivity(startMapsActivity);
+    private void goToActivity(String info) throws ClassNotFoundException {
+        Class<?> c = null;
+        if(nameActivity != null) {
+            try {
+                c = Class.forName(nameActivity );
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        Intent startActivity = new Intent(this, c);
+        startActivity.putExtra("info", info);
+        startActivity(startActivity);
     }
 
 

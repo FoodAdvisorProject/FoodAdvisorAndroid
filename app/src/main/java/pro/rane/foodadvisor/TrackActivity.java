@@ -131,7 +131,8 @@ public class TrackActivity extends AppCompatActivity
 
     private void goToMapsActivity(String info){
          Intent startSplashScreen = new Intent(this, SplashScreen.class);
-         startSplashScreen.putExtra("qrCodeInformation", info);
+         startSplashScreen.putExtra("info", "pro.rane.foodadvisor.MapsActivity");
+        startSplashScreen.putExtra("url", "http://foodadvisor.rane.pro:8080/getArticleTravel?tran_id="+info);
          startActivity(startSplashScreen);
     }
 
