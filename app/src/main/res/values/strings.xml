@@ -51,7 +51,7 @@
     <string name="action_settings">Impostazioni</string>
     <string name="main_logo_app">Main logo of the app</string>
 
-    <string name="empty"/>
+    <string name="empty" />
     <string name="name_producer">Nome Azienda</string>
     <string name="mail_producer">user@host.com</string>
     <string name="suggest">Consiglia</string>
@@ -62,6 +62,7 @@
     <string name="my_profile">Profilo</string>
     <string name="fragment_scan_info">Scan fragment</string>
     <string name="bug_report">Segnala un bug</string>
+    <string name="track_food">Traccia il cibo!</string>
 
 
 </resources>

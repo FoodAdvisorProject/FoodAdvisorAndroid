@@ -22,6 +22,24 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
+
+    private boolean isEmailValid(String email) {
+        return email.contains("@") && email.contains(".");
+    }
+
+
+
+    private boolean isNumberValid(String number){
+        return number.matches("\\d+(?:\\.\\d+)?");
+    }
+
+    private boolean isPasswordValid(String password) {
+
+        return password.length() > 8 || password.length()==8 && !password.isEmpty();
+    }
+
+
+
     public void register(View view) {
 
     }
