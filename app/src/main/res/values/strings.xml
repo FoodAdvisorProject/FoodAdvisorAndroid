@@ -65,6 +65,16 @@
     <string name="track_food">Traccia il cibo!</string>
     <string name="temp_track_text">Qui verranno mostrati i prodotti dell\'azienda</string>
     <string name="user_mode">User Mode</string>
+    <string name="route">Segui il percorso del cibo</string>
+    <string name="user_mode_desc">Da questa schermata puoi seguire il percorso del cibo. Scannerizza il QR Code per vedere tutti i passaggi che il cibo compie e fin dove arriva!</string>
+    <string name="main_desc">Benvenuto! Seleziona una delle attività nella barra a sinistra per iniziare.</string>
+    <string name="new_product">Aggiungi un prodotto</string>
+    <string name="add_new_product">Aggiungi nuovo prodotto</string>
+    <string name="new_product_name">Nome nuovo prodotto</string>
+    <string name="new_product_desc">Descrizione nuovo prodotto</string>
+    <string name="latitude">Latitudine:</string>
+    <string name="longitude">Longitudine:</string>
+    <string name="take_photo">Foto</string>
 
 
 </resources>

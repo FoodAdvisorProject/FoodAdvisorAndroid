@@ -98,6 +98,13 @@ public class NavigationActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
 
+        } else if (id == R.id.nav_new_product){
+            NewProductFragment fragment = new NewProductFragment();
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.profile){
             ProfileFragment fragment = new ProfileFragment();
 
