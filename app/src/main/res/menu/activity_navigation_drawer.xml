@@ -7,6 +7,11 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/track" />
         <item
+            android:id="@+id/nav_user_mode"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="@string/user_mode" />
+
+        <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_face_black_24dp"
             android:title="@string/my_profile"/>
