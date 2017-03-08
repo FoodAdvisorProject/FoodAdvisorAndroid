@@ -40,6 +40,18 @@ android {
 
     }
     productFlavors {
+        minConfig {
+            minSdkVersion 19
+            targetSdkVersion 19
+            versionCode 1
+        }
+        TargetConfig {
+            minSdkVersion 23
+            applicationId 'pro.rane.foodadvisor'
+            targetSdkVersion 23
+            versionName 'OpenBeta'
+            versionNameSuffix 'OpenBeta'
+        }
     }
 }
 
