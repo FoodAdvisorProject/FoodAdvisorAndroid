@@ -63,6 +63,7 @@
     <string name="fragment_scan_info">Scan fragment</string>
     <string name="bug_report">Segnala un bug</string>
     <string name="track_food">Traccia il cibo!</string>
+    <string name="temp_track_text">Qui verranno mostrati i prodotti dell\'azienda</string>
 
 
 </resources>
