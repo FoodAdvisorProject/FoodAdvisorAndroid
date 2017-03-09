@@ -25,12 +25,14 @@ import java.security.MessageDigest;
 
 /**
  * Created by iscandar on 09/03/17.
+ *
+ * CLASSE NON PREFETTAMENTE FUNZIONANTE!
  */
-
+//TODO: Roncotrollare la classe e vedere perche non funziona
 public class Rest {
     private int timeout =2000;
     private String res;
-
+    private String info;
     public String getRequest(String URL,RequestQueue queue){
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
@@ -61,12 +63,14 @@ public class Rest {
                         e.printStackTrace();
                     }
                 }
-
+                response(res);
             }
         }, timeout);
-    return res;
+        return info;
     }
-
+public void response(String info){
+    this.info=info;
+}
     public static void postRequest(String URL, JSONObject jsonBody, RequestQueue queue) {
         final String requestBody = jsonBody.toString();
 

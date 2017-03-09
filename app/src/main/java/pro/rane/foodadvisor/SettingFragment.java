@@ -11,9 +11,8 @@ import android.view.ViewGroup;
  */
 
 public class SettingFragment extends Fragment{
-
+    pro.rane.foodadvisor.SessionManager session;
     public SettingFragment(){
-
     }
     // TODO: 05/03/2017 creare attività di impostazioni account
 
@@ -21,10 +20,11 @@ public class SettingFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        session = new pro.rane.foodadvisor.SessionManager(getActivity().getApplicationContext());
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
-
         return rootView;
     }
+
 }

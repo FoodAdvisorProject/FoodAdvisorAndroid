@@ -4,8 +4,8 @@ package pro.rane.foodadvisor;
  * Created by iscandar on 09/03/17.
  * per otterenere i dati
  * da altre classi
- * SessionManagement session; <--globale
- * session = new SessionManagement(getApplicationContext()); <-- dentro il create
+ * pro.rane.foodadvisor.SessionManager session; <--globale
+ * session = new pro.rane.foodadvisor.SessionManager(getApplicationContext()); <-- dentro il create
  *session.checkLogin();
 
  // get user data from session
@@ -26,7 +26,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 
-public class SessionManagement {
+public class SessionManager {
     // Shared Preferences
     SharedPreferences pref;
 
@@ -53,7 +53,7 @@ public class SessionManagement {
     public static final String KEY_PHOTO = "photo";
 
     // Constructor
-    public SessionManagement(Context context){
+    public SessionManager(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
@@ -109,12 +109,12 @@ public class SessionManagement {
 //session data like hash
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
-        // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
-        // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
-
+        user.put(KEY_AZIENDA, pref.getString(KEY_AZIENDA, null));
+        user.put(KEY_SECOND_NAME, pref.getString(KEY_SECOND_NAME, null));
+        user.put(KEY_DESCRIPTION, pref.getString(KEY_DESCRIPTION, null));
+        user.put(KEY_ID, pref.getString(KEY_ID, null));
         // return user
         return user;
     }

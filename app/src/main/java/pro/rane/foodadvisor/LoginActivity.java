@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity  {
     //AlertDialogManager alert = new AlertDialogManager();
 
     // Session Manager Class
-    SessionManagement session;
+    pro.rane.foodadvisor.SessionManager session;
     String username;
 
     String password;
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_login);
 
         // Session Manager
-        session = new SessionManagement(getApplicationContext());
+        session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
 
         // Email, Password input text
         txtUsername = (EditText) findViewById(R.id.txtUsername);
@@ -107,7 +107,7 @@ if (session.isLoggedIn()){
             public void onClick(View arg0) {
                 // Get username, password from EditText
                 username = txtUsername.getText().toString();
-//TODO: CIfrare password rest.sha256
+                //TODO: CIfrare password rest.sha256
                 password = txtPassword.getText().toString();
                 connection(username);
 

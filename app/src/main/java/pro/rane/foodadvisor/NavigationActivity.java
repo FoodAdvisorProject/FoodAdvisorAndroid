@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class NavigationActivity extends AppCompatActivity
@@ -16,17 +17,19 @@ public class NavigationActivity extends AppCompatActivity
 
     NavigationView  navigationView = null;
     Toolbar toolbar = null;
+    pro.rane.foodadvisor.SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         MainFragment fragment = new MainFragment();
-
+        // Session class instance
+        session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,fragment);
         fragmentTransaction.commit();
 
-
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn() + "\n" + "Data: "+session.getUserDetails().toString(), Toast.LENGTH_LONG).show();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -132,5 +135,8 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void logout(View view){
+        session.logoutUser();
     }
 }
