@@ -77,6 +77,7 @@
     <string name="take_photo">Foto</string>
     <string name="new_product_info">Da qui puoi registrare nel database un nuovo prodotto. Clicca sul bottone per continuare</string>
     <string name="get_location">Setta le coordinate</string>
+    <string name="graffa_aperta">{</string>
 
 
 </resources>
