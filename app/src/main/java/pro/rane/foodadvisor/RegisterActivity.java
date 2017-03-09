@@ -34,7 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
+import pro.rane.foodadvisor.Rest;
 public class RegisterActivity extends AppCompatActivity {
     private EditText aziendaName;
     private EditText nomeTit;
@@ -147,7 +147,8 @@ public class RegisterActivity extends AppCompatActivity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            post(user);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            Rest.postRequest("http://foodadvisor.rane.pro:8080/addUser",user,requestQueue);
             alert("Operation complete");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -155,48 +156,5 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
-    private void post(JSONObject jsonBody){
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = "http://foodadvisor.rane.pro:8080/addUser";
 
-            final String requestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-            };
-            requestQueue.add(stringRequest);
-    }
 }
