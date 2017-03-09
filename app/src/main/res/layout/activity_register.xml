@@ -31,8 +31,7 @@
         android:orientation="vertical">
 
 
-
-    <android.support.design.widget.TextInputLayout
+        <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -59,6 +58,7 @@
             android:layout_below="@+id/aziendaText"
             android:layout_alignParentStart="true"
             android:id="@+id/nomeTit" />
+
     </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -150,14 +150,39 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />
 
-    </android.support.design.widget.TextInputLayout>
 
+    </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/descriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/phoneText"
+                android:ems="10"
+                android:hint="Descrizione"
+                android:inputType="textPersonName" />
+
+        </android.support.design.widget.TextInputLayout>
+        <Button
+            android:id="@+id/btnPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Carica Immagine"
+            android:onClick="loadPhoto"
+            android:textStyle="bold"
+            style="?android:textAppearanceSmall"/>
     <Button
         android:text="@string/registrati"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button"
-        android:onClick="checkData"
+        android:onClick="register"
         android:textStyle="bold"
         style="?android:textAppearanceSmall" />
 

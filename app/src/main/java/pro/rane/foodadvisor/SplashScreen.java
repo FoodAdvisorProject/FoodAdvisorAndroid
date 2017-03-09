@@ -107,10 +107,11 @@ public class SplashScreen extends AppCompatActivity {
     }
 
 
-    private void goScanActivity(){
+ /*   non usato, quando si chiude la activity torna a quella precendete
+ private void goScanActivity(){
         Intent startTrackActivity = new Intent(this,TrackActivity.class);
         startActivity(startTrackActivity);
     }
-
+*/
 
 }
