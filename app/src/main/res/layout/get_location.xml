@@ -60,7 +60,8 @@
         style="?android:textAppearanceSmall"
         android:layout_marginBottom="39dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="getValues"/>
 
     <Button
         android:id="@+id/btnLocation"
@@ -84,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/new_product_button"
-        android:text="TextView" />
+        android:text="@string/latitude" />
 
     <TextView
         android:id="@+id/longitude"
@@ -93,7 +94,7 @@
         android:layout_alignTop="@+id/latitude"
         android:layout_marginStart="15dp"
         android:layout_toEndOf="@+id/btnLocation"
-        android:text="TextView" />
+        android:text="@string/longitude" />
 
     <TextView
         android:id="@+id/textView12"

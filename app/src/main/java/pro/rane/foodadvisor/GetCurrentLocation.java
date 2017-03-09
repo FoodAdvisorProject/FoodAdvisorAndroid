@@ -1,15 +1,7 @@
 package pro.rane.foodadvisor;
 
-/**
- * Created by thecave3 on 09/03/17.
- */
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
-import android.*;
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -17,15 +9,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,8 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GetCurrentLocation extends Activity implements OnClickListener {
-    double latitude;
-    double longitude;
+    double latitude = 0.0f;
+    double longitude = 0.0f;
     TextView txtLat;
     TextView txtLng;
 
@@ -66,9 +54,6 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
 
         txtLat = (TextView) findViewById(R.id.latitude);
         txtLng = (TextView) findViewById(R.id.longitude);
-        txtLat.setText("");
-        txtLng.setText("");
-
 
 
         btnGetLocation = (Button) findViewById(R.id.btnLocation);
@@ -76,7 +61,6 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
 
         locationMangaer = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
-
     }
 
     @Override
@@ -101,6 +85,22 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
         } else {
             alertbox("Gps Status!!", "Your GPS is: OFF");
         }
+
+    }
+
+    public void getValues(View v){
+        if (latitude== 0.0f && longitude == 0.0f) return;
+        float floatlat = (float)latitude;
+        float floatlng = (float) longitude;
+        EditText editTextproductName = (EditText) findViewById(R.id.productName);
+        EditText editTextproductDesc = (EditText) findViewById(R.id.productDesc);
+        String productName = editTextproductName.getText().toString();
+        String productDesc = editTextproductDesc.getText().toString();
+        // TODO: 09/03/17  POST http://foodadvisor.rane.pro:8080/addArticle?name="+productName"&creator_id="+creator_id"
+
+        Rest call = new Rest();
+
+
 
     }
 
