@@ -9,8 +9,53 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pro.rane.foodadvisor.LoginActivity">
+        <!-- Email Label -->
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:singleLine="true"
+            android:layout_marginBottom="5dip"/>
 
-    <!-- Login progress -->
+        <!-- Email input text -->
+        <EditText android:id="@+id/txtUsername"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"/>
+
+        <!-- Password Label -->
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:layout_marginBottom="5dip"/>
+
+        <!-- Password input text -->
+        <EditText android:id="@+id/txtPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:password="true"
+            android:singleLine="true"/>
+
+        <!-- Login button -->
+        <Button android:id="@+id/btnLogin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"/>
+    <Button
+        android:text="Registrati"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/register"
+        android:textStyle="bold"
+        style="?android:textAppearanceSmall"
+        android:onClick="registerActivity" />
+
+    </LinearLayout>
+
+
+    <!-- Login progress
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -49,7 +94,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/txtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -63,7 +108,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/btnLogin"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,3 +129,4 @@
     </ScrollView>
 
 </LinearLayout>
+-->

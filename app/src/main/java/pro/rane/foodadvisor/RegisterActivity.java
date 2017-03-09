@@ -34,7 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
+import pro.rane.foodadvisor.Rest;
 public class RegisterActivity extends AppCompatActivity {
     private EditText aziendaName;
     private EditText nomeTit;
@@ -136,18 +136,19 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject user = new JSONObject();
             try {
                 user.put("login_name", aziendaName.getText().toString() );
-                user.put("passw_login", passText.getText().toString() );
+                user.put("passw_login", Rest.sha256(passText.getText().toString()) );
                 user.put("email", emailTit.getText().toString() );
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
-                user.put("is_enterprise",Integer.parseInt(ivaText.getText().toString()));
-                user.put("enterprise_description","Phone: "+phoneText.getText().toString()+"\n"+ description.getText().toString());
+                user.put("is_enterprise","true");
+                user.put("enterprise_description","Phone: "+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString());
                 user.put("photo",img.toString());
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            post(user);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            Rest.postRequest("http://foodadvisor.rane.pro:8080/addUser",user,requestQueue);
             alert("Operation complete");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -155,48 +156,5 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
-    private void post(JSONObject jsonBody){
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = "http://foodadvisor.rane.pro:8080/addUser";
 
-            final String requestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
-                    }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                }
-            };
-            requestQueue.add(stringRequest);
-    }
 }
