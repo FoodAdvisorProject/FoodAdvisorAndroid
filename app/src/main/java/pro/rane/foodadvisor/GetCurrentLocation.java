@@ -23,9 +23,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 public class GetCurrentLocation extends Activity implements OnClickListener {
-    double latitude = 0.0f;
-    double longitude = 0.0f;
+    SessionManager session;
+    double latitude = 1.0f;
+    double longitude = 1.0f;
     TextView txtLat;
     TextView txtLng;
 
@@ -43,6 +49,7 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_location);
+        session = new SessionManager(getApplicationContext());
 
 
         //if you want to lock screen for always Portrait mode
@@ -68,9 +75,7 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
         flag = displayGpsStatus();
         if (flag) {
 
-            Log.v(TAG, "onClick");
-
-
+            Log.e(TAG, "onClick");
 
             pb.setVisibility(View.VISIBLE);
             locationListener = new MyLocationListener();
@@ -96,11 +101,39 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
         EditText editTextproductDesc = (EditText) findViewById(R.id.productDesc);
         String productName = editTextproductName.getText().toString();
         String productDesc = editTextproductDesc.getText().toString();
-        // TODO: 09/03/17  POST http://foodadvisor.rane.pro:8080/addArticle?name="+productName"&creator_id="+creator_id"
+        HashMap<String, String> user = session.getUserDetails();
+        String id = user.get(SessionManager.KEY_ID);
 
-        Rest call = new Rest();
+        String url = "http://foodadvisor.rane.pro:8080/addArticle";
+
+       Toast.makeText(getBaseContext(),"Url : "+url,Toast.LENGTH_SHORT).show();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject req = new JSONObject();
+        try{
+            req.put("name",productName);
+            req.put("creator_id",id);
+            req.put("description",productDesc);
+            req.put("longitude",floatlng);
+            req.put("latitude",floatlat);
+            req.put("photo","null");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
 
 
+
+        // TODO: 09/03/2017 per ora esiste post activity, più in là esisterà una cosa migliore 
+        Intent startPostAct= new Intent(this, PostActivity.class);
+        startPostAct.putExtra("url", url);
+        startPostAct.putExtra("req",req.toString());
+        startActivity(startPostAct);
+        finish();
 
     }
 
@@ -151,8 +184,6 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
     private class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc) {
-
-
             pb.setVisibility(View.INVISIBLE);
             Toast.makeText(getBaseContext(),"Coordinate settate:\nLat: " +
                             loc.getLatitude()+ "\nLng: " + loc.getLongitude(),
