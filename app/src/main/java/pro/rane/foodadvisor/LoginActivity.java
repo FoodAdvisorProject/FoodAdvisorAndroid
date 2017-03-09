@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity  {
 
     // Session Manager Class
     SessionManagement session;
-    String username; 
+    String username;
 
     String password;
     @Override
@@ -89,7 +89,12 @@ public class LoginActivity extends AppCompatActivity  {
         txtPassword = (EditText) findViewById(R.id.txtPassword);
 
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-
+if (session.isLoggedIn()){
+    // Activity start
+    Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
+    startActivity(i);
+    finish();
+}
 
         // Login button
         btnLogin = (Button) findViewById(R.id.btnLogin);
