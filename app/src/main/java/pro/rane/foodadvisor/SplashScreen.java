@@ -45,9 +45,6 @@ public class SplashScreen extends AppCompatActivity {
       //  Log.d(this.getClass().getSimpleName() ,"SCAN_RES: "+scan_res);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-
-
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -63,10 +60,6 @@ public class SplashScreen extends AppCompatActivity {
             }
         });
         queue.add(stringRequest);
-
-
-
-
         new Handler().postDelayed(new Runnable()
         {
             @Override
@@ -88,8 +81,6 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
             }
         }, timeout);
-
-
     }
 
     private void goToActivity(String info) throws ClassNotFoundException {

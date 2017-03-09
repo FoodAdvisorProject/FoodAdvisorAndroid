@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
 
 public class SessionManagement {
     // Shared Preferences
@@ -81,6 +82,10 @@ public class SessionManagement {
             _context.startActivity(i);
         }
 
+    }
+    //take photo
+    public Bitmap photoUser(){
+        return Rest.StringToBitMap(pref.getString(KEY_PHOTO,"photo"));
     }
 
 

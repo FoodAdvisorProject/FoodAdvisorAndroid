@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.put("second_name", cognomeTit.getText().toString() );
                 user.put("is_enterprise","true");
                 user.put("enterprise_description","Phone: "+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString());
-                user.put("photo",img.toString());
+                user.put("photo",Rest.BitMapToString(bitmap));
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -154,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-
     }
+
 
 }

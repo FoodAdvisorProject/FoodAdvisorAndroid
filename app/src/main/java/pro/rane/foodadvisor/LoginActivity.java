@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +35,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.cast.framework.SessionManager;
 
@@ -67,7 +73,9 @@ public class LoginActivity extends AppCompatActivity  {
 
     // Session Manager Class
     SessionManagement session;
+    String username; 
 
+    String password;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,54 +101,115 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void onClick(View arg0) {
                 // Get username, password from EditText
-                String username = txtUsername.getText().toString();
-                String password =Rest.sha256( txtPassword.getText().toString());
-                String jsonStr = connection(username,password);
+                username = txtUsername.getText().toString();
+//TODO: CIfrare password rest.sha256
+                password = txtPassword.getText().toString();
+                connection(username);
 
-
-                if (jsonStr != null) {
-                    try {
-                        JSONObject jsonObj = new JSONObject(jsonStr);
-
-                        // Check if username, password is filled
-                        if (username.trim().length() > 0 && password.trim().length() > 0) {
-
-                            if (username.equals(jsonObj.getString("email")) && password.equals(jsonObj.getString("passw"))) {
-
-                                session.createLoginSession(jsonObj.getString("login"),jsonObj.getString("name"),jsonObj.getString("second_name"),jsonObj.getString("email"),jsonObj.getString("enterprise_description"),jsonObj.getString("photo"));
-
-                                // Activity start
-                                Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
-                                startActivity(i);
-                                finish();
-
-                            } else {
-                                // username / password doesn't match
-                                alert("Login failed..Username/Password is incorrect");
-                            }
-                        } else {
-                            // user didn't entered username or password
-                            // Show alert asking him to enter the details
-                            alert("Login failed..Please enter username and password");
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         });
     }
-    private String connection(String email, String sha){
-        Rest request= new Rest();
-        String URL="http://foodadvisor.rane.pro:8080/getUserIdByEmail?email="+email;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String response= request.getRequest(URL,requestQueue);
-        if(Integer.parseInt(response)>0) {
-            URL = "http://foodadvisor.rane.pro:8080/getUser?user_id="+response;
-            return request.getRequest(URL, requestQueue);
+    private String res;
+    private int timeout =2000;
+    private void connection(String email){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://foodadvisor.rane.pro:8080/getUserIdByEmail?email="+email,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        res = response;
+                        Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(this.getClass().getSimpleName() ,"Errore su volley : " + error.toString());
+                error.printStackTrace();
+            }
+        });
+        queue.add(stringRequest);
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                while(res==null){
+                    try {
+                        this.wait(timeout);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                auxConnection(Integer.parseInt(res));
+            }
+        }, timeout);
+
+    }
+    private void auxConnection(Integer user_id){
+        String ris;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://foodadvisor.rane.pro:8080/getUser?user_id="+user_id,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        res = response;
+                        Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(this.getClass().getSimpleName() ,"Errore su volley : " + error.toString());
+                error.printStackTrace();
+            }
+        });
+        queue.add(stringRequest);
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                while(res==null){
+                    try {
+                        this.wait(timeout);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                autentication(res);
+            }
+        }, timeout);
+    }
+    private void autentication(String jsonStr){
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+
+                // Check if username, password is filled
+                if (username.trim().length() > 0 && password.trim().length() > 0) {
+
+                    if (username.equals(jsonObj.getString("email")) && password.equals(jsonObj.getString("passw"))) {
+
+                        session.createLoginSession(jsonObj.getString("login"),jsonObj.getString("name"),jsonObj.getString("second_name"),jsonObj.getString("email"),jsonObj.getString("enterprise_description"),jsonObj.getString("photo"));
+
+                        // Activity start
+                        Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
+                        startActivity(i);
+                        finish();
+
+                    } else {
+                        // username / password doesn't match
+                        alert("Login failed..Username/Password is incorrect");
+                    }
+                } else {
+                    // user didn't entered username or password
+                    // Show alert asking him to enter the details
+                    alert("Login failed..Please enter username and password");
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return "";
     }
     private void alert(String text){
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
