@@ -21,44 +21,6 @@
         android:layout_below="@+id/toolbar8"
         android:layout_centerHorizontal="true" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar8"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="53dp"
-        android:id="@+id/textInputLayout">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/new_product_name"
-            android:ems="10"
-            android:layout_alignParentTop="true"
-            android:id="@+id/productName"
-            android:textSize="18sp" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/textInputLayout"
-        android:id="@+id/textInputLayout2">
-        <EditText
-            android:id="@+id/productDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textInputLayout"
-            android:ems="10"
-            android:hint="@string/new_product_desc"
-            android:inputType="textPersonName"
-            android:textSize="18sp" />
-    </android.support.design.widget.TextInputLayout>
-
-
     <Button
         android:id="@+id/new_product_button"
         android:layout_width="wrap_content"
@@ -71,46 +33,12 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:id="@+id/latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/latitude"
-        android:layout_above="@+id/new_product_button"
-        android:layout_alignStart="@+id/textView5" />
-
-    <TextView
-        android:id="@+id/longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/new_product_button"
-        android:layout_alignEnd="@+id/textView5"
-        android:text="@string/longitude" />
-
-    <TextView
-        android:id="@+id/latitude_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="37dp"
-        android:text="@string/latitude"
-        android:layout_above="@+id/latitude"
-        android:layout_toStartOf="@+id/new_product_button" />
-
-    <TextView
-        android:id="@+id/longitude_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/longitude"
-        android:layout_alignBaseline="@+id/latitude_desc"
-        android:layout_alignBottom="@+id/latitude_desc"
-        android:layout_toEndOf="@+id/new_product_button" />
-
-    <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/take_photo" />
+        android:text="@string/new_product_info" />
 
 
 </RelativeLayout>

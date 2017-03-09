@@ -1,35 +1,27 @@
 package pro.rane.foodadvisor;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.location.LocationListener;
+
 
 public class NewProductFragment extends Fragment{
+    protected Context context;
 
     public NewProductFragment(){
         //must be empty
     }
 
-    private float[] getCoordinates(){
-        float[] coordinates = new float[2];
-
-        // TODO: 09/03/2017 deve restituire le coordinate attuali
-
-        float lat = 0.0f;
-
-        float lng = 0.0f;
-
-        coordinates[0] = lat;
-        coordinates[1] = lng;
-        return coordinates;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +29,11 @@ public class NewProductFragment extends Fragment{
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_new_product, container, false);
 
-        float[] coordinates = getCoordinates();
+
+
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+
 
         // TODO: 09/03/2017 scrivere la presa della fotografia 
 
@@ -47,10 +43,11 @@ public class NewProductFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 // TODO: 09/03/2017 scrivere logica di aggiunta nuovo prodotto
-                Intent intent = new Intent(getActivity(), SplashScreen.class);
+                Intent intent = new Intent(getActivity(),GetCurrentLocation.class);
                 startActivity(intent);
             }
         });
         return rootView;
     }
+
 }
