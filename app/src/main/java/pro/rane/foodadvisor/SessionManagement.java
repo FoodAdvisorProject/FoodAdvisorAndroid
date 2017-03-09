@@ -2,6 +2,20 @@ package pro.rane.foodadvisor;
 
 /**
  * Created by iscandar on 09/03/17.
+ * per otterenere i dati
+ * da altre classi
+ * SessionManagement session; <--globale
+ * session = new SessionManagement(getApplicationContext()); <-- dentro il create
+ *session.checkLogin();
+
+ // get user data from session
+ HashMap<String, String> user = session.getUserDetails();
+
+ // name
+ String name = user.get(SessionManager.KEY_NAME);
+
+ // email
+ String email = user.get(SessionManager.KEY_EMAIL);
  */
 
 import java.util.HashMap;
@@ -35,6 +49,7 @@ public class SessionManagement {
     public static final String KEY_NAME = "name";
     public static final String KEY_SECOND_NAME = "second_name";
     public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_ID = "id";
     public static final String KEY_PHOTO = "photo";
 
     // Constructor
@@ -47,7 +62,7 @@ public class SessionManagement {
     /**
      * Create login session
      * */
-    public void createLoginSession(String azienda,String name,String second_name, String email,String description,String photo){
+    public void createLoginSession(String azienda,String name,String second_name, String email,String description,String photo,String id){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -57,6 +72,7 @@ public class SessionManagement {
         editor.putString(KEY_SECOND_NAME,second_name);
         editor.putString(KEY_DESCRIPTION,description);
         editor.putString(KEY_PHOTO,photo);
+        editor.putString(KEY_ID,id);
 
         // commit changes
         editor.commit();

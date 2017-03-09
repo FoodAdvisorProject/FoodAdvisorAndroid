@@ -107,7 +107,6 @@ public class Rest {
             }
         };
         queue.add(stringRequest);
-
     }
     public static String sha256(String base) {
         try{
