@@ -194,7 +194,7 @@ if (session.isLoggedIn()){
 
                     if (username.equals(jsonObj.getString("email")) && password.equals(jsonObj.getString("passw"))) {
 
-                        session.createLoginSession(jsonObj.getString("login"),jsonObj.getString("name"),jsonObj.getString("second_name"),jsonObj.getString("email"),jsonObj.getString("enterprise_description"),jsonObj.getString("photo"));
+                        session.createLoginSession(jsonObj.getString("login"),jsonObj.getString("name"),jsonObj.getString("second_name"),jsonObj.getString("email"),jsonObj.getString("enterprise_description"),jsonObj.getString("photo"),jsonObj.getString("user_id"));
 
                         // Activity start
                         Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
