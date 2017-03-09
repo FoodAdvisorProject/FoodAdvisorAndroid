@@ -136,12 +136,12 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject user = new JSONObject();
             try {
                 user.put("login_name", aziendaName.getText().toString() );
-                user.put("passw_login", passText.getText().toString() );
+                user.put("passw_login", Rest.sha256(passText.getText().toString()) );
                 user.put("email", emailTit.getText().toString() );
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
-                user.put("is_enterprise",Integer.parseInt(ivaText.getText().toString()));
-                user.put("enterprise_description","Phone: "+phoneText.getText().toString()+"\n"+ description.getText().toString());
+                user.put("is_enterprise","true");
+                user.put("enterprise_description","Phone: "+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString());
                 user.put("photo",img.toString());
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
