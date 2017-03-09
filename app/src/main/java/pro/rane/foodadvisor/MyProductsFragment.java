@@ -1,21 +1,20 @@
 package pro.rane.foodadvisor;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 /**
- * A simple {@link Fragment} subclass.
+ * Created by Andrea on 08/03/2017.
  */
-public class ProfileFragment extends Fragment {
+
+public class MyProductsFragment extends Fragment {
 
 
-    public ProfileFragment() {
-        // Required empty public constructor
+    public MyProductsFragment() {
+        //must be empty
     }
 
 
@@ -23,8 +22,11 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        // TODO: 08/03/2017 fare adeguate call sui prodotti
+        
+        
+        View rootView = inflater.inflate(R.layout.fragment_my_products, container, false);
+
         return rootView;
     }
-
 }

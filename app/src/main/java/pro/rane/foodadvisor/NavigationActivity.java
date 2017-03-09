@@ -82,14 +82,28 @@ public class NavigationActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             ScanFragment fragment = new ScanFragment();
-
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_gallery) {
-            // TODO: 05/03/2017 creare attività i miei prodotti 
+        }  else if (id == R.id.nav_user_mode) {
+            UserFragment fragment = new UserFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
 
+        } else if (id == R.id.nav_gallery) {
+            MyProductsFragment fragment = new MyProductsFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
+
+        } else if (id == R.id.nav_new_product){
+            NewProductFragment fragment = new NewProductFragment();
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.profile){
             ProfileFragment fragment = new ProfileFragment();
@@ -99,13 +113,17 @@ public class NavigationActivity extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_manage) {
-            // TODO: 05/03/2017 creare attività di impostazioni 
-
+            SettingFragment fragment = new SettingFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_share) {
-            // TODO: 05/03/2017 creare attività condivisione prodotto 
+            ShareProductFragment fragment = new ShareProductFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_bug_report){
-            // TODO: 05/03/2017 creare attività con form di report bug alla nostra mail 
-            ProfileFragment fragment = new ProfileFragment();
+            ReportBugFragment fragment = new ReportBugFragment();
 
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
