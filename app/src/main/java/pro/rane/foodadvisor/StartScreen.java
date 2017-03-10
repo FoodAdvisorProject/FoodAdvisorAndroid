@@ -18,10 +18,10 @@ public class StartScreen extends AppCompatActivity {
     public void userPath(View view){
         Intent intent = new Intent(this, TrackActivity.class);
         startActivity(intent);
-        finish();
     }
     public void producerPath(View view){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 }

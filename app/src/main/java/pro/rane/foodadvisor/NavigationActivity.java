@@ -37,7 +37,9 @@ public class NavigationActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container,fragment);
         fragmentTransaction.commit();
 
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn() + "\n" + "Data: "+session.getUserDetails().toString(), Toast.LENGTH_LONG).show();
+        //disabilitata temporaneamente da usare solo durante il debug dell'attività
+        //Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn() + "\n" + "Data: "+session.getUserDetails().toString(), Toast.LENGTH_LONG).show();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

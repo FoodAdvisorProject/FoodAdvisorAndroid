@@ -81,6 +81,8 @@
     <string name="descrizione_azienda">Descrizione Azienda</string>
     <string name="nome_intestatario">Nome Intestatario</string>
     <string name="id_description">Codice identificativo (ID)</string>
+    <string name="come_back">Torna indietro</string>
+    <string name="ok_response">OK!</string>
 
 
 </resources>
