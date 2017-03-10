@@ -127,8 +127,8 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
         }
 
         //Toast.makeText(getBaseContext(),req.toString(),Toast.LENGTH_SHORT).show();
-
-        // TODO: 09/03/2017 per ora esiste post activity, più in là esisterà una cosa migliore 
+        // TODO: 10/03/2017 i beneamati permessi e la permission request 
+        // TODO: 09/03/2017 per ora esiste post activity, più in là esisterà una cosa migliore
         Intent startPostAct= new Intent(this, PostActivity.class);
         startPostAct.putExtra("url", url);
         startPostAct.putExtra("req",req.toString());
