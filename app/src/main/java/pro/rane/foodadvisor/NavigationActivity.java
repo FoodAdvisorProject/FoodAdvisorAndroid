@@ -49,11 +49,9 @@ public class NavigationActivity extends AppCompatActivity
         toggle.syncState();
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View hView =  navigationView.getHeaderView(0);
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
 
         username = (TextView)  hView.findViewById(R.id.username);
         email = (TextView)  hView.findViewById(R.id.email);

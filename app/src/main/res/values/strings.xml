@@ -77,6 +77,10 @@
     <string name="take_photo">Foto (non disponibile ancora)</string>
     <string name="new_product_info">Da qui puoi registrare nel database un nuovo prodotto. Clicca sul bottone per continuare</string>
     <string name="get_location">Setta le coordinate</string>
+    <string name="profile_pic_desc">Foto Profilo</string>
+    <string name="descrizione_azienda">Descrizione Azienda</string>
+    <string name="nome_intestatario">Nome Intestatario</string>
+    <string name="id_description">Codice identificativo (ID)</string>
 
 
 </resources>
