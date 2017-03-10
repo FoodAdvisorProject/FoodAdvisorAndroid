@@ -36,8 +36,8 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         session = new pro.rane.foodadvisor.SessionManager(getActivity().getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
         session.checkLogin();
+        HashMap<String, String> user = session.getUserDetails();
 
         nome_azienda = (TextView) rootView.findViewById(R.id.nome_azienda);
         email = (TextView) rootView.findViewById(R.id.email_azienda);
