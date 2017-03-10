@@ -74,10 +74,9 @@
     <string name="new_product_desc">Descrizione nuovo prodotto</string>
     <string name="latitude">Latitudine:</string>
     <string name="longitude">Longitudine:</string>
-    <string name="take_photo">Foto</string>
+    <string name="take_photo">Foto (non disponibile ancora)</string>
     <string name="new_product_info">Da qui puoi registrare nel database un nuovo prodotto. Clicca sul bottone per continuare</string>
     <string name="get_location">Setta le coordinate</string>
-    <string name="graffa_aperta">{</string>
 
 
 </resources>

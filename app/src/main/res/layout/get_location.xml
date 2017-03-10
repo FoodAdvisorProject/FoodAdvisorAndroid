@@ -83,25 +83,24 @@
         android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/latitude"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/new_product_button"
-        android:text="@string/latitude" />
+        android:layout_alignStart="@+id/new_product_button" />
 
     <TextView
         android:id="@+id/longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/latitude"
-        android:layout_marginStart="15dp"
-        android:layout_toEndOf="@+id/btnLocation"
-        android:text="@string/longitude" />
+        android:text="@string/longitude"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/new_product_button" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/progressBar1"
-        android:layout_below="@+id/textInputLayout2"
         android:layout_marginTop="28dp"
-        android:text="@string/take_photo" />
+        android:text="@string/take_photo"
+        android:layout_below="@+id/textInputLayout2"
+        android:layout_alignStart="@+id/btnLocation" />
 </RelativeLayout>

@@ -10,7 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -18,6 +21,11 @@ public class NavigationActivity extends AppCompatActivity
     NavigationView  navigationView = null;
     Toolbar toolbar = null;
     pro.rane.foodadvisor.SessionManager session;
+
+    de.hdodenhof.circleimageview.CircleImageView profile_photo;
+    TextView username;
+    TextView email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +48,23 @@ public class NavigationActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        username = (TextView)  hView.findViewById(R.id.username);
+        email = (TextView)  hView.findViewById(R.id.email);
+
+        HashMap<String, String> user = session.getUserDetails();
+        username.setText(user.get(SessionManager.KEY_AZIENDA));
+        email.setText(user.get(SessionManager.KEY_EMAIL));
+
+        // TODO: 10/03/2017 creare funzione di conversione da stringa a foto formato bitmap
+        //profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
+        //profile_photo.setImageBitmap(user.get(SessionManager.KEY_PHOTO));
     }
 
     @Override
