@@ -108,6 +108,7 @@ if (session.isLoggedIn()){
                 // Get username, password from EditText
                 username = txtUsername.getText().toString();
                 //TODO: CIfrare password rest.sha256
+                // TODO: 10/03/2017 riabilitare cifratura in seguito 
                 password = txtPassword.getText().toString();
                 connection(username);
 

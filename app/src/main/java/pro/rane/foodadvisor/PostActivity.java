@@ -69,6 +69,7 @@ public class PostActivity  extends AppCompatActivity {
                 Log.i("VOLLEY", response);
                 loadingText.setText(R.string.ok_response);
                 backButton.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -102,11 +103,9 @@ public class PostActivity  extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
 
-        // TODO: 09/03/2017 dove deve andare una volta evasa la richiesta?
         //Intent startActivity = new Intent();
         // startActivity(startActivity);
         //finish();
-        progressBar.setVisibility(View.INVISIBLE);
     }
 
     public void comeBack(View view){

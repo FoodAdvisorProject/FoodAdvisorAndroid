@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.app.AlertDialog;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -35,6 +36,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Pattern;
+
 import pro.rane.foodadvisor.Rest;
 public class RegisterActivity extends AppCompatActivity {
     private EditText aziendaName;
@@ -92,14 +95,15 @@ public class RegisterActivity extends AppCompatActivity {
         return password.length() > 8 || password.length()==8 && !password.isEmpty() && password==validation;
     }
     private boolean controll() {
-        if (aziendaName.getText().toString() == "" || nomeTit.getText().toString() == "" ||
+        // TODO: 10/03/2017 controllare
+     /*   if (aziendaName.getText().toString() == "" || nomeTit.getText().toString() == "" ||
                 cognomeTit.getText().toString() == "" || emailTit.getText().toString() == "" ||
                 phoneText.getText().toString() == "" || ivaText.getText().toString() == "" ||
                 !isPasswordValid(passText.getText().toString(), passConfirmText.getText().toString()) ||
                 !isEmailValid(emailTit.getText().toString()) || !isNumberValid(ivaText.getText().toString())) {
             alert("Some incorrect data, please check");
             return false;
-        }
+        }*/
         return true;
 
     }
@@ -131,26 +135,35 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
     }
+    private String toCorrectCase(String req){
+        String ret;
+        ret = req.replace(':','=').replace(',','&').replaceAll(Pattern.quote("{"),"").replaceAll(Pattern.quote("}"),"").replaceAll(Pattern.quote(""),"").replace("\"", "").replace(" ","_");
+        Toast.makeText(getBaseContext(),ret, Toast.LENGTH_SHORT).show();
+        return ret;
+    }
 
     public void register(View view) {
         if(controll()){
             JSONObject user = new JSONObject();
             try {
                 user.put("login_name", aziendaName.getText().toString() );
-                user.put("passw_login", Rest.sha256(passText.getText().toString()) );
-                user.put("email", emailTit.getText().toString() );
+                // TODO: 10/03/2017 riabilitare cifratura in seguito 
+                user.put("login_passw", passText.getText().toString()/*Rest.sha256(passText.getText().toString())*/ );
+                user.put("email", emailTit.getText().toString().replace("@","%40") );
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
-                user.put("is_enterprise","true");
-                user.put("enterprise_description","Phone: "+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString());
-                user.put("photo",Rest.BitMapToString(bitmap));
+                user.put("is_enterprise","1");
+                // TODO: 10/03/2017  da ricontrollare
+                user.put("enterprise_description","ciao"/*"Phone:"+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString()*/);
+                // TODO: 10/03/2017  fotografie implementare
+                user.put("photo",/*Rest.BitMapToString(bitmap)*/"null");
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             String URL="http://foodadvisor.rane.pro:8080/addUser";
-            final String requestBody = user.toString();
+            final String requestBody = toCorrectCase(user.toString());
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -164,7 +177,7 @@ public class RegisterActivity extends AppCompatActivity {
             }) {
                 @Override
                 public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
+                    return "application/x-www-form-urlencoded; charset=utf-8";
                 }
 
                 @Override
