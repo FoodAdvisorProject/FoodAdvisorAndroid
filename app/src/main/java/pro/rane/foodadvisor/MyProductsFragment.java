@@ -47,8 +47,7 @@ public class MyProductsFragment extends Fragment {
         HashMap<String, String> user = session.getUserDetails();
         url = "http://foodadvisor.rane.pro:8080/getUserArticles?user_id=" + user.get(SessionManager.KEY_ID);
 
-        
-        
+
         View rootView = inflater.inflate(R.layout.fragment_my_products, container, false);
         products = (TextView) rootView.findViewById(R.id.userProducts);
         loading_bar = (ProgressBar) rootView.findViewById(R.id.progressBar5);
@@ -96,5 +95,9 @@ public class MyProductsFragment extends Fragment {
         loading_bar.setVisibility(View.INVISIBLE);
         products.setVisibility(View.VISIBLE);
     }
+
+    /* TODO: 11/03/2017 implementare funzione "segui il tuo prodotto" : ovvero una chiamata di user mode direttamente sul prodotto senza passare per lo scan.
+        NB tale cosa a livello di layout sarà un bottone
+     */
 
 }

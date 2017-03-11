@@ -1,8 +1,6 @@
 package pro.rane.foodadvisor;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +20,6 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
