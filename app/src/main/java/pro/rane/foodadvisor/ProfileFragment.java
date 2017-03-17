@@ -11,9 +11,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class ProfileFragment extends Fragment {
 
     pro.rane.foodadvisor.SessionManager session;

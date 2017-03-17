@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
-import pro.rane.foodadvisor.Rest;
+import pro.rane.foodadvisor.Utility;
 public class RegisterActivity extends AppCompatActivity {
     private EditText aziendaName;
     private EditText nomeTit;
@@ -158,7 +158,6 @@ public class RegisterActivity extends AppCompatActivity {
                 // TODO: 10/03/2017  fotografie implementare
                 user.put("photo",/*Rest.BitMapToString(bitmap)*/"null");
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -204,6 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
             alert("Operation complete");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
 
     }

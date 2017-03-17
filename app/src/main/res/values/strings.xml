@@ -60,7 +60,7 @@
     <string name="my_products">I miei prodotti</string>
     <string name="track">Traccia</string>
     <string name="my_profile">Profilo</string>
-    <string name="fragment_scan_info">Scan fragment</string>
+    <string name="fragment_scan_info">Da qui puoi aggiungere la transazione del prodotto che hai ricevuto da un altro tracker. Scannerizza il QR Code presente sul prodotto. (È necessario avere internet e GPS attivo).</string>
     <string name="bug_report">Segnala un bug</string>
     <string name="track_food">Traccia il cibo!</string>
     <string name="temp_track_text">Qui verranno mostrati i prodotti dell\'azienda</string>
@@ -83,6 +83,8 @@
     <string name="id_description">Codice identificativo (ID)</string>
     <string name="come_back">Torna indietro</string>
     <string name="ok_response">OK!</string>
+    <string name="fragment_scan_title">Scan Fragment</string>
+    <string name="add_transaction">Aggiungi transazione</string>
 
 
 </resources>

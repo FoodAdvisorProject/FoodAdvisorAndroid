@@ -101,7 +101,7 @@ public class SessionManager {
     }
     //take photo
     public Bitmap photoUser(){
-        return Rest.StringToBitMap(pref.getString(KEY_PHOTO,"photo"));
+        return Utility.StringToBitMap(pref.getString(KEY_PHOTO,"photo"));
     }
 
 

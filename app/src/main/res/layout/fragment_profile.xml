@@ -1,9 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pro.rane.foodadvisor.ProfileFragment">
+    tools:context="pro.rane.foodadvisor.ProfileFragment"
+    android:orientation="vertical"
+    android:layout_marginStart="15sp"
+    android:layout_marginEnd="15sp">
 
 
 
@@ -11,11 +14,18 @@
         android:id="@+id/toolbar3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/farmer"
+        android:contentDescription="@string/profile_pic_desc"
+        />
+
 
     <TextView
         android:id="@+id/nome_azienda"
@@ -24,17 +34,8 @@
         android:text="@string/username_azienda"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
-        android:layout_below="@+id/imageView"
-        android:layout_alignEnd="@+id/description_azienda" />
+        />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        app:srcCompat="@drawable/farmer"
-        android:contentDescription="@string/profile_pic_desc"
-        android:layout_below="@+id/toolbar3"
-        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/email_azienda"
@@ -42,9 +43,8 @@
         android:layout_height="wrap_content"
         android:text="@string/email"
         android:textSize="16sp"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="26dp"
+        />
 
     <TextView
         android:id="@+id/description_azienda"
@@ -52,19 +52,15 @@
         android:layout_height="wrap_content"
         android:text="@string/descrizione_azienda"
         android:textSize="16sp"
-        android:layout_below="@+id/nome_azienda"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp" />
 
     <TextView
         android:id="@+id/first_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nome_titolare"
-        android:textSize="16sp"
         android:layout_marginTop="35dp"
-        android:layout_below="@+id/email_azienda"
-        android:layout_alignStart="@+id/nome_azienda" />
+        android:text="@string/nome_titolare"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/second_name"
@@ -72,8 +68,6 @@
         android:layout_height="wrap_content"
         android:text="@string/cognome_titolare"
         android:textSize="16sp"
-        android:layout_below="@+id/first_name"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp" />
 
     <TextView
@@ -82,8 +76,7 @@
         android:layout_height="wrap_content"
         android:text="@string/id_description"
         android:textSize="16sp"
-        android:layout_below="@+id/second_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp" />
+        android:layout_marginTop="24dp"
+        />
 
-</RelativeLayout>
+</LinearLayout>
