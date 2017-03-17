@@ -13,7 +13,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-/*NOTA:quando viene invocato splashScreen bisogno inserire due put extra
+/*
+La SplashActivity serve a fare SOLO le GET al server
+
+NOTA:quando viene invocato splashScreen bisogno inserire due put extra
 uno contenente le info un l'altro contenente l'url a cui fare la richiesta.
 
 es:
@@ -27,6 +30,8 @@ in Track Activity:
         if (b != null)
             info = b.getString("info"); <--- da qui lui prende la risposta che è stata data dal server
  */
+
+
 
 public class SplashScreen extends AppCompatActivity {
     private String nameActivity;

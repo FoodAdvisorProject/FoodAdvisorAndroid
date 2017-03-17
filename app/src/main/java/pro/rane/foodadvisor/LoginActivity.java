@@ -31,10 +31,6 @@ import org.json.JSONObject;
  */
 public class LoginActivity extends AppCompatActivity  {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
 
     // Email, password edittext
     EditText txtUsername, txtPassword;
@@ -81,9 +77,7 @@ if (session.isLoggedIn()){
             public void onClick(View arg0) {
                 // Get username, password from EditText
                 username = txtUsername.getText().toString();
-                //TODO: Cifrare password rest.sha256
-                // TODO: 10/03/2017 riabilitare cifratura in seguito 
-                password = txtPassword.getText().toString();
+                password = Utility.sha256(txtPassword.getText().toString());
                 connection(username);
 
             }

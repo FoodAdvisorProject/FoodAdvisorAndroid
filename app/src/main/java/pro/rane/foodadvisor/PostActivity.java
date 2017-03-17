@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -22,7 +22,6 @@ import com.android.volley.toolbox.Volley;
 
 
 import java.io.UnsupportedEncodingException;
-import java.util.regex.Pattern;
 
 /**
  * Created by Andrea on 09/03/2017.
@@ -36,12 +35,7 @@ public class PostActivity  extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button backButton;
 
-    private String toCorrectCase(String req){
-        String ret;
-        ret = req.replace(':','=').replace(',','&').replaceAll(Pattern.quote("{"),"").replaceAll(Pattern.quote("}"),"").replaceAll(Pattern.quote(""),"").replace("\"", "").replace(" ","_");
-        Toast.makeText(getBaseContext(),ret, Toast.LENGTH_SHORT).show();
-        return ret;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +53,9 @@ public class PostActivity  extends AppCompatActivity {
         backButton.setVisibility(View.INVISIBLE);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        final String requestBody = toCorrectCase(req);
+        final String requestBody = Utility.toCorrectCase(req);
+        //Decommentare solo per il debug
+        //Toast.makeText(getBaseContext(),requestBody, Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

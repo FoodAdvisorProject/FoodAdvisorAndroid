@@ -39,6 +39,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
 import pro.rane.foodadvisor.Utility;
+
+import static pro.rane.foodadvisor.Utility.toCorrectCase;
+
 public class RegisterActivity extends AppCompatActivity {
     private EditText aziendaName;
     private EditText nomeTit;
@@ -96,6 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private boolean controll() {
         // TODO: 10/03/2017 controllare
+        // TODO: 17/03/2017 questi controlli vanno fatti appena l'utente smette di scrivere sulla riga, si scarica in tempi di gestione e semplicità di risposta
      /*   if (aziendaName.getText().toString() == "" || nomeTit.getText().toString() == "" ||
                 cognomeTit.getText().toString() == "" || emailTit.getText().toString() == "" ||
                 phoneText.getText().toString() == "" || ivaText.getText().toString() == "" ||
@@ -135,26 +139,21 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
     }
-    private String toCorrectCase(String req){
-        String ret;
-        ret = req.replace(':','=').replace(',','&').replaceAll(Pattern.quote("{"),"").replaceAll(Pattern.quote("}"),"").replaceAll(Pattern.quote(""),"").replace("\"", "").replace(" ","_");
-        Toast.makeText(getBaseContext(),ret, Toast.LENGTH_SHORT).show();
-        return ret;
-    }
+
 
     public void register(View view) {
         if(controll()){
             JSONObject user = new JSONObject();
             try {
                 user.put("login_name", aziendaName.getText().toString() );
-                // TODO: 10/03/2017 riabilitare cifratura in seguito 
-                user.put("login_passw", passText.getText().toString()/*Rest.sha256(passText.getText().toString())*/ );
+                // TODO: 10/03/2017 riabilitare cifratura in seguito
+                user.put("login_passw", Utility.sha256(passText.getText().toString()) );
                 user.put("email", emailTit.getText().toString().replace("@","%40") );
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
                 user.put("is_enterprise","1");
                 // TODO: 10/03/2017  da ricontrollare
-                user.put("enterprise_description","ciao"/*"Phone:"+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString()*/);
+                user.put("enterprise_description","Phone:"+phoneText.getText().toString()+"\\n"+ description.getText().toString()+"\\nIVA: "+ivaText.getText().toString());
                 // TODO: 10/03/2017  fotografie implementare
                 user.put("photo",/*Rest.BitMapToString(bitmap)*/"null");
             } catch (JSONException e) {
@@ -200,7 +199,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             };
             requestQueue.add(stringRequest);
-            alert("Operation complete");
+            alert("Operazione Completata");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();

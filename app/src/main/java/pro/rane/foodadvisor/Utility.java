@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -21,15 +22,19 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.util.regex.Pattern;
 
-/**
- * Created by iscandar on 09/03/17.
- *
- * CLASSE NON PERFETTAMENTE FUNZIONANTE!
- */
+
 //TODO: Ricontrollare la classe e vedere perche non funziona
 
 public class Utility {
+
+    public static String toCorrectCase(String req){
+        String ret;
+        ret = req.replace(':','=').replace(',','&').replaceAll(Pattern.quote("{"),"").replaceAll(Pattern.quote("}"),"").replaceAll(Pattern.quote(""),"").replace("\"", "").replace(" ","_");
+        return ret;
+    }
+
     public static String sha256(String base) {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
