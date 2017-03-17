@@ -16,18 +16,18 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/action_settings" />
+        android:text="@string/action_settings"
+        android:textSize="45sp"
+        android:layout_below="@+id/toolbar7"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LogOut"
-        android:layout_marginBottom="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="logout"/>
+        android:text="@string/logout_string"
+        android:onClick="logout"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

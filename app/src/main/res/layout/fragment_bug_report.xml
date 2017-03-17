@@ -6,9 +6,10 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/bug_report" />
+        android:textSize="45sp"
+        android:text="@string/bug_report"
+        android:layout_below="@+id/toolbar6"
+        android:layout_centerHorizontal="true" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar6"

@@ -18,6 +18,13 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_desc"
+        android:textSize="30dp"/>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="100sp"
@@ -28,55 +35,104 @@
 
 
     <TextView
+        android:id="@+id/textView14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/username_azienda"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="14sp"
+        />
+
+    <TextView
         android:id="@+id/nome_azienda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username_azienda"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
         />
 
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/email_azienda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"
-        android:textSize="16sp"
-        android:layout_marginTop="26dp"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
         />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/descrizione_azienda"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/description_azienda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/descrizione_azienda"
-        android:textSize="16sp"
-        android:layout_marginTop="24dp" />
+        android:textSize="14sp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nome_titolare"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/first_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="10dp"
         android:text="@string/nome_titolare"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cognome_titolare"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/second_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cognome_titolare"
-        android:textSize="16sp"
-        android:layout_marginTop="14dp" />
+        android:textSize="14sp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/id_description"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/id_azienda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/id_description"
-        android:textSize="16sp"
-        android:layout_marginTop="24dp"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
         />
 
 </LinearLayout>

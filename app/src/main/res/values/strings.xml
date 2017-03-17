@@ -83,8 +83,12 @@
     <string name="id_description">Codice identificativo (ID)</string>
     <string name="come_back">Torna indietro</string>
     <string name="ok_response">OK!</string>
-    <string name="fragment_scan_title">Scan Fragment</string>
+    <string name="fragment_scan_title">Aggiungi transazione</string>
     <string name="add_transaction">Aggiungi transazione</string>
+    <string name="permissions_needed">L\'app non funziona se non ha accesso al GPS</string>
+    <string name="logout_string">Logout</string>
+    <string name="my_products_title">I miei prodotti</string>
+    <string name="profile_desc">Informazioni personali</string>
 
 
 </resources>
