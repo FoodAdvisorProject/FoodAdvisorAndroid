@@ -21,11 +21,13 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
 
-//TODO: Ricontrollare la classe e vedere perche non funziona
+
 
 public class Utility {
 
@@ -35,6 +37,8 @@ public class Utility {
         return ret;
     }
 
+    // TODO: 19/03/2017 eliminare appena sicuri di funzionamento altra 
+    //Deprecata e lasciata qui per il momento, alla prossima pulizia del codice verrà eliminata
     public static String sha256(String base) {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -53,6 +57,28 @@ public class Utility {
         }
     }
 
+
+    public static String md5(String plaintext){
+        MessageDigest m;
+        String hashtext = "";
+        try {
+            m = MessageDigest.getInstance("MD5");
+            m.reset();
+            m.update(plaintext.getBytes());
+            byte[] digest = m.digest();
+            BigInteger bigInt = new BigInteger(1,digest);
+            hashtext = bigInt.toString(16);
+            // Now we need to zero pad it if you actually want the full 32 chars.
+            while(hashtext.length() < 32 ){
+                hashtext = "0"+hashtext;
+            }
+        }catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashtext;
+    }
+
+    // TODO: 19/03/2017 testare le due funzioni e implementarle 
     //conversion data for photo
     public static String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();

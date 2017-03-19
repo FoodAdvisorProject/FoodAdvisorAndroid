@@ -77,7 +77,7 @@ if (session.isLoggedIn()){
             public void onClick(View arg0) {
                 // Get username, password from EditText
                 username = txtUsername.getText().toString();
-                password = Utility.sha256(txtPassword.getText().toString());
+                password = Utility.md5(txtPassword.getText().toString());
                 connection(username);
 
             }
@@ -120,7 +120,6 @@ if (session.isLoggedIn()){
 
     }
     private void auxConnection(Integer user_id){
-        String ris;
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://foodadvisor.rane.pro:8080/getUser?user_id="+user_id,
                 new Response.Listener<String>() {
@@ -172,12 +171,12 @@ if (session.isLoggedIn()){
 
                     } else {
                         // username / password doesn't match
-                        alert("Login failed..Username/Password is incorrect");
+                        alert("Login fallito.\nL'email o la password non sono corrette");
                     }
                 } else {
                     // user didn't entered username or password
                     // Show alert asking him to enter the details
-                    alert("Login failed..Please enter username and password");
+                    alert("Login fallito.\nPerfavore inserisci email e password");
                 }
 
             } catch (JSONException e) {

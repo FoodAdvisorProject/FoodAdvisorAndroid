@@ -69,10 +69,10 @@ public class TrackActivity extends AppCompatActivity
         }
 
         if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Snackbar.make(myLayout, "Camera permission was granted.", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(myLayout, "Permesso fotocamera ottenuto.", Snackbar.LENGTH_SHORT).show();
             initQRCodeReaderView();
         } else {
-            Snackbar.make(myLayout, "Camera permission request was denied.", Snackbar.LENGTH_SHORT)
+            Snackbar.make(myLayout, "Permesso fotocamera negato.", Snackbar.LENGTH_SHORT)
                     .show();
         }
     }
@@ -89,7 +89,7 @@ public class TrackActivity extends AppCompatActivity
 
     private void requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-            Snackbar.make(myLayout, "Camera access is required to display the camera preview.",
+            Snackbar.make(myLayout, "Per continuare sono necessari i permessi della fotocamera.",
                     Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                 @Override public void onClick(View view) {
                     ActivityCompat.requestPermissions(TrackActivity.this, new String[] {
@@ -98,7 +98,7 @@ public class TrackActivity extends AppCompatActivity
                 }
             }).show();
         } else {
-            Snackbar.make(myLayout, "Permission is not available. Requesting camera permission.",
+            Snackbar.make(myLayout, "Permessi non disponibili. Richiedo i permessi.",
                     Snackbar.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(this, new String[] {
                     Manifest.permission.CAMERA

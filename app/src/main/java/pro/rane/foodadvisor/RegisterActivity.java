@@ -146,14 +146,13 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject user = new JSONObject();
             try {
                 user.put("login_name", aziendaName.getText().toString() );
-                // TODO: 10/03/2017 riabilitare cifratura in seguito
-                user.put("login_passw", Utility.sha256(passText.getText().toString()) );
+                user.put("login_passw", Utility.md5(passText.getText().toString()) );
                 user.put("email", emailTit.getText().toString().replace("@","%40") );
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
                 user.put("is_enterprise","1");
-                // TODO: 10/03/2017  da ricontrollare
-                user.put("enterprise_description","Phone:"+phoneText.getText().toString()+"\\n"+ description.getText().toString()+"\\nIVA: "+ivaText.getText().toString());
+                // TODO: 19/03/2017 la chiamata funziona c'è un errore nella formattazione, potremmo pensare di cambiare i parametri di registrazione aggiungendo più dati e risolvendo il problema completamente 
+                user.put("enterprise_description",""/*"Phone:"+phoneText.getText().toString()+"\\n"+ description.getText().toString()+"\\nIVA: "+ivaText.getText().toString()*/);
                 // TODO: 10/03/2017  fotografie implementare
                 user.put("photo",/*Rest.BitMapToString(bitmap)*/"null");
             } catch (JSONException e) {
@@ -162,6 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             String URL="http://foodadvisor.rane.pro:8080/addUser";
             final String requestBody = toCorrectCase(user.toString());
+            Log.e("VOLLEY",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -199,7 +199,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             };
             requestQueue.add(stringRequest);
-            alert("Operazione Completata");
+        //    alert("Operazione Completata");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();

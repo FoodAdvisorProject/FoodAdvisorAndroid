@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class ProfileFragment extends Fragment {
     TextView first_name;
     TextView second_name;
     TextView id_azienda;
+    ImageView foto;
 
 
     public ProfileFragment() {
@@ -45,6 +47,7 @@ public class ProfileFragment extends Fragment {
         first_name = (TextView) rootView.findViewById(R.id.first_name);
         second_name = (TextView) rootView.findViewById(R.id.second_name);
         id_azienda = (TextView) rootView.findViewById(R.id.id_azienda);
+        foto = (ImageView) rootView.findViewById(R.id.fotoProfilo);
 
         nome_azienda.setText(user.get(SessionManager.KEY_AZIENDA));
         email.setText(user.get(SessionManager.KEY_EMAIL));
@@ -52,6 +55,7 @@ public class ProfileFragment extends Fragment {
         first_name.setText(user.get(SessionManager.KEY_NAME));
         second_name.setText(user.get(SessionManager.KEY_SECOND_NAME));
         id_azienda.setText(user.get(SessionManager.KEY_ID));
+        //foto.setImageBitmap(user.get(SessionManager.KEY_PHOTO));
 
         return rootView;
     }

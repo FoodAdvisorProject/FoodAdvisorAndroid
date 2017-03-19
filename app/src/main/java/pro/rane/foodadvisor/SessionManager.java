@@ -115,7 +115,6 @@ public class SessionManager {
         user.put(KEY_SECOND_NAME, pref.getString(KEY_SECOND_NAME, null));
         user.put(KEY_DESCRIPTION, pref.getString(KEY_DESCRIPTION, null));
         user.put(KEY_ID, pref.getString(KEY_ID, null));
-        // return user
         return user;
     }
 
