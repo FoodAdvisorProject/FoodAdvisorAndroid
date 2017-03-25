@@ -1,5 +1,6 @@
 package pro.rane.foodadvisor;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
@@ -76,6 +78,33 @@ public class Utility {
             e.printStackTrace();
         }
         return hashtext;
+    }
+
+
+    /* restGET
+       Dato un contesto context ed una stringa rappresentante un url, la funzione restituisce la risposta della chiamata sottoforma di stringa
+       Nota: Quando si chiama questa funzione va assolutamente passato il contesto context (getActivity().getApplicationContext() nei fragments)
+     */
+    public static String restGET(Context context, String url){
+        final String[] res = new String[1]; // ho lasciato fare questa schifezza al correttore automatico, ma dovrebbe funzionare perchè l'array è statico ma il contenuto dinamico.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        res[0] = response;
+                        Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(this.getClass().getSimpleName() ,"Errore su volley : " + error.toString());
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(stringRequest);
+        return res[0];
     }
 
     // TODO: 19/03/2017 testare le due funzioni e implementarle 
