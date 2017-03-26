@@ -39,25 +39,6 @@ public class Utility {
         return ret;
     }
 
-    // TODO: 19/03/2017 eliminare appena sicuri di funzionamento altra 
-    //Deprecata e lasciata qui per il momento, alla prossima pulizia del codice verrà eliminata
-    public static String sha256(String base) {
-        try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(base.getBytes("UTF-8"));
-            StringBuffer hexString = new StringBuffer();
-
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if(hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch(Exception ex){
-            throw new RuntimeException(ex);
-        }
-    }
 
 
     public static String md5(String plaintext){
@@ -85,7 +66,7 @@ public class Utility {
        Dato un contesto context ed una stringa rappresentante un url, la funzione restituisce la risposta della chiamata sottoforma di stringa
        Nota: Quando si chiama questa funzione va assolutamente passato il contesto context (getActivity().getApplicationContext() nei fragments)
      */
-    public static String restGET(Context context, String url){
+    public static String restGET(final Context context,final String url){
         final String[] res = new String[1]; // ho lasciato fare questa schifezza al correttore automatico, ma dovrebbe funzionare perchè l'array è statico ma il contenuto dinamico.
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
