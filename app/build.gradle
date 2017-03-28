@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     //compileSdkVersion 'Google Inc.:Google APIs:24' //windows
-    compileSdkVersion 24//ubuntu
+    compileSdkVersion 23//ubuntu
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "pro.rane.foodadvisor"
@@ -74,4 +74,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
     compile 'de.hdodenhof:circleimageview:1.3.0'
     testCompile 'junit:junit:4.12'
+    compile files('src/universal-image-loader-1.9.5.jar')
 }
