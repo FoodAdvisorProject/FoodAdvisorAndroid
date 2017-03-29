@@ -20,4 +20,36 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:text="TextView" />
+
+    <EditText
+        android:id="@+id/body_email_bug"
+        android:layout_width="match_parent"
+        android:layout_height="80sp"
+        android:layout_marginLeft="15sp"
+        android:layout_marginRight="15sp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:layout_below="@+id/textView13"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginTop="89dp" />
+
+    <Button
+        android:id="@+id/button_send_bug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/body_email_bug"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="63dp"
+        android:onClick="reportABug"
+        android:text="Invia il bug" />
+
 </RelativeLayout>
