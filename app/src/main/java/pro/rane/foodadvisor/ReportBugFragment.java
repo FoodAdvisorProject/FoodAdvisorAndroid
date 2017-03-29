@@ -45,7 +45,7 @@ public class ReportBugFragment extends Fragment{
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
                 i.putExtra(Intent.EXTRA_SUBJECT, "[BUG REPORT] User: " + user.get(SessionManager.KEY_NAME));
-                i.putExtra(Intent.EXTRA_TEXT   , body.getText().toString()+"\n\n Version: "+ Build.VERSION.RELEASE +" API: "+ Build.VERSION.SDK_INT + "Model: " + Build.MODEL+" Marca: "+Build.MANUFACTURER);
+                i.putExtra(Intent.EXTRA_TEXT   , body.getText().toString()+"\n\n Version: "+ Build.VERSION.RELEASE +" API: "+ Build.VERSION.SDK_INT + " Model: " + Build.MODEL+" Marca: "+Build.MANUFACTURER);
                 try {
                     startActivity(Intent.createChooser(i, getString(R.string.title_app_selector_name)));
                 } catch (android.content.ActivityNotFoundException ex) {

@@ -55,7 +55,7 @@
     <string name="name_producer">Nome Azienda</string>
     <string name="mail_producer">user@host.com</string>
     <string name="suggest">Consiglia</string>
-    <string name="share">Condividi</string>
+    <string name="share">Crediti</string>
     <string name="social">Social</string>
     <string name="my_products">I miei prodotti</string>
     <string name="track">Traccia</string>
@@ -94,6 +94,11 @@
     <string name="title_app_selector_name">Invio la mail...</string>
     <string name="send_bug">Invia ticket</string>
     <string name="bug_disclamer">I dati raccolti verranno usati esclusivamente a scopo di risolvere il problema presentato nel miglior modo possibile e non per alcun altro fine.</string>
+    <string name="copyright">FoodAdvisor 2016-2017</string>
+    <string name="credits_desc">A work by RaNe : Raging Nerds:</string>
+    <string name="credits_protagonists">Alejandro Ont\nAndrea Lacava\nFabio Pacileo\nDaniele Volpe\nGabrio Tognozzi</string>
+    <string name="credits_friends_desc">A real special thanks to our friends:</string>
+    <string name="credits_friends" >Marino Spitoni (Design)\nCyril Glerum-Imbert (Logo)\n</string>
 
 
 </resources>
