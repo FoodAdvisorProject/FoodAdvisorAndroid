@@ -79,20 +79,22 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
-    <activity    android:name=".GetCurrentLocation"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:configChanges="orientation"
-        android:screenOrientation="portrait">
-    </activity>
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+               <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
 
-        <activity    android:name=".PostActivity"/>
+       </activity>
+
+   <activity    android:name=".GetCurrentLocation"
+       android:label="@string/app_name"
+       android:theme="@style/AppTheme.NoActionBar"
+       android:configChanges="orientation"
+       android:screenOrientation="portrait">
+   </activity>
+
+       <activity    android:name=".PostActivity"/>
 
 </application>
 
