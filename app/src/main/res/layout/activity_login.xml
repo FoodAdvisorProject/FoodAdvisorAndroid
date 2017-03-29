@@ -9,126 +9,42 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pro.rane.foodadvisor.LoginActivity">
-        <!-- Email Label -->
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:singleLine="true"
-            android:layout_marginBottom="5dip"/>
 
-        <!-- Email input text -->
-        <EditText android:id="@+id/txtUsername"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"/>
+    <EditText android:id="@+id/txtUsername"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:hint="@string/email"/>
 
-        <!-- Password Label -->
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:layout_marginBottom="5dip"/>
+    <EditText android:id="@+id/txtPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:hint="@string/password"/>
 
-        <!-- Password input text -->
-        <EditText android:id="@+id/txtPassword"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:password="true"
-            android:singleLine="true"/>
+    <Button android:id="@+id/btnLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_login"
+        android:textStyle="bold"
+        style="?android:textAppearanceSmall"/>
 
-        <!-- Login button -->
-        <Button android:id="@+id/btnLogin"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:textStyle="bold"
-            style="?android:textAppearanceSmall"/>
     <Button
-        android:text="Registrati"
+        android:text="@string/registrati"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/register"
+        android:id="@+id/btnRegister"
         android:textStyle="bold"
         style="?android:textAppearanceSmall"
-        android:onClick="registerActivity" />
+        />
 
-    </LinearLayout>
-
-
-    <!-- Login progress
     <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
-    <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/progressBar7"
+        style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/email_login_form"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/txtPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/btnLogin"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in_short"
-                android:textStyle="bold" />
-
-            <Button
-                android:text="Registrati"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/register"
-                android:textStyle="bold"
-                style="?android:textAppearanceSmall"
-                android:onClick="registerActivity" />
-
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:indeterminate="true"/>
 
 </LinearLayout>
--->

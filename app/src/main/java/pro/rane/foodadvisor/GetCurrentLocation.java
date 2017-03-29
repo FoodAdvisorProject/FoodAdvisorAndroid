@@ -28,14 +28,15 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+// TODO: 30/03/2017 debuggare
 public class GetCurrentLocation extends Activity implements OnClickListener {
     SessionManager session;
-    double latitude = 1.0f;
-    double longitude = 1.0f;
+    double latitude = 0.0f;
+    double longitude = 0.0f;
     TextView txtLat;
     TextView txtLng;
 
-    private LocationManager locationMangaer = null;
+    private LocationManager locationManager = null;
     private LocationListener locationListener = null;
 
     private Button btnGetLocation = null;
@@ -66,9 +67,11 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
         btnGetLocation = (Button) findViewById(R.id.btnLocation);
         btnGetLocation.setOnClickListener(this);
 
-        locationMangaer = (LocationManager)
+        locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -81,14 +84,14 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
             locationListener = new MyLocationListener();
 
             try {
-                locationMangaer.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 5, locationListener);
             }catch (SecurityException e){
                 e.printStackTrace();
             }
 
 
         } else {
-            alertbox("Gps Status!!", "Your GPS is: OFF");
+            alertbox("GPS spento!", "Il GPS è spento!\nAccendi il GPS per continuare");
         }
 
     }
@@ -154,10 +157,10 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
     /*----------Method to create an AlertBox ------------- */
     protected void alertbox(String title, String mymessage) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Your Device's GPS is Disable")
+        builder.setMessage("Il GPS è disabilitato.")
                 .setCancelable(false)
-                .setTitle("** Gps Status **")
-                .setPositiveButton("Gps On",
+                .setTitle("** Stato GPS **")
+                .setPositiveButton("GPS On",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // finish the current activity
@@ -168,7 +171,7 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
                                 dialog.cancel();
                             }
                         })
-                .setNegativeButton("Cancel",
+                .setNegativeButton("Cancella",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // cancel the dialog box
@@ -193,10 +196,9 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
             txtLng.setText("Longitude: " +longitude);
         }
 
-        // TODO: 17/03/2017 Capire l'utilità di queste funzioni e scriverle altrimenti basta lasciarle così
+        //Non necessarie ai nostri fini
         @Override
         public void onProviderDisabled(String provider) {
-            //Non dovrebbe servirci ai nostri scopi
         }
 
         @Override
@@ -207,7 +209,7 @@ public class GetCurrentLocation extends Activity implements OnClickListener {
         @Override
         public void onStatusChanged(String provider,
                                     int status, Bundle extras) {
-            
         }
+
     }
 }

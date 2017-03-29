@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,21 +32,17 @@ import org.json.JSONObject;
  */
 public class LoginActivity extends AppCompatActivity  {
 
-
-    // Email, password edittext
+    ProgressBar progress;
     EditText txtUsername, txtPassword;
-
-    // login button
-    Button btnLogin;
-
+    Button btnLogin , btnRegister;
     // Alert Dialog Manager
     //AlertDialogManager alert = new AlertDialogManager();
-
     // Session Manager Class
     pro.rane.foodadvisor.SessionManager session;
     String username;
-
     String password;
+
+    // TODO: 30/03/2017 RISCRIVERE COMPLETAMENTE LA LOGICA DI AUTENTICAZIONE. ASPETTARE NUOVE CHIAMATE REST
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,23 +51,32 @@ public class LoginActivity extends AppCompatActivity  {
         // Session Manager
         session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
 
-        // Email, Password input text
+
         txtUsername = (EditText) findViewById(R.id.txtUsername);
         txtPassword = (EditText) findViewById(R.id.txtPassword);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
+        progress = (ProgressBar) findViewById(R.id.progressBar7);
+        progress.setVisibility(View.INVISIBLE);
 
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-if (session.isLoggedIn()){
-    // Activity start
-    Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
-    startActivity(i);
-    finish();
-}
+        if (session.isLoggedIn()){
+            // Activity start
+            Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
+            startActivity(i);
+            finish();
+        }
 
-        // Login button
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+              registerActivity();
+            }
+        });
 
 
-        // Login button click event
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -79,11 +85,13 @@ if (session.isLoggedIn()){
                 username = txtUsername.getText().toString();
                 password = Utility.md5(txtPassword.getText().toString());
                 connection(username);
-
+                progress.setVisibility(View.VISIBLE);
+                btnLogin.setVisibility(View.INVISIBLE);
+                btnRegister.setVisibility(View.INVISIBLE);
             }
         });
     }
-    private String res;
+    private String res = "";
     private int timeout =2000;
     private void connection(String email){
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -102,12 +110,13 @@ if (session.isLoggedIn()){
             }
         });
         queue.add(stringRequest);
+
         new Handler().postDelayed(new Runnable()
         {
             @Override
             public void run()
             {
-                while(res==null){
+                while(res.equals("")){
                     try {
                         this.wait(timeout);
                     } catch (InterruptedException e) {
@@ -117,6 +126,7 @@ if (session.isLoggedIn()){
                 auxConnection(Integer.parseInt(res));
             }
         }, timeout);
+
 
     }
     private void auxConnection(Integer user_id){
@@ -197,7 +207,7 @@ if (session.isLoggedIn()){
     }
 
 
-    public void registerActivity(View view){
+    public void registerActivity(){
         Intent startRegisterActivity = new Intent(this,RegisterActivity.class);
         startActivity(startRegisterActivity);
     }
