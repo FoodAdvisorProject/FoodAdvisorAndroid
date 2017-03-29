@@ -25,7 +25,6 @@ public class ReportBugFragment extends Fragment{
         // Required empty public constructor
     }
 
-    // TODO: 29/03/17 testare funzione report a Bug 
 
 
 
