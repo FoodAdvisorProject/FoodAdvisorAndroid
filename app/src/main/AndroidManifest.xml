@@ -30,11 +30,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/action_register" />
+            android:label="@string/action_register">
+        <!--
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        -->
+        </activity>
         <activity
             android:name=".TrackActivity"
             android:label="@string/app_name" />
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -87,7 +93,7 @@
 
        </activity>
 
-   <activity    android:name=".GetCurrentLocation"
+   <activity android:name=".GetCurrentLocation"
        android:label="@string/app_name"
        android:theme="@style/AppTheme.NoActionBar"
        android:configChanges="orientation"

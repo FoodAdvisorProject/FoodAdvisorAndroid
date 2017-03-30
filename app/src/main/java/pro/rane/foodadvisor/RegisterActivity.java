@@ -5,18 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.app.AlertDialog;
-import android.widget.Toast;
+
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -36,11 +34,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.regex.Pattern;
+import java.net.URLEncoder;
 
-import pro.rane.foodadvisor.Utility;
-
-import static pro.rane.foodadvisor.Utility.toCorrectCase;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText aziendaName;
@@ -71,45 +66,59 @@ public class RegisterActivity extends AppCompatActivity {
 
     // TODO: 03/03/2017 scrivere la logica di check information + la chiamata API di registrazione del con eventuale risposta positiva o negativa
     // TODO: 05/03/2017 la call è /addUser
-    private void alert(String text){
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Attention");
-        alertDialog.setMessage(text);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                //TODO: in questo punto aggiungere altro
-            }
-        });
-        alertDialog.show();
-    }
 
     private boolean isEmailValid(String email) {
         return email.contains("@") && email.contains(".");
     }
 
-
-    private boolean isNumberValid(String number){
-
-        return number.matches("\\d+(?:\\.\\d+)?");
-    }
-
-    private boolean isPasswordValid(String password,String validation) {
-
-        return password.length() > 8 || password.length()==8 && !password.isEmpty() && password==validation;
-    }
     private boolean controll() {
-        // TODO: 10/03/2017 controllare
-        // TODO: 17/03/2017 questi controlli vanno fatti appena l'utente smette di scrivere sulla riga, si scarica in tempi di gestione e semplicità di risposta
-     /*   if (aziendaName.getText().toString() == "" || nomeTit.getText().toString() == "" ||
-                cognomeTit.getText().toString() == "" || emailTit.getText().toString() == "" ||
-                phoneText.getText().toString() == "" || ivaText.getText().toString() == "" ||
-                !isPasswordValid(passText.getText().toString(), passConfirmText.getText().toString()) ||
-                !isEmailValid(emailTit.getText().toString()) || !isNumberValid(ivaText.getText().toString())) {
-            alert("Some incorrect data, please check");
-            return false;
-        }*/
-        return true;
+        boolean ret = true;
 
+        if(TextUtils.isEmpty(aziendaName.getText().toString())) {
+            aziendaName.setError("Il campo non può essere vuoto");
+            ret = false;
+        }
+
+        if (TextUtils.isEmpty(nomeTit.getText().toString())){
+            nomeTit.setError("Il campo non può essere vuoto");
+            ret = false;
+        }
+
+        if (TextUtils.isEmpty(cognomeTit.getText().toString())){
+            cognomeTit.setError("Il campo non può essere vuoto");
+            ret = false;
+        }
+
+        if (TextUtils.isEmpty(emailTit.getText().toString())){
+            emailTit.setError("Il campo non può essere vuoto");
+            ret = false;
+        }else if (!isEmailValid(emailTit.getText().toString())){
+            emailTit.setError("Email non valida");
+            ret = false;
+        }
+
+        if (!TextUtils.isDigitsOnly(phoneText.getText().toString())){
+            phoneText.setError("Il campo non può contenere caratteri alfabetici");
+            ret = false;
+        }
+
+        if(TextUtils.isEmpty(passText.getText().toString())){
+            passText.setError("Il campo non può essere vuoto");
+            ret = false;
+        } else if (passText.getText().toString().length()<= 8){
+            passText.setError("La password è troppo corta (min 8 caratteri)");
+            ret = false;
+        }
+
+        if(TextUtils.isEmpty(passConfirmText.getText().toString())){
+            passConfirmText.setError("Il campo non può essere vuoto");
+            ret = false;
+        } else if (!passText.getText().toString().equals(passConfirmText.getText().toString())){
+            passConfirmText.setError("Deve essere la stessa del campo password");
+            ret = false;
+        }
+
+        return ret;
     }
     public void loadPhoto(View view){
 
@@ -123,10 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(resultCode== Activity.RESULT_OK && data!=null){
 
             Uri selectedImage = data.getData();
-
-            try
-
-            {
+            try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),selectedImage);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
@@ -141,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void register(View view) {
+    public void register(View view) throws UnsupportedEncodingException {
         if(controll()){
             JSONObject user = new JSONObject();
             try {
@@ -151,8 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
                 user.put("is_enterprise","1");
-                // TODO: 19/03/2017 la chiamata funziona c'è un errore nella formattazione, potremmo pensare di cambiare i parametri di registrazione aggiungendo più dati e risolvendo il problema completamente 
-                user.put("enterprise_description",""/*"Phone:"+phoneText.getText().toString()+"\\n"+ description.getText().toString()+"\\nIVA: "+ivaText.getText().toString()*/);
+                user.put("enterprise_description","Phone:"+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString());
                 // TODO: 10/03/2017  fotografie implementare
                 user.put("photo",/*Rest.BitMapToString(bitmap)*/"null");
             } catch (JSONException e) {
@@ -160,7 +165,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             String URL="http://foodadvisor.rane.pro:8080/addUser";
-            final String requestBody = toCorrectCase(user.toString());
+            // TODO: 30/03/17 testare URLEncoder
+            final String requestBody = URLEncoder.encode(user.toString(),"UTF-8");
             Log.e("VOLLEY",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
@@ -199,7 +205,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             };
             requestQueue.add(stringRequest);
-        //    alert("Operazione Completata");
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();

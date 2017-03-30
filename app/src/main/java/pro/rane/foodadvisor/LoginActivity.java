@@ -1,8 +1,6 @@
 package pro.rane.foodadvisor;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Handler;
@@ -27,17 +25,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * A login screen that offers login via email/password.
- */
+
 public class LoginActivity extends AppCompatActivity  {
 
     ProgressBar progress;
     EditText txtUsername, txtPassword;
     Button btnLogin , btnRegister;
-    // Alert Dialog Manager
-    //AlertDialogManager alert = new AlertDialogManager();
-    // Session Manager Class
     pro.rane.foodadvisor.SessionManager session;
     String username;
     String password;
@@ -181,12 +174,13 @@ public class LoginActivity extends AppCompatActivity  {
 
                     } else {
                         // username / password doesn't match
-                        alert("Login fallito.\nL'email o la password non sono corrette");
+                        Utility.alert(this,"Login fallito.\nL'email o la password non sono corrette");
                     }
                 } else {
                     // user didn't entered username or password
                     // Show alert asking him to enter the details
-                    alert("Login fallito.\nPerfavore inserisci email e password");
+                    txtUsername.setError("Il campo non può essere vuoto");
+                    txtPassword.setError("Il campo non può essere vuoto");
                 }
 
             } catch (JSONException e) {
@@ -194,17 +188,7 @@ public class LoginActivity extends AppCompatActivity  {
             }
         }
     }
-    private void alert(String text){
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Attention");
-        alertDialog.setMessage(text);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                //TODO: in questo punto aggiungere altro
-            }
-        });
-        alertDialog.show();
-    }
+
 
 
     public void registerActivity(){
