@@ -64,9 +64,6 @@ public class RegisterActivity extends AppCompatActivity {
         description = (EditText) findViewById(R.id.descriptionText);
     }
 
-    // TODO: 03/03/2017 scrivere la logica di check information + la chiamata API di registrazione del con eventuale risposta positiva o negativa
-    // TODO: 05/03/2017 la call è /addUser
-
     private boolean isEmailValid(String email) {
         return email.contains("@") && email.contains(".");
     }
@@ -165,7 +162,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             String URL="http://foodadvisor.rane.pro:8080/addUser";
-            // TODO: 30/03/17 testare URLEncoder
             final String requestBody = URLEncoder.encode(user.toString(),"UTF-8");
             Log.e("VOLLEY",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {

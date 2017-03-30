@@ -6,51 +6,40 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 
 
 public class NewProductFragment extends Fragment{
-    protected Context context;
 
-    SessionManager session;
+    pro.rane.foodadvisor.SessionManager session;
     double latitude = 0.0f;
     double longitude = 0.0f;
-    TextView txtLat;
-    TextView txtLng;
+    private TextView txtLat;
+    private TextView txtLng;
 
-    private LocationManager locationManager = null;
-    private LocationListener locationListener = null;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+
+    private EditText editTextproductName;
+    private EditText editTextproductDesc;
 
     private Button btnGetLocation = null;
 
@@ -67,106 +56,126 @@ public class NewProductFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final Button btnNewProduct;
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_new_product, container, false);
         //if you want to lock screen for always Portrait mode
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        session = new pro.rane.foodadvisor.SessionManager(getContext());
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
         pb = (ProgressBar) rootView.findViewById(R.id.loadingBar);
         pb.setVisibility(View.INVISIBLE);
+
+        editTextproductName = (EditText) rootView.findViewById(R.id.prodName);
+        editTextproductDesc = (EditText) rootView.findViewById(R.id.prodDesc);
 
         txtLat = (TextView) rootView.findViewById(R.id.latitude);
         txtLng = (TextView) rootView.findViewById(R.id.longitude);
 
         btnGetLocation = (Button) rootView.findViewById(R.id.btnLocation);
-        btnGetLocation.setOnClickListener(this);
+        btnGetLocation.setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    flag = displayGpsStatus();
+                    if (flag) {
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                        //Log.e(TAG, "onClick");
+                        pb.setVisibility(View.VISIBLE);
+                        btnGetLocation.setVisibility(View.INVISIBLE);
+                        locationListener = new MyLocationListener();
+
+                        try {
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 5, locationListener);
+                        }catch (SecurityException e){
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Utility.alert(getContext(), "Il GPS è spento!\nAccendi il GPS per continuare");
+                    }
+                }
+            });
+
+        btnNewProduct = (Button) rootView.findViewById(R.id.new_product_button);
+        btnNewProduct.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(TextUtils.isEmpty(editTextproductName.getText().toString())){
+                    editTextproductName.setError("Campo obbligatorio");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(editTextproductDesc.getText().toString())){
+                    editTextproductDesc.setError("Campo obbligatorio");
+                    return;
+                }
+
+                if (latitude== 0.0f && longitude == 0.0f){
+                    Toast.makeText(getActivity().getApplicationContext(),"Attendere valore coordinate",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                btnNewProduct.setVisibility(View.INVISIBLE);
+                btnGetLocation.setVisibility(View.INVISIBLE);
+                pb.setVisibility(View.VISIBLE);
+
+                float floatlat = (float)latitude;
+                float floatlng = (float) longitude;
+                String productName = editTextproductName.getText().toString();
+                String productDesc = editTextproductDesc.getText().toString();
+                HashMap<String, String> user = session.getUserDetails();
+                String id = user.get(SessionManager.KEY_ID);
+
+                String url = "http://foodadvisor.rane.pro:8080/addArticle";
+
+                Toast.makeText(getActivity().getBaseContext(),"Url : "+url,Toast.LENGTH_SHORT).show();
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                JSONObject req = new JSONObject();
+                try{
+                    req.put("name",productName);
+                    req.put("creator_id",id);
+                    req.put("description",productDesc);
+                    req.put("longitude",floatlng);
+                    req.put("latitude",floatlat);
+                    req.put("photo","null");
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                //Toast.makeText(getBaseContext(),req.toString(),Toast.LENGTH_SHORT).show();
+
+                pb.setVisibility(View.INVISIBLE);
+                btnNewProduct.setVisibility(View.VISIBLE);
+                btnGetLocation.setVisibility(View.VISIBLE);
+
+                Intent startPostAct= new Intent(getActivity(), PostActivity.class);
+                startPostAct.putExtra("url", url);
+                startPostAct.putExtra("req",req.toString());
+                startActivity(startPostAct);
+
+            }
+        });
 
 
         return rootView;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        flag = displayGpsStatus();
-        if (flag) {
-
-            Log.e(TAG, "onClick");
-
-            pb.setVisibility(View.VISIBLE);
-            locationListener = new MyLocationListener();
-
-            try {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 5, locationListener);
-            }catch (SecurityException e){
-                e.printStackTrace();
-            }
-
-
-        } else {
-            Utility.alert("GPS spento!", "Il GPS è spento!\nAccendi il GPS per continuare");
-        }
-
-    }
-
-    public void getValues(View v){
-        if (latitude== 0.0f && longitude == 0.0f) return;
-        float floatlat = (float)latitude;
-        float floatlng = (float) longitude;
-        EditText editTextproductName = (EditText) getActivity().findViewById(R.id.productName);
-        EditText editTextproductDesc = (EditText) getActivity().findViewById(R.id.productDesc);
-        String productName = editTextproductName.getText().toString();
-        String productDesc = editTextproductDesc.getText().toString();
-        HashMap<String, String> user = session.getUserDetails();
-        String id = user.get(SessionManager.KEY_ID);
-
-        String url = "http://foodadvisor.rane.pro:8080/addArticle";
-
-        Toast.makeText(getActivity().getBaseContext(),"Url : "+url,Toast.LENGTH_SHORT).show();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        JSONObject req = new JSONObject();
-        try{
-            req.put("name",productName);
-            req.put("creator_id",id);
-            req.put("description",productDesc);
-            req.put("longitude",floatlng);
-            req.put("latitude",floatlat);
-            req.put("photo","null");
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        //Toast.makeText(getBaseContext(),req.toString(),Toast.LENGTH_SHORT).show();
-
-        Intent startPostAct= new Intent(this.getActivity(), PostActivity.class);
-        startPostAct.putExtra("url", url);
-        startPostAct.putExtra("req",req.toString());
-        startActivity(startPostAct);
-        //this.getActivity().finish();
-
     }
 
     /*----Method to Check GPS is enable or disable ----- */
     private Boolean displayGpsStatus() {
         ContentResolver contentResolver = getActivity().getBaseContext()
                 .getContentResolver();
-        boolean gpsStatus = Settings.Secure
-                .isLocationProviderEnabled(contentResolver,
-                        LocationManager.GPS_PROVIDER);
-        if (gpsStatus) {
-            return true;
-
-        } else {
-            return false;
-        }
+        return Settings.Secure.isLocationProviderEnabled(contentResolver, LocationManager.GPS_PROVIDER);
     }
 
 
@@ -176,6 +185,7 @@ public class NewProductFragment extends Fragment{
         @Override
         public void onLocationChanged(Location loc) {
             pb.setVisibility(View.INVISIBLE);
+            btnGetLocation.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity().getBaseContext(),"Coordinate settate:\nLat: " +
                             loc.getLatitude()+ "\nLng: " + loc.getLongitude(),
                     Toast.LENGTH_SHORT).show();

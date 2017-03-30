@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -74,6 +75,15 @@ public class LoginActivity extends AppCompatActivity  {
 
             @Override
             public void onClick(View arg0) {
+
+                if (TextUtils.isEmpty(txtUsername.getText().toString())){
+                    txtUsername.setError("Il campo non può essere vuoto");
+                    return;
+                }
+                if (TextUtils.isEmpty(txtPassword.getText().toString())){
+                    txtPassword.setError("Il campo non può essere vuoto");
+                    return;
+                }
                 // Get username, password from EditText
                 username = txtUsername.getText().toString();
                 password = Utility.md5(txtPassword.getText().toString());
@@ -174,7 +184,11 @@ public class LoginActivity extends AppCompatActivity  {
 
                     } else {
                         // username / password doesn't match
+                        /*"uname: "+jsonObj.getString("email")+"\nPass: "+jsonObj.getString("passw")+ "\nINSERITO: "+username+" "+password*/
                         Utility.alert(this,"Login fallito.\nL'email o la password non sono corrette");
+                        progress.setVisibility(View.INVISIBLE);
+                        btnLogin.setVisibility(View.VISIBLE);
+                        btnRegister.setVisibility(View.VISIBLE);
                     }
                 } else {
                     // user didn't entered username or password
@@ -182,7 +196,6 @@ public class LoginActivity extends AppCompatActivity  {
                     txtUsername.setError("Il campo non può essere vuoto");
                     txtPassword.setError("Il campo non può essere vuoto");
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }

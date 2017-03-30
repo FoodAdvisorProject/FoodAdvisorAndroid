@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,17 @@ public class ReportBugFragment extends Fragment{
             @Override
             public void onClick(View v)
             {
+                if (TextUtils.isEmpty(body.getText().toString())){
+                    body.setError("Questo campo è obbligatorio");
+                    return;
+                }
+
+                if (body.getText().toString().length()<100){
+                    int mis = 100 - body.getText().toString().length();
+                    body.setError("Almeno 100 caratteri, ne mancano "+ mis);
+                    return;
+                }
+
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});

@@ -1,10 +1,12 @@
 package pro.rane.foodadvisor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +36,7 @@ in Track Activity:
 
 
 public class SplashScreen extends AppCompatActivity {
+    private Context context;
     private String nameActivity;
     private int timeout =2000;
     private String res;
@@ -41,13 +44,14 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.splash_screen);
         String url;
         Bundle b = getIntent().getExtras();
         if (b != null)
             nameActivity = b.getString("info");
             url = b.getString("url");
-      //  Log.d(this.getClass().getSimpleName() ,"SCAN_RES: "+scan_res);
+        Log.d(this.getClass().getSimpleName() ,"SCAN_RES: "+url);
 
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -77,7 +81,11 @@ public class SplashScreen extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                // TODO: 01/03/2017 ripetere scannerizzazione qr in caso di valore di merda NB usare metodo goScanActivity
+                if(res.equals("Error: null")){
+                    Toast.makeText(context,"Errore 404! Prodotto non trovato!", Toast.LENGTH_SHORT).show();
+                    goScanActivity();
+                    return;
+                }
                 try {
                     goToActivity(res);
                 } catch (ClassNotFoundException e) {
@@ -102,12 +110,9 @@ public class SplashScreen extends AppCompatActivity {
         startActivity(startActivity);
     }
 
-
- /*   non usato, quando si chiude la activity torna a quella precendete
- private void goScanActivity(){
+    private void goScanActivity(){
         Intent startTrackActivity = new Intent(this,TrackActivity.class);
         startActivity(startTrackActivity);
+        finish();
     }
-*/
-
 }

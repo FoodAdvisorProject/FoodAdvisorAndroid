@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView.OnQRCodeReadListener;
 
-// TODO: 17/03/2017 possiamo riutilizzare questa classe anche con lo scan fragment semplicemente facendo passare anche qui un url oppure un codice di disambiguazione su quando deve rilanciare l'attività della mappa o una splash screen 
 public class TrackActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback, OnQRCodeReadListener {
 
