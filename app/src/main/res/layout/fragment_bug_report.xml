@@ -56,7 +56,8 @@
         android:layout_height="wrap_content"
         android:text="@string/send_bug"
         android:layout_below="@+id/textView19"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="?android:textAppearanceSmall"/>
 
     <TextView
         android:id="@+id/textView19"

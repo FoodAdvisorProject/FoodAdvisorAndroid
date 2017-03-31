@@ -24,7 +24,8 @@
         android:layout_marginBottom="20dip"
         android:inputType="textPassword"
         android:maxLines="1"
-        android:hint="@string/password"/>
+        android:hint="@string/password"
+        android:imeOptions="actionSend"/>
 
     <Button android:id="@+id/btnLogin"
         android:layout_width="fill_parent"

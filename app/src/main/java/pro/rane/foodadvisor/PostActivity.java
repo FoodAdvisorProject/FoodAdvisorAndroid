@@ -71,8 +71,8 @@ public class PostActivity  extends AppCompatActivity {
                 Bitmap myBitmap = QRCode.from(response).bitmap();
                 qrcode.setImageBitmap(myBitmap);
                 ViewGroup.LayoutParams params = qrcode.getLayoutParams();
-                params.width =  500 ;
-                params.height = 500 ;
+                params.width =  1000 ;
+                params.height = 1000 ;
                 qrcode.setLayoutParams(params);
                 loadingText.setText("Id prodotto: "+ response);
                 qrcode.setVisibility(View.VISIBLE);

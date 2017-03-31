@@ -102,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(passText.getText().toString())){
             passText.setError("Il campo non può essere vuoto");
             ret = false;
-        } else if (passText.getText().toString().length()<= 8){
+        } else if (passText.getText().toString().length()< 8){
             passText.setError("La password è troppo corta (min 8 caratteri)");
             ret = false;
         }
