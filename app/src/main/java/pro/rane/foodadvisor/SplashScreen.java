@@ -110,6 +110,7 @@ public class SplashScreen extends AppCompatActivity {
         startActivity(startActivity);
     }
 
+    // TODO: 31/03/17 eliminare rimpiazzando la chiamata con goToActivity(TrackActivity); 
     private void goScanActivity(){
         Intent startTrackActivity = new Intent(this,TrackActivity.class);
         startActivity(startTrackActivity);

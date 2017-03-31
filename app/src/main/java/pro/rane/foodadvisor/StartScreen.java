@@ -10,11 +10,19 @@ import android.view.View;
 import android.Manifest;
 
 public class StartScreen extends AppCompatActivity {
+    pro.rane.foodadvisor.SessionManager session;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
+        if (session.isLoggedIn()){
+            //Se l'utente è già loggato passo direttamente al Navigation Drawer
+            Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
+            startActivity(i);
+            finish();
+        }
         setContentView(R.layout.start_screen);
 
         // richiesta permesso GPS

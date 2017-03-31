@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 // TODO: 31/03/17 far chiudere la tastiera dopo click dei bottoni 
 // TODO: 31/03/17 far chiudere il set error una volta che si tocca sul campo 
 // TODO: 31/03/17 reindirizzare la vista una volta fatto  il press button sugli errori
-// TODO: 31/03/17  quando rientro voglio restare nel track commerciale
 // TODO: 31/03/17 Error handling (not found) rivedere su register activity e su login activity 
 // TODO: 31/03/17 campi email e password di font diversi correggere
 // TODO: 31/03/17 una volta fatto il logout devo chiudere la navigation activity
@@ -38,7 +37,7 @@ public class Utility {
 
     public static String toCorrectCase(String req){
         String ret;
-        ret = req.replace(':','=').replace(',','&').replaceAll(Pattern.quote("{"),"").replaceAll(Pattern.quote("}"),"").replaceAll(Pattern.quote(""),"").replace("\"", "").replace(" ","_");
+        ret = req.replace(':','=').replace(',','&').replaceAll(Pattern.quote("{"),"").replaceAll(Pattern.quote("}"),"").replaceAll(Pattern.quote(""),"").replace("\"", "").replace(" ","%20");
         return ret;
     }
 

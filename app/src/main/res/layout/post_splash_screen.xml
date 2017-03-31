@@ -36,7 +36,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
         android:text="@string/come_back"
-        android:onClick="comeBack"/>
+        android:onClick="comeBack"
+        style="?android:textAppearanceSmall"/>
 
     <ImageView
         android:id="@+id/qr_code"

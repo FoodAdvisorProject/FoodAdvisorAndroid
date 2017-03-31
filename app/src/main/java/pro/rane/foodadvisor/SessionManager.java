@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 
+// TODO: 31/03/17 funzione di catch foto
 public class SessionManager {
     // Shared Preferences
     SharedPreferences pref;
