@@ -1,10 +1,13 @@
 package pro.rane.foodadvisor;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,6 +24,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
+import net.glxn.qrgen.android.QRCode;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -34,7 +39,7 @@ public class PostActivity  extends AppCompatActivity {
     private TextView loadingText;
     private ProgressBar progressBar;
     private Button backButton;
-
+    private ImageView qrcode;
 
 
     @Override
@@ -50,6 +55,8 @@ public class PostActivity  extends AppCompatActivity {
         loadingText = (TextView) findViewById(R.id.loadingText);
         progressBar = (ProgressBar) findViewById(R.id.progressBar22);
         backButton = (Button) findViewById(R.id.backButton);
+        qrcode = (ImageView) findViewById(R.id.qr_code);
+        qrcode.setVisibility(View.INVISIBLE);
         backButton.setVisibility(View.INVISIBLE);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -60,7 +67,15 @@ public class PostActivity  extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.i("VOLLEY", response);
-                loadingText.setText(R.string.ok_response);
+                //loadingText.setText(R.string.ok_response);
+                Bitmap myBitmap = QRCode.from(response).bitmap();
+                qrcode.setImageBitmap(myBitmap);
+                ViewGroup.LayoutParams params = qrcode.getLayoutParams();
+                params.width =  500 ;
+                params.height = 500 ;
+                qrcode.setLayoutParams(params);
+                loadingText.setText("Id prodotto: "+ response);
+                qrcode.setVisibility(View.VISIBLE);
                 backButton.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
             }

@@ -186,9 +186,9 @@ public class NewProductFragment extends Fragment{
         public void onLocationChanged(Location loc) {
             pb.setVisibility(View.INVISIBLE);
             btnGetLocation.setVisibility(View.VISIBLE);
-            Toast.makeText(getActivity().getBaseContext(),"Coordinate settate:\nLat: " +
+            /*Toast.makeText(getActivity().getBaseContext(),"Coordinate settate:\nLat: " +
                             loc.getLatitude()+ "\nLng: " + loc.getLongitude(),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();*/
             longitude = loc.getLongitude();
             latitude = loc.getLatitude();
             txtLat.setText("Latitude: " +latitude);
