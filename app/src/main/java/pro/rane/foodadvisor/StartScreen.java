@@ -2,6 +2,7 @@ package pro.rane.foodadvisor;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.Manifest;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class StartScreen extends AppCompatActivity {
     //pro.rane.foodadvisor.SessionManager session;
@@ -27,6 +29,11 @@ public class StartScreen extends AppCompatActivity {
             finish();
         }*/
         setContentView(R.layout.start_screen);
+        TextView tx = (TextView)findViewById(R.id.titleView);
+
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Sketch_Block.ttf");
+
+        tx.setTypeface(custom_font);
 
         userButton = (Button) findViewById(R.id.user);
         prodButton = (Button) findViewById(R.id.producer);
