@@ -36,11 +36,10 @@
         android:layout_height="wrap_content"
         android:text="@string/track_food"
         android:textStyle="bold"
-        style="?android:textAppearanceSmall"
-        android:onClick="userPath"
         android:layout_marginTop="48dp"
         android:layout_below="@+id/titleView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="?android:textAppearanceSmall"/>
 
 
     <Button
@@ -49,10 +48,9 @@
         android:layout_height="wrap_content"
         android:text="@string/tracker"
         android:textStyle="bold"
-        style="?android:textAppearanceSmall"
-        android:onClick="producerPath"
         android:layout_marginBottom="127dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="?android:textAppearanceSmall"/>
 
 </RelativeLayout>

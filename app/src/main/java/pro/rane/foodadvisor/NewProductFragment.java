@@ -47,6 +47,8 @@ public class NewProductFragment extends Fragment{
 
     private static final String TAG = "Debug";
     private Boolean flag = false;
+    private Button btnNewProduct;
+
 
     public NewProductFragment(){
         //must be empty
@@ -56,7 +58,7 @@ public class NewProductFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final Button btnNewProduct;
+
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_new_product, container, false);
         //if you want to lock screen for always Portrait mode
@@ -84,7 +86,7 @@ public class NewProductFragment extends Fragment{
                     flag = displayGpsStatus();
                     if (flag) {
 
-                        //Log.e(TAG, "onClick");
+                        //Log.w(TAG, "onClick");
                         pb.setVisibility(View.VISIBLE);
                         btnGetLocation.setVisibility(View.INVISIBLE);
                         locationListener = new MyLocationListener();

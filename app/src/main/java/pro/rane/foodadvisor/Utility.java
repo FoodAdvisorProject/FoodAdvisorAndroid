@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 // TODO: 31/03/17 reindirizzare la vista una volta fatto  il press button sugli errori
 // TODO: 31/03/17 Error handling (not found) rivedere su register activity e su login activity 
 // TODO: 31/03/17 campi email e password di font diversi correggere
-// TODO: 31/03/17 una volta fatto il logout devo chiudere la navigation activity
+
 
 
 public class Utility {

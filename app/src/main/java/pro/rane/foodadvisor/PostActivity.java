@@ -28,9 +28,7 @@ import net.glxn.qrgen.android.QRCode;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by Andrea on 09/03/2017.
- */
+
 
 
 public class PostActivity  extends AppCompatActivity {
@@ -82,7 +80,7 @@ public class PostActivity  extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
+                Log.d("VOLLEY", error.toString());
             }
         }) {
             @Override

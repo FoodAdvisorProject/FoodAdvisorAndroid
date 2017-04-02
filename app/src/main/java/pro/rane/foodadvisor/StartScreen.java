@@ -8,22 +8,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.Manifest;
+import android.widget.Button;
 
 public class StartScreen extends AppCompatActivity {
-    pro.rane.foodadvisor.SessionManager session;
+    //pro.rane.foodadvisor.SessionManager session;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
+    private Button userButton;
+    private Button prodButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
+        /*session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
         if (session.isLoggedIn()){
             //Se l'utente è già loggato passo direttamente al Navigation Drawer
             Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
             startActivity(i);
             finish();
-        }
+        }*/
         setContentView(R.layout.start_screen);
+
+        userButton = (Button) findViewById(R.id.user);
+        prodButton = (Button) findViewById(R.id.producer);
+
+        userButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userPath(v);
+            }
+        });
+
+        prodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                producerPath(v);
+            }
+        });
 
         // richiesta permesso GPS
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)

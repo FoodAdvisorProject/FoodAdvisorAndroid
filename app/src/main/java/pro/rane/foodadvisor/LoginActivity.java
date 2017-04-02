@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity  {
         });
     }
     private String res = "";
-    private int timeout =2000;
+    private int timeout = 2000;
     private void connection(String email){
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://foodadvisor.rane.pro:8080/getUserIdByEmail?email="+email,

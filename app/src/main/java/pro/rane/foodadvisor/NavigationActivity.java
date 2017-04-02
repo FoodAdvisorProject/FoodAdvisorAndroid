@@ -147,7 +147,8 @@ public class NavigationActivity extends AppCompatActivity
     }
     public void logout(View view){
         session.logoutUser();
-        // TODO: 31/03/17 decoomentare una volta che il login funziona, serve a chiudere la navigation activity quando si fa il logout
-        finish();
+        // TODO: 31/03/17 una volta fatto il logout devo chiudere la navigation activity
+        // TODO: 31/03/17 decommentare una volta che il login funziona, serve a chiudere la navigation activity quando si fa il logout
+        //finish();
     }
 }
