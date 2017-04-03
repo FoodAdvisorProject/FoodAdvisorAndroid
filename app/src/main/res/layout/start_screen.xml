@@ -38,10 +38,11 @@
         android:layout_height="wrap_content"
         android:text="@string/track_food"
         android:textStyle="bold"
-        android:layout_marginTop="48dp"
-        android:layout_below="@+id/titleView"
-        android:layout_centerHorizontal="true"
-        style="?android:textAppearanceSmall"/>
+        style="?android:textAppearanceSmall"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/producer"
+        android:layout_marginEnd="19dp" />
 
 
     <Button
@@ -50,9 +51,10 @@
         android:layout_height="wrap_content"
         android:text="@string/tracker"
         android:textStyle="bold"
-        android:layout_marginBottom="127dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        style="?android:textAppearanceSmall"/>
+        style="?android:textAppearanceSmall"
+        android:layout_marginEnd="21dp"
+        android:layout_alignBaseline="@+id/user"
+        android:layout_alignBottom="@+id/user"
+        android:layout_alignEnd="@+id/titleView" />
 
 </RelativeLayout>

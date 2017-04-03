@@ -19,27 +19,37 @@
         android:layout_height="wrap_content"
         android:text="@string/user_mode"
         android:textSize="45sp"
-        android:layout_alignBottom="@+id/textView7"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="81dp" />
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/toolbar8"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:text="@string/user_mode_desc"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignTop="@+id/textView5"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp" />
 
     <Button
         android:id="@+id/user_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
         android:text="@string/route"
         android:textStyle="bold"
         style="?android:textAppearanceSmall"
-        android:layout_below="@+id/textView7"
-        android:layout_alignEnd="@+id/textView5" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/textView5"
+        android:layout_marginBottom="52dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="791sp"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/percorso"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/route"
+        android:layout_below="@+id/textView5" />
 
 </RelativeLayout>

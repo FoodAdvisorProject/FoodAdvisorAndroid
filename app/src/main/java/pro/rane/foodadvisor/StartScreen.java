@@ -21,13 +21,13 @@ public class StartScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
+        pro.rane.foodadvisor.SessionManager session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
         if (session.isLoggedIn()){
             //Se l'utente è già loggato passo direttamente al Navigation Drawer
             Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
             startActivity(i);
             finish();
-        }*/
+        }
         setContentView(R.layout.start_screen);
         TextView tx = (TextView)findViewById(R.id.titleView);
 
