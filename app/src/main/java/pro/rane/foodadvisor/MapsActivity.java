@@ -43,6 +43,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.FIFOLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -50,13 +52,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
+import static com.nostra13.universalimageloader.core.assist.QueueProcessingType.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback {
 
@@ -68,13 +71,13 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private String[][] coordinates;
     private Marker[] markerT;
     private Marker marker;
-    private Hashtable<String, String> markers;
+    private Hashtable<String, JSONObject> markers;
     private ImageLoader imageLoader;
     private DisplayImageOptions options;
     private JSONArray trip;
     public static JSONObject article;
     private GoogleApiClient client;
-
+   private JSONObject creator=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,23 +90,26 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             info = b.getString("info");
 
         try {
-            trip = new JSONArray(info);
+            JSONArray temp= new JSONArray(info);
+            trip = new JSONArray();
+            for (int i = temp.length()-1; i>=0; i--) {
+                trip.put(temp.get(i));
+            }
             getInfoArticle(trip.getJSONObject(0).getString("article_id"));
             SystemClock.sleep(4000);
             coordinates = new String[trip.length()][2];
            // Toast.makeText(getApplicationContext(),getInfoArticle(trip.getJSONObject(0).getString("article_id")), Toast.LENGTH_SHORT).show();
-            Integer n=trip.length()-1;
             for (int i = 0;i<trip.length();i++){
-                coordinates[n-i][0] = trip.getJSONObject(i).getString(LATITUDE);
-                coordinates[n-i][1] = trip.getJSONObject(i).getString(LONGITUDE);
+                coordinates[i][0] = trip.getJSONObject(i).getString(LATITUDE);
+                coordinates[i][1] = trip.getJSONObject(i).getString(LONGITUDE);
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-       // initImageLoader();
+        initImageLoader();
         imageLoader = ImageLoader.getInstance();
-        markers = new Hashtable<String, String>();
+        markers = new Hashtable<String, JSONObject>();
         options = new DisplayImageOptions.Builder()
                 .showStubImage(R.drawable.logo)        //    Display Stub Image
                 .showImageForEmptyUri(R.drawable.logo)    //    If Empty image found
@@ -116,7 +122,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     }
     public void getInfoArticle(String id){
-
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(
                 Request.Method.GET, "http://foodadvisor.rane.pro:8080/getArticle?article_id="+id, null,
                 new Response.Listener<JSONObject>() {
@@ -143,18 +148,19 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Integer a;
+
+        JSONObject buyer=null;
         mMap = googleMap;
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
         mMap.setOnInfoWindowClickListener(this);
-
         View marker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
         TextView numTxt = (TextView) marker.findViewById(R.id.info_marker);
         markerT=new Marker[trip.length()];
-         JSONObject buyer=null;
+        Polyline line;
        // Toast.makeText(getApplicationContext(),"INFO_ART 2 "+info_art, Toast.LENGTH_SHORT).show();
         try {
-
             buyer=trip.getJSONObject(0).getJSONObject("buyer");
+            creator=trip.getJSONObject(0).getJSONObject("buyer");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -162,11 +168,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             numTxt.setText("Start Point");
             markerT[0]=mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(coordinates[0][0]), Double.parseDouble(coordinates[0][1])))
                     .title("Creation of "+article.getString("name"))
-                    .snippet("Description: "+article.getString("description"))
-                    .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))//
+                    .snippet("Description: "+article.getString("description")+"\n"+"Made by: "+creator.getString("name")+"\n"+"Company description: "+creator.getString("enterprise_description"))
+                    .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
                    // .anchor(0.2f, 0f)
             );
-            markers.put(markerT[0].getId(),buyer.getString("photo"));
+            markers.put(markerT[0].getId(),creator);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -176,12 +183,18 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
            try {
                 markerT[a]=mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(coordinates[a][0]), Double.parseDouble(coordinates[a][1])))
-                        .title("Transaction of "+article.getString("name"))
-                        .snippet("Description: "+article.getString("description"))
+                        .title("Transaction number "+a.toString()+" of "+article.getString("name"))
+                        .snippet("Description: "+article.getString("description")+"\n"+"Made by: "+creator.getString("name")+"\n"+"Company description: "+creator.getString("enterprise_description"))
                         .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
                 );
+              line = mMap.addPolyline(new PolylineOptions()
+                       .add(new LatLng(Double.parseDouble(coordinates[a-1][0]), Double.parseDouble(coordinates[a-1][1])),new LatLng(Double.parseDouble(coordinates[a][0]), Double.parseDouble(coordinates[a][1])))
+                       .width(5)
+                       .color(Color.BLUE));
+
                buyer=trip.getJSONObject(a).getJSONObject("buyer");
-               markers.put(markerT[a].getId(),buyer.getString("photo"));//article.getString("photo")
+               markers.put(markerT[a].getId(),buyer);
+             //  Toast.makeText(getApplicationContext(),"partenza "+markers.get(markerT[a].getId()).toString(), Toast.LENGTH_SHORT).show();
 
            } catch (JSONException e) {
                 e.printStackTrace();
@@ -218,8 +231,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     public void onStart() {
         super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
     }
 
@@ -227,8 +238,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     public void onStop() {
         super.onStop();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.disconnect();
     }
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter
@@ -256,30 +265,70 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         public View getInfoWindow(final Marker marker) {
             MapsActivity.this.marker = marker;
 
-
-            String img = null;
-
+           String url = "http://foodadvisor.rane.pro:8080/getUserImage?user_id=";
+            String urlCreator= null;
+            try {
+                urlCreator = "http://foodadvisor.rane.pro:8080/getUserImage?user_id="+creator.getString("user_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String urlArticle= null;
+            String id="1";
+            JSONObject buyer=null;
             if (marker.getId() != null && markers != null && markers.size() > 0) {
                 if ( markers.get(marker.getId()) != null &&
                         markers.get(marker.getId()) != null) {
-                    img = markers.get(marker.getId());
+                    try {
+                        buyer=markers.get(marker.getId());
+                        id =buyer.getString("user_id");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
+            url=url+id;
             final ImageView image = ((ImageView) view.findViewById(R.id.badge));
             final ImageView imgSeller = ((ImageView) view.findViewById(R.id.seller));
-           // final ImageView imgBuyer = ((ImageView) view.findViewById(R.id.buyer));
-            if (img != null && !img.equalsIgnoreCase("null")
-                    && !img.equalsIgnoreCase("")) {
-                imgSeller.setImageBitmap(Utility.StringToBitMap(img));
-                try {
-                    image.setImageBitmap(Utility.StringToBitMap(article.getString("photo")));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                getInfoContents(marker);
+           final ImageView imgCreator = ((ImageView) view.findViewById(R.id.creator));
+            if (url != null && !url.equalsIgnoreCase("null")
+                    && !url.equalsIgnoreCase("")) {
+                //TODO:aggiunta della immagine del articolo
+               /* imageLoader.displayImage(url, imgSeller, options,
+                        new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingComplete(String imageUri,
+                                                          View view, Bitmap loadedImage) {
+                                super.onLoadingComplete(imageUri, view,
+                                        loadedImage);
+                                getInfoContents(marker);
+
+                            }
+                        });*/
+                imageLoader.displayImage(url, imgSeller, options,
+                        new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingComplete(String imageUri,
+                                                          View view, Bitmap loadedImage) {
+                                super.onLoadingComplete(imageUri, view,
+                                        loadedImage);
+                            }
+                        });
+                imageLoader.displayImage(urlCreator, imgCreator, options,
+                        new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingComplete(String imageUri,
+                                                          View view, Bitmap loadedImage) {
+                                super.onLoadingComplete(imageUri, view,
+                                        loadedImage);
+                                getInfoContents(marker);
+                            }
+                        });
+                image.setImageResource(R.drawable.logo);
             } else {
                 image.setImageResource(R.drawable.logo);
                 imgSeller.setImageResource(R.drawable.logo);
+                imgCreator.setImageResource(R.drawable.logo);
             }
             final String title = marker.getTitle();
             final TextView titleUi = ((TextView) view.findViewById(R.id.title));
@@ -297,9 +346,43 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             } else {
                 snippetUi.setText("");
             }
+            final TextView info=((TextView) view.findViewById(R.id.txt_info));
+            if (info != null) {
+                try {
+                    info.setText("\nActual Seller: "+buyer.getString("name")+"\nDescription: "+buyer.getString("enterprise_description"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                snippetUi.setText("");
+            }
 
             return view;
         }
+    }
+    private void initImageLoader() {
+        int memoryCacheSize;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+            int memClass = ((ActivityManager)
+                    getSystemService(Context.ACTIVITY_SERVICE))
+                    .getMemoryClass();
+            memoryCacheSize = (memClass / 8) * 1024 * 1024;
+        } else {
+            memoryCacheSize = 2 * 1024 * 1024;
+        }
+
+        final ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                this).threadPoolSize(5)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .memoryCacheSize(memoryCacheSize)
+                .memoryCache(new FIFOLimitedMemoryCache(memoryCacheSize-1000000))
+                .denyCacheImageMultipleSizesInMemory()
+                .discCacheFileNameGenerator(new Md5FileNameGenerator())
+                .tasksProcessingOrder(LIFO)
+                .build();
+
+        ImageLoader.getInstance().init(config);
     }
 
 

@@ -17,15 +17,14 @@
             android:layout_height="50dp"
             android:layout_marginRight="5dp"
             android:adjustViewBounds="true"></ImageView>
-
         <ImageView
-            android:id="@+id/seller"
+            android:id="@+id/creator"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginRight="5dp"
             android:adjustViewBounds="true"></ImageView>
 
- <!--       <Button
+        <!--       <Button
             android:id="@+id/btnSeller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,6 +66,18 @@
             android:layout_height="wrap_content"
             android:textColor="#ff7f7f7f"
             android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/seller"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginRight="5dp"
+            android:adjustViewBounds="true"></ImageView>
+
+        <TextView
+            android:id="@+id/txt_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/info"
