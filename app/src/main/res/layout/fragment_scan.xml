@@ -62,8 +62,8 @@
         android:layout_above="@+id/btnTran"
         android:layout_alignStart="@+id/textView3"
         android:layout_alignEnd="@+id/textView3"
-        android:layout_marginRight="15sp"
-        android:layout_marginLeft="15sp"
+        android:layout_marginRight="30sp"
+        android:layout_marginLeft="30sp"
         android:id="@+id/camera_layout">
     </FrameLayout>
 

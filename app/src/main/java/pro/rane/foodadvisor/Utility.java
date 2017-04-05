@@ -22,13 +22,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
-// TODO: 31/03/17 BUG REPORT
-// TODO: 31/03/17 lo slider start point si muove e ad ogni reindirizzamento (non punta correttamente se troppo in alto) 
+
+
 // TODO: 31/03/17 tasto indietro che chiude l'app mentre dovrebbe far tornare al first fragment
 // TODO: 31/03/17 far chiudere la tastiera dopo click dei bottoni 
 // TODO: 31/03/17 far chiudere il set error una volta che si tocca sul campo 
 // TODO: 31/03/17 reindirizzare la vista una volta fatto il press button sugli errori
-// TODO: 31/03/17 Error handling (not found) rivedere su register activity e su login activity 
 // TODO: 31/03/17 campi email e password di fonts diversi correggere
 
 
@@ -102,7 +101,7 @@ public class Utility {
         return res[0];
     }
 
-    // TODO: 19/03/2017 testare le due funzioni e implementarle 
+
     //conversion data for photo
     public static String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();

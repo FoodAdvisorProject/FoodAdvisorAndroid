@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity  {
     String username;
     String password;
 
-    // TODO: 30/03/2017 RISCRIVERE COMPLETAMENTE LA LOGICA DI AUTENTICAZIONE. ASPETTARE NUOVE CHIAMATE REST
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -90,7 +90,7 @@
     <string name="my_products_title">I miei prodotti</string>
     <string name="profile_desc">Informazioni personali</string>
     <string name="bug_report_description">Per favore descrivi il problema che hai riscontrato nell\'utilizzo dell\'app e inviacelo attraverso la tua mail preferita. Stai attento a non cambiare alcun dato precompilato oppure la mail non verrà presa in considerazione.</string>
-    <string name="bug_description">Descrivi qui il bug riscontrato (min 100 caratteri)</string>
+    <string name="bug_description">Descrivi qui il bug riscontrato (min 50 caratteri)</string>
     <string name="title_app_selector_name">Invio la mail…</string>
     <string name="send_bug">Invia ticket</string>
     <string name="bug_disclamer">I dati raccolti verranno usati esclusivamente a scopo di risolvere il problema presentato nel miglior modo possibile e non per alcun altro fine.</string>

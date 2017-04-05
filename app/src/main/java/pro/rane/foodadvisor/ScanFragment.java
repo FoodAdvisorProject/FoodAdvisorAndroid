@@ -75,7 +75,6 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
 
 
 
-    // TODO: 05/04/2017 Coordinate GPS prendere
 
     public ScanFragment() {
         // Required empty public constructor

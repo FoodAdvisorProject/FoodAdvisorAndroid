@@ -50,7 +50,7 @@ public class ReportBugFragment extends Fragment{
 
                 if (body.getText().toString().length()<minchar){
                     int mis = minchar - body.getText().toString().length();
-                    body.setError("Almeno 100 caratteri, ne mancano "+ mis);
+                    body.setError("Almeno "+minchar+" caratteri, ne mancano "+ mis);
                     return;
                 }
 
