@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 // TODO: 31/03/17 tasto indietro che chiude l'app mentre dovrebbe far tornare al first fragment
 // TODO: 31/03/17 far chiudere la tastiera dopo click dei bottoni 
 // TODO: 31/03/17 far chiudere il set error una volta che si tocca sul campo 
-// TODO: 31/03/17 reindirizzare la vista una volta fatto  il press button sugli errori
+// TODO: 31/03/17 reindirizzare la vista una volta fatto il press button sugli errori
 // TODO: 31/03/17 Error handling (not found) rivedere su register activity e su login activity 
 // TODO: 31/03/17 campi email e password di fonts diversi correggere
 

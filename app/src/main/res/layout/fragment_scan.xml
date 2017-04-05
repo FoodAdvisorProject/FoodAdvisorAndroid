@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,10 +21,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fragment_scan_info"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="15sp"
-        android:layout_marginEnd="15sp"/>
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="15sp"
+        android:layout_marginRight="15sp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textView"
@@ -35,12 +37,35 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnTran"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+        android:text="@string/add_transaction"
+        android:layout_marginBottom="22dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="79dp"
-        android:text="@string/add_transaction" />
+        style="?android:textAppearanceSmall"
+        />
+
+    <ProgressBar
+        android:id="@+id/progrBar3"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnTran"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView3"
+        android:layout_above="@+id/btnTran"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_marginRight="15sp"
+        android:layout_marginLeft="15sp"
+        android:id="@+id/camera_layout">
+    </FrameLayout>
+
 
 </RelativeLayout>
