@@ -286,7 +286,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                     }
                 }
             }
-
             url=url+id;
             final ImageView image = ((ImageView) view.findViewById(R.id.badge));
             final ImageView imgSeller = ((ImageView) view.findViewById(R.id.seller));
@@ -384,6 +383,4 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
         ImageLoader.getInstance().init(config);
     }
-
-
 }
