@@ -20,6 +20,7 @@ public class ReportBugFragment extends Fragment{
     private static final String email = "food.advisor.ita@gmail.com";
     private EditText body;
     private Button bug_button;
+    private final int minchar = 50;
     pro.rane.foodadvisor.SessionManager session;
     public ReportBugFragment() {
         // Required empty public constructor
@@ -47,8 +48,8 @@ public class ReportBugFragment extends Fragment{
                     return;
                 }
 
-                if (body.getText().toString().length()<100){
-                    int mis = 100 - body.getText().toString().length();
+                if (body.getText().toString().length()<minchar){
+                    int mis = minchar - body.getText().toString().length();
                     body.setError("Almeno 100 caratteri, ne mancano "+ mis);
                     return;
                 }

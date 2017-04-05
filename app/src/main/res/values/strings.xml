@@ -99,6 +99,7 @@
     <string name="credits_protagonists">Alejandro Ont\nAndrea Lacava\nFabio Pacileo\nDaniele Volpe\nGabrio Tognozzi</string>
     <string name="credits_friends_desc">A real special thanks to our friends:</string>
     <string name="credits_friends" >Marino Spitoni (Design)\nCyril Glerum-Imbert (Logo)\n</string>
+    <string name="scannerizza_qrcode">Scannerizza QRCODE</string>
 
 
 </resources>
