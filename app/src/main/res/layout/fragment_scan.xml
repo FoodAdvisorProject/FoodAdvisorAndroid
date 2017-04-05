@@ -43,7 +43,9 @@
         android:text="@string/add_transaction"
         android:layout_marginBottom="22dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        style="?android:textAppearanceSmall"
+        />
 
     <ProgressBar
         android:id="@+id/progrBar3"
@@ -60,6 +62,8 @@
         android:layout_above="@+id/btnTran"
         android:layout_alignStart="@+id/textView3"
         android:layout_alignEnd="@+id/textView3"
+        android:layout_marginRight="15sp"
+        android:layout_marginLeft="15sp"
         android:id="@+id/camera_layout">
     </FrameLayout>
 
