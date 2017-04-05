@@ -3,20 +3,21 @@
 android:layout_width="wrap_content"
 android:layout_height="wrap_content" >
 
-<ImageView
-    android:layout_width="55dp"
-    android:layout_height="65dp"
-    android:src="@drawable/custom_marker" />
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:background="@drawable/custom_marker"
+        />
 
 <TextView
-    android:id="@+id/num_txt"
+    android:id="@+id/info_marker"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="5dp"
     android:gravity="center"
-    android:text="20"
-    android:textColor="#ce8223"
+    android:text="16"
+    android:textColor="#e10905"
     android:textSize="25dp"
     android:textStyle="bold" />
 

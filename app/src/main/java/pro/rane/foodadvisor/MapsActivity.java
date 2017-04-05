@@ -58,10 +58,7 @@ import org.json.JSONObject;
 
 import java.util.Hashtable;
 
-import static com.nostra13.universalimageloader.core.assist.QueueProcessingType.*;
-
-
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback {
 
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
@@ -75,12 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageLoader imageLoader;
     private DisplayImageOptions options;
     private JSONArray trip;
-    private JSONObject article;
-    public static String info_art;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+    public static JSONObject article;
     private GoogleApiClient client;
 
     @Override
@@ -98,7 +90,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             trip = new JSONArray(info);
             getInfoArticle(trip.getJSONObject(0).getString("article_id"));
             SystemClock.sleep(4000);
-
             coordinates = new String[trip.length()][2];
            // Toast.makeText(getApplicationContext(),getInfoArticle(trip.getJSONObject(0).getString("article_id")), Toast.LENGTH_SHORT).show();
             Integer n=trip.length()-1;
@@ -110,7 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        initImageLoader();
+       // initImageLoader();
         imageLoader = ImageLoader.getInstance();
         markers = new Hashtable<String, String>();
         options = new DisplayImageOptions.Builder()
@@ -133,7 +124,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onResponse(JSONObject response) {
                       //  Toast.makeText(getApplicationContext(),"Response "+response.toString(), Toast.LENGTH_SHORT).show();
-                        MapsActivity.info_art= new String(response.toString());
+                        try {
+                            MapsActivity.article=new JSONObject(new String(response.toString()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -145,30 +140,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Integer a;
         mMap = googleMap;
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+        mMap.setOnInfoWindowClickListener(this);
 
         View marker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
-        TextView numTxt = (TextView) marker.findViewById(R.id.num_txt);
+        TextView numTxt = (TextView) marker.findViewById(R.id.info_marker);
         markerT=new Marker[trip.length()];
-
-        Toast.makeText(getApplicationContext(),"INFO_ART 2 "+info_art, Toast.LENGTH_SHORT).show();
+         JSONObject buyer=null;
+       // Toast.makeText(getApplicationContext(),"INFO_ART 2 "+info_art, Toast.LENGTH_SHORT).show();
         try {
-            article=new JSONObject(info_art);
+
+            buyer=trip.getJSONObject(0).getJSONObject("buyer");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -177,9 +163,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerT[0]=mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(coordinates[0][0]), Double.parseDouble(coordinates[0][1])))
                     .title("Creation of "+article.getString("name"))
                     .snippet("Description: "+article.getString("description"))
-                    .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
+                    .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))//
+                   // .anchor(0.2f, 0f)
             );
-            markers.put(markerT[0].getId(),"https://is5-ssl.mzstatic.com/image/thumb/Purple18/v4/03/41/a2/0341a26c-b318-ac3d-94e5-c8213036bd7d/source/256x256bb.jpg");//article.getString("photo")
+            markers.put(markerT[0].getId(),buyer.getString("photo"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -193,17 +180,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .snippet("Description: "+article.getString("description"))
                         .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
                 );
-               markers.put(markerT[a].getId(),"https://is5-ssl.mzstatic.com/image/thumb/Purple18/v4/03/41/a2/0341a26c-b318-ac3d-94e5-c8213036bd7d/source/256x256bb.jpg");//article.getString("photo")
+               buyer=trip.getJSONObject(a).getJSONObject("buyer");
+               markers.put(markerT[a].getId(),buyer.getString("photo"));//article.getString("photo")
 
            } catch (JSONException e) {
                 e.printStackTrace();
            }
         }
 
-       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerT[0].getPosition(), 15));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerT[0].getPosition(), 5));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
 
+    }
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(this, "Info window clicked",
+                Toast.LENGTH_SHORT).show();
     }
 
 
@@ -238,7 +231,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.disconnect();
     }
-    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter
+             {
 
         private View view;
 
@@ -262,32 +256,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public View getInfoWindow(final Marker marker) {
             MapsActivity.this.marker = marker;
 
-            String url = null;
+
+            String img = null;
 
             if (marker.getId() != null && markers != null && markers.size() > 0) {
                 if ( markers.get(marker.getId()) != null &&
                         markers.get(marker.getId()) != null) {
-                    url = markers.get(marker.getId());
+                    img = markers.get(marker.getId());
                 }
             }
             final ImageView image = ((ImageView) view.findViewById(R.id.badge));
-
-            if (url != null && !url.equalsIgnoreCase("null")
-                    && !url.equalsIgnoreCase("")) {
-                imageLoader.displayImage(url, image, options,
-                        new SimpleImageLoadingListener() {
-                            @Override
-                            public void onLoadingComplete(String imageUri,
-                                                          View view, Bitmap loadedImage) {
-                                super.onLoadingComplete(imageUri, view,
-                                        loadedImage);
-                                getInfoContents(marker);
-                            }
-                        });
+            final ImageView imgSeller = ((ImageView) view.findViewById(R.id.seller));
+           // final ImageView imgBuyer = ((ImageView) view.findViewById(R.id.buyer));
+            if (img != null && !img.equalsIgnoreCase("null")
+                    && !img.equalsIgnoreCase("")) {
+                imgSeller.setImageBitmap(Utility.StringToBitMap(img));
+                try {
+                    image.setImageBitmap(Utility.StringToBitMap(article.getString("photo")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                getInfoContents(marker);
             } else {
                 image.setImageResource(R.drawable.logo);
+                imgSeller.setImageResource(R.drawable.logo);
             }
-
             final String title = marker.getTitle();
             final TextView titleUi = ((TextView) view.findViewById(R.id.title));
             if (title != null) {
@@ -308,27 +301,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return view;
         }
     }
-    private void initImageLoader() {
-        int memoryCacheSize;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            int memClass = ((ActivityManager)
-                    getSystemService(Context.ACTIVITY_SERVICE))
-                    .getMemoryClass();
-            memoryCacheSize = (memClass / 8) * 1024 * 1024;
-        } else {
-            memoryCacheSize = 2 * 1024 * 1024;
-        }
 
-        final ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                this).threadPoolSize(5)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .memoryCacheSize(memoryCacheSize)
-                .memoryCache(new FIFOLimitedMemoryCache(memoryCacheSize-1000000))
-                .denyCacheImageMultipleSizesInMemory()
-                .discCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(LIFO)
-                .build();
 
-        ImageLoader.getInstance().init(config);
-    }
 }
