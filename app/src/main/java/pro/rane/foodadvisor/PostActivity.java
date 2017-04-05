@@ -100,10 +100,9 @@ public class PostActivity  extends AppCompatActivity {
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                String responseString = "";
-                if (response != null) {
-                    responseString = String.valueOf(response.statusCode);
-                }
+                String responseString;
+                responseString = String.valueOf(response.statusCode);
+
                 return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
             }
         };

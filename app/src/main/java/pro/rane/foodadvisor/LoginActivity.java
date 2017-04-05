@@ -20,11 +20,16 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 public class LoginActivity extends AppCompatActivity  {
@@ -87,122 +92,66 @@ public class LoginActivity extends AppCompatActivity  {
                 // Get username, password from EditText
                 username = txtUsername.getText().toString();
                 password = Utility.md5(txtPassword.getText().toString());
-                connection(username);
-                progress.setVisibility(View.VISIBLE);
-                btnLogin.setVisibility(View.INVISIBLE);
-                btnRegister.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-    private String res = "";
-    private int timeout = 2000;
-    private void connection(String email){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://foodadvisor.rane.pro:8080/getUserIdByEmail?email="+email,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        res = response;
-                        Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(this.getClass().getSimpleName() ,"Errore su volley : " + error.toString());
-                error.printStackTrace();
-            }
-        });
-        queue.add(stringRequest);
 
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                while(res.equals("")){
-                    try {
-                        this.wait(timeout);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                auxConnection(Integer.parseInt(res));
-            }
-        }, timeout);
-
-
-    }
-    private void auxConnection(Integer user_id){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://foodadvisor.rane.pro:8080/getUser?user_id="+user_id,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        res = response;
-                        Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(this.getClass().getSimpleName() ,"Errore su volley : " + error.toString());
-                error.printStackTrace();
-            }
-        });
-        queue.add(stringRequest);
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                while(res==null){
-                    try {
-                        this.wait(timeout);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                autentication(res);
-            }
-        }, timeout);
-    }
-    private void autentication(String jsonStr){
-        if (jsonStr != null) {
-            try {
-                JSONObject jsonObj = new JSONObject(jsonStr);
-
-                // Check if username, password is filled
                 if (username.trim().length() > 0 && password.trim().length() > 0) {
-
-                    if (username.equals(jsonObj.getString("email")) && password.equals(jsonObj.getString("passw"))) {
-
-                        session.createLoginSession(jsonObj.getString("login"),jsonObj.getString("name"),jsonObj.getString("second_name"),jsonObj.getString("email"),jsonObj.getString("enterprise_description"),jsonObj.getString("photo"),jsonObj.getString("user_id"));
-
-                        // Activity start
-                        Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
-                        startActivity(i);
-                        finish();
-
-                    } else {
-                        // username / password doesn't match
-                        /*"uname: "+jsonObj.getString("email")+"\nPass: "+jsonObj.getString("passw")+ "\nINSERITO: "+username+" "+password*/
-                        Utility.alert(this,"Login fallito.\nL'email o la password non sono corrette");
-                        progress.setVisibility(View.INVISIBLE);
-                        btnLogin.setVisibility(View.VISIBLE);
-                        btnRegister.setVisibility(View.VISIBLE);
+                    progress.setVisibility(View.VISIBLE);
+                    btnLogin.setVisibility(View.INVISIBLE);
+                    btnRegister.setVisibility(View.INVISIBLE);
+                    try {
+                        autentication(username,password);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
                     }
-                } else {
+
+                }else {
                     // user didn't entered username or password
                     // Show alert asking him to enter the details
                     txtUsername.setError("Il campo non può essere vuoto");
                     txtPassword.setError("Il campo non può essere vuoto");
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
+        });
     }
 
+    private void autentication(String uname, String ciph_pwd) throws UnsupportedEncodingException {
+        final String url = "http://foodadvisor.rane.pro:8080/getUser?email="+URLEncoder.encode(uname,"UTF-8") + "&password=" + URLEncoder.encode(ciph_pwd, "UTF-8");
+        //Toast.makeText(getApplicationContext(),url,Toast.LENGTH_SHORT).show();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    session.createLoginSession(response.getString("login"), response.getString("name"), response.getString("second_name"), response.getString("email"), response.getString("enterprise_description"), "null", response.getString("user_id"));
+
+                    // Activity start
+                    Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
+                    startActivity(i);
+                    finish();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progress.setVisibility(View.INVISIBLE);
+                    btnLogin.setVisibility(View.VISIBLE);
+                    btnRegister.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(getApplicationContext(),"Login fallito.\nL'email o la password non sono corrette",Toast.LENGTH_SHORT).show();
+                progress.setVisibility(View.INVISIBLE);
+                btnLogin.setVisibility(View.VISIBLE);
+                btnRegister.setVisibility(View.VISIBLE);
+            }
+        });
+
+        queue.add(request);
+
+    }
 
     public void registerActivity(){
         Intent startRegisterActivity = new Intent(this,RegisterActivity.class);

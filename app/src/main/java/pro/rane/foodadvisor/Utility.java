@@ -41,7 +41,8 @@ public class Utility {
         return ret;
     }
 
-    public static void alert(Context context, String text){
+    // TODO: 05/04/2017 va rimessa a posto
+    public static AlertDialog alert(Context context, String text){
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle("Attenzione");
         alertDialog.setMessage(text);
@@ -49,7 +50,7 @@ public class Utility {
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        alertDialog.show();
+        return alertDialog;
     }
 
 
