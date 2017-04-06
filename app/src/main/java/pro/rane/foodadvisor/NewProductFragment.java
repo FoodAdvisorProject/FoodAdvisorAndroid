@@ -30,8 +30,8 @@ import java.util.HashMap;
 public class NewProductFragment extends Fragment{
 
     pro.rane.foodadvisor.SessionManager session;
-    double latitude = 0.0f;
-    double longitude = 0.0f;
+    float latitude = 0.0f;
+    float longitude = 0.0f;
     private TextView txtLat;
     private TextView txtLng;
 
@@ -76,6 +76,8 @@ public class NewProductFragment extends Fragment{
 
         txtLat = (TextView) rootView.findViewById(R.id.latitude);
         txtLng = (TextView) rootView.findViewById(R.id.longitude);
+        txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
+        txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
 
         btnGetLocation = (Button) rootView.findViewById(R.id.btnLocation);
         btnGetLocation.setOnClickListener(new OnClickListener()
@@ -92,7 +94,7 @@ public class NewProductFragment extends Fragment{
                         locationListener = new MyLocationListener();
 
                         try {
-                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 5, locationListener);
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
                         }catch (SecurityException e){
                             e.printStackTrace();
                         }
@@ -126,8 +128,7 @@ public class NewProductFragment extends Fragment{
                 btnGetLocation.setVisibility(View.INVISIBLE);
                 pb.setVisibility(View.VISIBLE);
 
-                float floatlat = (float)latitude;
-                float floatlng = (float) longitude;
+
                 String productName = editTextproductName.getText().toString();
                 String productDesc = editTextproductDesc.getText().toString();
                 HashMap<String, String> user = session.getUserDetails();
@@ -148,8 +149,8 @@ public class NewProductFragment extends Fragment{
                     req.put("name",productName);
                     req.put("creator_id",id);
                     req.put("description",productDesc);
-                    req.put("longitude",floatlng);
-                    req.put("latitude",floatlat);
+                    req.put("longitude",longitude);
+                    req.put("latitude",latitude);
                     req.put("photo","null");
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -191,10 +192,10 @@ public class NewProductFragment extends Fragment{
             /*Toast.makeText(getActivity().getBaseContext(),"Coordinate settate:\nLat: " +
                             loc.getLatitude()+ "\nLng: " + loc.getLongitude(),
                     Toast.LENGTH_SHORT).show();*/
-            longitude = loc.getLongitude();
-            latitude = loc.getLatitude();
-            txtLat.setText("Latitude: " +latitude);
-            txtLng.setText("Longitude: " +longitude);
+            longitude = (float) loc.getLongitude();
+            latitude = (float) loc.getLatitude();
+            txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
+            txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
         }
 
         //Non necessarie ai nostri fini

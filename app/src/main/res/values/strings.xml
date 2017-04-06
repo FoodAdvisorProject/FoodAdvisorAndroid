@@ -60,7 +60,7 @@
     <string name="my_products">I miei prodotti</string>
     <string name="track">Traccia</string>
     <string name="my_profile">Profilo</string>
-    <string name="fragment_scan_info">Da qui puoi aggiungere la transazione del prodotto che hai ricevuto da un altro tracker. Scannerizza il QR Code presente sul prodotto. (È necessario avere internet e GPS attivo).</string>
+    <string name="fragment_scan_info">Da qui puoi aggiungere la transazione del prodotto che hai ricevuto da un altro tracker.\nScannerizza il QR Code presente sul prodotto.\n(È necessario avere internet e GPS attivo).</string>
     <string name="bug_report">Segnala un bug</string>
     <string name="track_food">Traccia il cibo</string>
     <string name="temp_track_text">Qui verranno mostrati i prodotti dell\'azienda</string>
@@ -72,8 +72,8 @@
     <string name="add_new_product">Aggiungi nuovo prodotto</string>
     <string name="new_product_name">Nome nuovo prodotto</string>
     <string name="new_product_desc">Descrizione nuovo prodotto</string>
-    <string name="latitude">Latitudine:</string>
-    <string name="longitude">Longitudine:</string>
+    <string name="latitude">Latitudine: </string>
+    <string name="longitude">Longitudine: </string>
     <string name="take_photo">Foto (non disponibile ancora)</string>
     <string name="new_product_info">Da qui puoi registrare nel database un nuovo prodotto. Clicca sul bottone per continuare</string>
     <string name="get_location">Setta le coordinate</string>
@@ -100,6 +100,7 @@
     <string name="credits_friends_desc">A real special thanks to our friends:</string>
     <string name="credits_friends" >Marino Spitoni (Design)\nCyril Glerum-Imbert (Logo)\n</string>
     <string name="scannerizza_qrcode">Scannerizza QRCODE</string>
+    <string name="prod_id_desc">Id prodotto:</string>
 
 
 </resources>

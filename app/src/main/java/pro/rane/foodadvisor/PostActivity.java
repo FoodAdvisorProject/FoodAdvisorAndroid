@@ -38,6 +38,7 @@ public class PostActivity  extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button backButton;
     private ImageView qrcode;
+    private final static int qrDisplayedSize = 1000;
 
 
     @Override
@@ -69,10 +70,10 @@ public class PostActivity  extends AppCompatActivity {
                 Bitmap myBitmap = QRCode.from(response).bitmap();
                 qrcode.setImageBitmap(myBitmap);
                 ViewGroup.LayoutParams params = qrcode.getLayoutParams();
-                params.width =  1000 ;
-                params.height = 1000 ;
+                params.width =  qrDisplayedSize;
+                params.height = qrDisplayedSize;
                 qrcode.setLayoutParams(params);
-                loadingText.setText("Id prodotto: "+ response);
+                loadingText.setText(getString(R.string.prod_id_desc).concat(response));
                 qrcode.setVisibility(View.VISIBLE);
                 backButton.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);

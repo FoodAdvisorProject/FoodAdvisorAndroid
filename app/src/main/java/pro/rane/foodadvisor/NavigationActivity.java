@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,9 +63,13 @@ public class NavigationActivity extends AppCompatActivity
         username.setText(user.get(SessionManager.KEY_AZIENDA));
         email.setText(user.get(SessionManager.KEY_EMAIL));
 
-        // TODO: 06/04/2017 photohandling 
-        //profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
-        //profile_photo.setImageBitmap(user.get(SessionManager.KEY_PHOTO));
+        // TODO: 06/04/2017 photohandling
+        profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
+        try {
+            profile_photo.setImageBitmap(Utility.StringToBitMap(user.get(SessionManager.KEY_PHOTO)));
+        }catch (NullPointerException npe){
+            Log.e(this.getClass().getSimpleName(),npe.toString());
+        }
     }
 
     @Override
@@ -73,7 +78,11 @@ public class NavigationActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+           // super.onBackPressed();
+            MainFragment fragment = new MainFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment);
+            fragmentTransaction.commit();
         }
     }
 

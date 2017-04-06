@@ -55,7 +55,7 @@ public class ProfileFragment extends Fragment {
         first_name.setText(user.get(SessionManager.KEY_NAME));
         second_name.setText(user.get(SessionManager.KEY_SECOND_NAME));
         id_azienda.setText(user.get(SessionManager.KEY_ID));
-        //foto.setImageBitmap(user.get(SessionManager.KEY_PHOTO));
+        //foto.setImageBitmap(Utility.StringToBitMap(user.get(SessionManager.KEY_PHOTO)));
 
         return rootView;
     }

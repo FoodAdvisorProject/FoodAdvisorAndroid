@@ -23,116 +23,139 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile_desc"
-        android:textSize="30dp"/>
+        android:textSize="30sp"/>
 
-    <ImageView
-        android:id="@+id/fotoProfilo"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        app:srcCompat="@drawable/farmer"
-        android:contentDescription="@string/profile_pic_desc"
-        />
-
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/username_azienda"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="14sp"
-        />
-
-    <TextView
-        android:id="@+id/nome_azienda"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/username_azienda"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/fotoProfilo"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:contentDescription="@string/profile_pic_desc"
+            app:srcCompat="@drawable/farmer"
+            />
+    </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/textViewMailDesc"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/email"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="14sp"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/email_azienda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp"
-        />
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/username_azienda"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="16sp"
+                />
 
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/descrizione_azienda"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/nome_azienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/username_azienda"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
 
-    <TextView
-        android:id="@+id/description_azienda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/descrizione_azienda"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp" />
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/nome_titolare"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/textViewMailDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/first_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/nome_titolare"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/email_azienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cognome_titolare"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/descrizione_azienda"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/second_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cognome_titolare"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp" />
+            <TextView
+                android:id="@+id/description_azienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/descrizione_azienda"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/id_description"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nome_titolare"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/id_azienda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/id_description"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp"
-        />
+            <TextView
+                android:id="@+id/first_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/nome_titolare"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cognome_titolare"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/second_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cognome_titolare"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/id_description"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/id_azienda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/id_description"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+
 
 </LinearLayout>

@@ -21,9 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fragment_scan_info"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="5sp"
         android:layout_marginLeft="15sp"
         android:layout_marginRight="15sp"
+        android:layout_marginBottom="15sp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
 
