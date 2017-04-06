@@ -62,7 +62,7 @@ public class NavigationActivity extends AppCompatActivity
         username.setText(user.get(SessionManager.KEY_AZIENDA));
         email.setText(user.get(SessionManager.KEY_EMAIL));
 
-        // TODO: 10/03/2017 creare funzione di conversione da stringa a foto formato bitmap
+        // TODO: 06/04/2017 photohandling 
         //profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
         //profile_photo.setImageBitmap(user.get(SessionManager.KEY_PHOTO));
     }

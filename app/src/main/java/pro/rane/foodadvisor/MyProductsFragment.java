@@ -40,7 +40,6 @@ public class MyProductsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // TODO: 08/03/2017 fare adeguate call sui prodotti
 
         session = new pro.rane.foodadvisor.SessionManager(getActivity().getApplicationContext());
         session.checkLogin();

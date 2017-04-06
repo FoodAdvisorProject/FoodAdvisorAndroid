@@ -2,10 +2,11 @@ package pro.rane.foodadvisor;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 
 /*
 La SplashActivity serve a fare SOLO le GET al server
@@ -38,8 +40,6 @@ in Track Activity:
 public class SplashScreen extends AppCompatActivity {
     private Context context;
     private String nameActivity;
-    private int timeout =2000;
-    private String res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,53 +47,46 @@ public class SplashScreen extends AppCompatActivity {
         context = getApplicationContext();
         setContentView(R.layout.splash_screen);
         String url;
+        ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
+        pb.setVisibility(View.VISIBLE);
+
+
         Bundle b = getIntent().getExtras();
         if (b != null)
             nameActivity = b.getString("info");
-            url = b.getString("url");
+        assert b != null;
+        url = b.getString("url");
         Log.d(this.getClass().getSimpleName() ,"SCAN_RES: "+url);
 
         RequestQueue queue = Volley.newRequestQueue(this);
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        res = response;
-                        Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
+
+                        if(response.equals("Error: null")){
+                            Log.e(this.getClass().getSimpleName() ,"Errore su volley : " + response);
+                            Toast.makeText(context,"Errore 404! Prodotto non trovato!", Toast.LENGTH_SHORT).show();
+                            goScanActivity();
+                        }else{
+                            try {
+                                Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
+                                goToActivity(response);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(this.getClass().getSimpleName() ,"Errore su volley : " + error.toString());
-                error.printStackTrace();
+                Toast.makeText(context,"Errore 404! Prodotto non trovato!", Toast.LENGTH_SHORT).show();
+                goScanActivity();
             }
         });
         queue.add(stringRequest);
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                while(res==null){
-                    try {
-                        this.wait(timeout);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(res.equals("Error: null")){
-                    Toast.makeText(context,"Errore 404! Prodotto non trovato!", Toast.LENGTH_SHORT).show();
-                    goScanActivity();
-                    return;
-                }
-                try {
-                    goToActivity(res);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                finish();
-            }
-        }, timeout);
     }
 
     private void goToActivity(String info) throws ClassNotFoundException {
@@ -108,9 +101,9 @@ public class SplashScreen extends AppCompatActivity {
         Intent startActivity = new Intent(this, c);
         startActivity.putExtra("info", info);
         startActivity(startActivity);
+        finish();
     }
 
-    // TODO: 31/03/17 eliminare rimpiazzando la chiamata con goToActivity(TrackActivity); 
     private void goScanActivity(){
         Intent startTrackActivity = new Intent(this,TrackActivity.class);
         startActivity(startTrackActivity);
