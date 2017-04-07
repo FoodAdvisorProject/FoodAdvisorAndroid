@@ -66,6 +66,7 @@ public class PostActivity  extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.i("VOLLEY", response);
+                // TODO: 07/04/17 gestione eventuali errori
                 //loadingText.setText(R.string.ok_response);
                 Bitmap myBitmap = QRCode.from(response).bitmap();
                 qrcode.setImageBitmap(myBitmap);
@@ -108,10 +109,6 @@ public class PostActivity  extends AppCompatActivity {
             }
         };
         requestQueue.add(stringRequest);
-
-        //Intent startActivity = new Intent();
-        // startActivity(startActivity);
-        //finish();
     }
 
     public void comeBack(View view){

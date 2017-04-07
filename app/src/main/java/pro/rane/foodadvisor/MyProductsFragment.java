@@ -25,7 +25,6 @@ import java.util.HashMap;
 
 public class MyProductsFragment extends Fragment {
     private String url;
-    private String res;
     pro.rane.foodadvisor.SessionManager session;
     ProgressBar loading_bar;
     TextView products;
@@ -62,8 +61,7 @@ public class MyProductsFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        res = response;
-                        showArticles(res);
+                        showArticles(response);
                         Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
                     }
                 }, new Response.ErrorListener() {
