@@ -32,16 +32,16 @@ import java.util.regex.Pattern;
 
 
 
-public class Utility {
+class Utility {
 
-    public static String toCorrectCase(String req){
+    static String toCorrectCase(String req){
         String ret;
         ret = req.replace(':','=').replace(',','&').replaceAll(Pattern.quote("{"),"").replaceAll(Pattern.quote("}"),"").replaceAll(Pattern.quote(""),"").replace("\"", "").replace(" ","%20");
         return ret;
     }
 
     // TODO: 05/04/2017 va rimessa a posto
-    public static AlertDialog alert(Context context, String text){
+    static AlertDialog alert(Context context, String text){
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle("Attenzione");
         alertDialog.setMessage(text);
@@ -54,7 +54,7 @@ public class Utility {
 
 
 
-    public static String md5(String plaintext){
+    static String md5(String plaintext){
         MessageDigest m;
         String hashtext = "";
         try {
@@ -79,7 +79,7 @@ public class Utility {
        Dato un contesto context ed una stringa rappresentante un url, la funzione restituisce la risposta della chiamata sottoforma di stringa
        Nota: Quando si chiama questa funzione va assolutamente passato il contesto context (getActivity().getApplicationContext() nei fragments)
      */
-    public static String restGET(final Context context,final String url){
+    static String restGET(final Context context,final String url){
         final String[] res = new String[1]; // ho lasciato fare questa schifezza al correttore automatico, ma dovrebbe funzionare perchè l'array è statico ma il contenuto dinamico.
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -103,18 +103,17 @@ public class Utility {
 
 
     //conversion data for photo
-    public static String BitMapToString(Bitmap bitmap){
+    static String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
-    public static Bitmap StringToBitMap(String encodedString){
+
+    static Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         } catch(Exception e) {
             e.getMessage();
             return null;

@@ -92,9 +92,8 @@ public class NewProductFragment extends Fragment{
                         pb.setVisibility(View.VISIBLE);
                         btnGetLocation.setVisibility(View.INVISIBLE);
                         locationListener = new MyLocationListener();
-                        // TODO: 07/04/17 testare con 0 0 (valori iniziali 1000 5)
                         try {
-                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, locationListener);
                         }catch (SecurityException e){
                             e.printStackTrace();
                         }
@@ -137,12 +136,6 @@ public class NewProductFragment extends Fragment{
                 String url = "http://foodadvisor.rane.pro:8080/addArticle";
 
                 Toast.makeText(getActivity().getBaseContext(),"Url : "+url,Toast.LENGTH_SHORT).show();
-                // TODO: 07/04/17 perchè sti due secondi di stop?
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
                 JSONObject req = new JSONObject();
                 try{

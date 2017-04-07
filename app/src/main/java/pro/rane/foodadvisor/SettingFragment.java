@@ -12,7 +12,7 @@ public class SettingFragment extends Fragment{
     pro.rane.foodadvisor.SessionManager session;
     public SettingFragment(){
     }
-    // TODO: 05/03/2017 creare attività di impostazioni account
+
 
 
     @Override

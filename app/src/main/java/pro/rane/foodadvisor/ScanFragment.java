@@ -97,9 +97,10 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
 
-        // TODO: 07/04/17 testare con 0 0 (valori iniziali 2500 5)
+
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
         }catch (SecurityException e) {
             e.printStackTrace();
         }
