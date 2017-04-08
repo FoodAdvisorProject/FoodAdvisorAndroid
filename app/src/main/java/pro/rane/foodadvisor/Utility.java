@@ -40,19 +40,6 @@ class Utility {
         return ret;
     }
 
-    // TODO: 05/04/2017 va rimessa a posto
-    static AlertDialog alert(Context context, String text){
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("Attenzione");
-        alertDialog.setMessage(text);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        return alertDialog;
-    }
-
-
 
     static String md5(String plaintext){
         MessageDigest m;
@@ -73,6 +60,7 @@ class Utility {
         }
         return hashtext;
     }
+
 
 
     /* restGET

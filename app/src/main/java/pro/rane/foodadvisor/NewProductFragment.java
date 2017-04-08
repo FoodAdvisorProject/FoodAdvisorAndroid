@@ -1,6 +1,7 @@
 package pro.rane.foodadvisor;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -10,14 +11,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.content.ContentResolver;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -25,6 +25,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class NewProductFragment extends Fragment{
@@ -41,14 +43,9 @@ public class NewProductFragment extends Fragment{
     private EditText editTextproductName;
     private EditText editTextproductDesc;
 
-    private Button btnGetLocation = null;
-
-    private ProgressBar pb = null;
-
-    private static final String TAG = "Debug";
-    private Boolean flag = false;
+    private ProgressBar pb;
     private Button btnNewProduct;
-
+    private Button btnGetLocation;
 
     public NewProductFragment(){
         //must be empty
@@ -74,6 +71,24 @@ public class NewProductFragment extends Fragment{
         editTextproductName = (EditText) rootView.findViewById(R.id.prodName);
         editTextproductDesc = (EditText) rootView.findViewById(R.id.prodDesc);
 
+        editTextproductName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        editTextproductDesc.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
         txtLat = (TextView) rootView.findViewById(R.id.latitude);
         txtLng = (TextView) rootView.findViewById(R.id.longitude);
         txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
@@ -85,20 +100,27 @@ public class NewProductFragment extends Fragment{
                 @Override
                 public void onClick(View v)
                 {
-                    flag = displayGpsStatus();
-                    if (flag) {
-
-                        //Log.w(TAG, "onClick");
+                    if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         pb.setVisibility(View.VISIBLE);
                         btnGetLocation.setVisibility(View.INVISIBLE);
                         locationListener = new MyLocationListener();
                         try {
-                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, locationListener);
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,1, locationListener);
                         }catch (SecurityException e){
                             e.printStackTrace();
                         }
                     } else {
-                        Utility.alert(getContext(), "Il GPS è spento!\nAccendi il GPS per continuare");
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Il GPS è spento")
+                                .setContentText("FoodAdvisor ha bisogno del GPS per funzionanre correttamente!")
+                                .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(intent);
+                            }
+                        }).show();
                     }
                 }
             });
@@ -167,13 +189,10 @@ public class NewProductFragment extends Fragment{
         return rootView;
     }
 
-    /*----Method to Check GPS is enable or disable ----- */
-    private Boolean displayGpsStatus() {
-        ContentResolver contentResolver = getActivity().getBaseContext()
-                .getContentResolver();
-        return Settings.Secure.isLocationProviderEnabled(contentResolver, LocationManager.GPS_PROVIDER);
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 
 
     /*----------Listener class to get coordinates ------------- */
@@ -191,7 +210,6 @@ public class NewProductFragment extends Fragment{
             txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
         }
 
-        //Non necessarie ai nostri fini
         @Override
         public void onProviderDisabled(String provider) {
         }

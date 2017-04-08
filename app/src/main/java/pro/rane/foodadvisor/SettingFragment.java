@@ -13,7 +13,7 @@ public class SettingFragment extends Fragment{
     public SettingFragment(){
     }
 
-
+    // TODO: 08/04/2017 permessi fotocamera e GPS
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

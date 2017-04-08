@@ -1,5 +1,7 @@
 package pro.rane.foodadvisor;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import es.dmoral.toasty.Toasty;
+
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,10 +31,13 @@ public class NavigationActivity extends AppCompatActivity
     TextView username;
     TextView email;
 
+    LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         MainFragment fragment = new MainFragment();
         // Session class instance
         session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
@@ -73,12 +80,22 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume(){
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toasty.warning(this, "GPS non attivo", Toast.LENGTH_SHORT, true).show();
+            super.onResume();
+       }else {
+            super.onResume();
+        }
+
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-           // super.onBackPressed();
             MainFragment fragment = new MainFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);

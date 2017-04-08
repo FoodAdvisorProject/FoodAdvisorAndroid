@@ -1,56 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
-    //compileSdkVersion 'Google Inc.:Google APIs:24' //windows
-    compileSdkVersion 23//ubuntu
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "pro.rane.foodadvisor"
         minSdkVersion 21
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
-        useLibrary 'org.apache.http.legacy'
-
-    }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-    }
-    defaultConfig {
-        // Enabling multidex support.
         multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-        }
-
-    }
-    productFlavors {
-        minConfig {
-            minSdkVersion 19
-            targetSdkVersion 19
-            versionCode 1
-        }
-        TargetConfig {
-            minSdkVersion 23
-            applicationId 'pro.rane.foodadvisor'
-            targetSdkVersion 23
-            versionName 'OpenBeta'
-            versionNameSuffix 'OpenBeta'
         }
     }
 }
@@ -75,6 +40,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.github.kenglxn.QRGen:android:2.2.0'
-    testCompile 'junit:junit:4.12'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'cn.pedant.sweetalert:library:1.3'
+    compile 'com.github.GrenderG:Toasty:1.1.4' //in caso riprovare
+    testCompile 'junit:junit:4.12'
 }
