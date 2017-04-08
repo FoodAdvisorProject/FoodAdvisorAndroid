@@ -17,6 +17,8 @@ import com.android.volley.toolbox.Volley;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -107,4 +109,5 @@ class Utility {
             return null;
         }
     }
+
 }

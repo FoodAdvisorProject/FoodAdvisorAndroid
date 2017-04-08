@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "pro.rane.foodadvisor"
         minSdkVersion 21
@@ -42,6 +42,7 @@ dependencies {
     compile 'com.github.kenglxn.QRGen:android:2.2.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'cn.pedant.sweetalert:library:1.3'
-    compile 'com.github.GrenderG:Toasty:1.1.4' //in caso riprovare
+    compile 'com.github.GrenderG:Toasty:1.1.4'
+    //in caso riprovare
     testCompile 'junit:junit:4.12'
 }
