@@ -273,6 +273,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 e.printStackTrace();
             }
             String urlArticle= null;
+            try {
+                urlArticle = "http://foodadvisor.rane.pro:8080/getArticleImage?article_id="+article.getString("article_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             String id="1";
             JSONObject buyer=null;
             if (marker.getId() != null && markers != null && markers.size() > 0) {
@@ -290,20 +295,19 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             final ImageView image = ((ImageView) view.findViewById(R.id.badge));
             final ImageView imgSeller = ((ImageView) view.findViewById(R.id.seller));
            final ImageView imgCreator = ((ImageView) view.findViewById(R.id.creator));
-            if (url != null && !url.equalsIgnoreCase("null")
+            if (urlArticle != null && !urlArticle.equalsIgnoreCase("null")
                     && !url.equalsIgnoreCase("")) {
-                //TODO:aggiunta della immagine del articolo
-               /* imageLoader.displayImage(url, imgSeller, options,
+                imageLoader.displayImage(urlArticle, image, options,
                         new SimpleImageLoadingListener() {
                             @Override
                             public void onLoadingComplete(String imageUri,
                                                           View view, Bitmap loadedImage) {
                                 super.onLoadingComplete(imageUri, view,
                                         loadedImage);
-                                getInfoContents(marker);
+
 
                             }
-                        });*/
+                        });
                 imageLoader.displayImage(url, imgSeller, options,
                         new SimpleImageLoadingListener() {
                             @Override
