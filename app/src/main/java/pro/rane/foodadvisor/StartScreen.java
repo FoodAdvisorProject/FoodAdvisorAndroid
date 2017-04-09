@@ -12,6 +12,9 @@ import android.Manifest;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 public class StartScreen extends AppCompatActivity {
     //pro.rane.foodadvisor.SessionManager session;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
@@ -21,6 +24,9 @@ public class StartScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(config);
         pro.rane.foodadvisor.SessionManager session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
         if (session.isLoggedIn()){
             //Se l'utente è già loggato passo direttamente al Navigation Drawer

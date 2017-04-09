@@ -1,6 +1,7 @@
 package pro.rane.foodadvisor;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.HashMap;
 
@@ -55,7 +60,11 @@ public class ProfileFragment extends Fragment {
         first_name.setText(user.get(SessionManager.KEY_NAME));
         second_name.setText(user.get(SessionManager.KEY_SECOND_NAME));
         id_azienda.setText(user.get(SessionManager.KEY_ID));
-        //foto.setImageBitmap(Utility.StringToBitMap(user.get(SessionManager.KEY_PHOTO)));
+        //Toast.makeText(getContext(),user.get(SessionManager.KEY_ID),Toast.LENGTH_SHORT).show();
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        // TODO: 08/04/2017 temporaneo
+        imageLoader.displayImage("http://foodadvisor.rane.pro:8080/getUserImage?user_id=".concat(user.get(SessionManager.KEY_ID)),foto);
 
         return rootView;
     }

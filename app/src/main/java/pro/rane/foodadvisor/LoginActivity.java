@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    session.createLoginSession(response.getString("login"), response.getString("name"), response.getString("second_name"), response.getString("email"), response.getString("enterprise_description"), "null", response.getString("user_id"));
+                    session.createLoginSession(response.getString("login"), response.getString("name"), response.getString("second_name"), response.getString("email"), response.getString("enterprise_description"), response.getString("user_id"));
 
                     // Activity start
                     Intent i = new Intent(getApplicationContext(), NavigationActivity.class);

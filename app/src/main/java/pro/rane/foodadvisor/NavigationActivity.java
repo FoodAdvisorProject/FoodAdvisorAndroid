@@ -1,6 +1,7 @@
 package pro.rane.foodadvisor;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.HashMap;
 
@@ -70,14 +74,13 @@ public class NavigationActivity extends AppCompatActivity
         username.setText(user.get(SessionManager.KEY_AZIENDA));
         email.setText(user.get(SessionManager.KEY_EMAIL));
 
-        // TODO: 06/04/2017 photohandling
         profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
-        try {
-            profile_photo.setImageBitmap(Utility.StringToBitMap(user.get(SessionManager.KEY_PHOTO)));
-        }catch (NullPointerException npe){
-            Log.e(this.getClass().getSimpleName(),npe.toString());
-        }
+
+
+        final ImageLoader imageLoader = ImageLoader.getInstance();
+        // TODO: 08/04/2017 photohandling
     }
+
 
     @Override
     public void onResume(){

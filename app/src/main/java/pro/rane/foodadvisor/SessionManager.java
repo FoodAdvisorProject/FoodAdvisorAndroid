@@ -25,6 +25,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.view.View;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 // TODO: 31/03/17 funzione di catch foto
 public class SessionManager {
@@ -53,6 +57,11 @@ public class SessionManager {
     public static final String KEY_ID = "id";
     public static final String KEY_PHOTO = "photo";
 
+    // TODO: 08/04/2017 photo handling
+    private static  Bitmap profileImage;
+    private static final String imgUri ="http://foodadvisor.rane.pro:8080/getUserImage?user_id=";
+
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -60,10 +69,23 @@ public class SessionManager {
         editor = pref.edit();
     }
 
+    // TODO: 08/04/2017 modificare e far si che faccia storage
+    public Bitmap getProfileImage(String id) {
+        ImageLoader imageLoader = ImageLoader.getInstance();
+
+        imageLoader.loadImage(imgUri.concat(id), new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                profileImage = loadedImage;
+            }
+        });
+        return profileImage;
+    }
+
     /**
      * Create login session
      * */
-    public void createLoginSession(String azienda,String name,String second_name, String email,String description,String photo,String id){
+    public void createLoginSession(String azienda,String name,String second_name, String email,String description,String id){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -72,9 +94,8 @@ public class SessionManager {
         editor.putString(KEY_AZIENDA,azienda);
         editor.putString(KEY_SECOND_NAME,second_name);
         editor.putString(KEY_DESCRIPTION,description);
-        editor.putString(KEY_PHOTO,photo);
+        //editor.putString(KEY_PHOTO,photo);
         editor.putString(KEY_ID,id);
-
         // commit changes
         editor.commit();
     }
@@ -100,11 +121,6 @@ public class SessionManager {
         }
 
     }
-    //take photo
-    public Bitmap photoUser(){
-        return Utility.StringToBitMap(pref.getString(KEY_PHOTO,"photo"));
-    }
-
 
 
 //session data like hash
