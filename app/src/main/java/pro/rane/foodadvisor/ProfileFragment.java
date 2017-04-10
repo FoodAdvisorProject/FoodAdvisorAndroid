@@ -44,8 +44,6 @@ public class ProfileFragment extends Fragment {
         session.checkLogin();
         HashMap<String, String> user = session.getUserDetails();
 
-        // TODO: 10/03/2017 gestione foto 
-
         nome_azienda = (TextView) rootView.findViewById(R.id.nome_azienda);
         email = (TextView) rootView.findViewById(R.id.email_azienda);
         descrizione_azienda = (TextView) rootView.findViewById(R.id.description_azienda);

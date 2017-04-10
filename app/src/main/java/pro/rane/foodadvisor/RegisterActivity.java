@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.app.AlertDialog;
 
@@ -36,6 +37,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import es.dmoral.toasty.Toasty;
+
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText aziendaName;
@@ -47,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText phoneText;
     private EditText ivaText;
     private EditText description;
+    private Button loadPhotoBtn;
     byte img[];
     Bitmap bitmap=null;
     @Override
@@ -62,6 +66,81 @@ public class RegisterActivity extends AppCompatActivity {
         phoneText = (EditText) findViewById(R.id.phoneText);
         ivaText = (EditText) findViewById(R.id.ivaText);
         description = (EditText) findViewById(R.id.descriptionText);
+
+        loadPhotoBtn = (Button) findViewById(R.id.btnPhoto);
+
+        loadPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent iob = new Intent(Intent.ACTION_PICK,
+
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(iob, 0);
+            }
+        });
+
+        aziendaName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        nomeTit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        cognomeTit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        passText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        emailTit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        passConfirmText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        phoneText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        ivaText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        description.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
     }
 
     private boolean isEmailValid(String email) {
@@ -117,16 +196,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         return ret;
     }
-    public void loadPhoto(View view){
-
-            Intent iob = new Intent(Intent.ACTION_PICK,
-
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(iob, 0);
-
-    }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode== Activity.RESULT_OK && data!=null){
+
 
             Uri selectedImage = data.getData();
             try {
@@ -139,6 +211,11 @@ public class RegisterActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            Toasty.success(this,"Immagine selezionata").show();
+            loadPhotoBtn.setText(R.string.edit_img);
+        }else{
+            Toasty.error(this,"Immagine non selezionata").show();
         }
 
     }

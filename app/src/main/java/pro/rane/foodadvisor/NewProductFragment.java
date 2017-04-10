@@ -75,7 +75,7 @@ public class NewProductFragment extends Fragment{
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    hideKeyboard(v);
+                    Utility.hideKeyboard(v);
                 }
             }
         });
@@ -84,7 +84,7 @@ public class NewProductFragment extends Fragment{
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    hideKeyboard(v);
+                    Utility.hideKeyboard(v);
                 }
             }
         });
@@ -189,10 +189,7 @@ public class NewProductFragment extends Fragment{
         return rootView;
     }
 
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
+
 
 
     /*----------Listener class to get coordinates ------------- */

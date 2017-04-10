@@ -1,5 +1,6 @@
 package pro.rane.foodadvisor;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,15 +26,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
-
-
-
-
-// TODO: 31/03/17 far chiudere la tastiera dopo click dei bottoni 
-// TODO: 31/03/17 far chiudere il set error una volta che si tocca sul campo 
-// TODO: 31/03/17 reindirizzare la vista una volta fatto il press button sugli errori
-// TODO: 31/03/17 campi email e password di fonts diversi correggere
-
 
 
 class Utility {
@@ -108,6 +102,11 @@ class Utility {
             e.getMessage();
             return null;
         }
+    }
+
+    public static void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }

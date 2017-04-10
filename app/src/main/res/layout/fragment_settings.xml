@@ -32,4 +32,36 @@
         android:layout_marginBottom="59dp"
         style="?android:textAppearanceSmall"/>
 
+
+    <CheckBox
+        android:id="@+id/checkedGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/permessi_gps"
+        android:clickable="false"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/textView4" />
+
+    <CheckBox
+        android:id="@+id/checkedCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/permessi_fotocamera"
+        android:clickable="false"
+        android:layout_below="@+id/checkedGPS"
+        android:layout_alignStart="@+id/checkedGPS" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15sp"
+        android:layout_marginEnd="15sp"
+        android:text="@string/disclamer_setting"
+        android:layout_above="@+id/checkedGPS" />
+
 </RelativeLayout>

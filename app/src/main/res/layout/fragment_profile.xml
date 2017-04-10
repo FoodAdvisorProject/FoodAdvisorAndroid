@@ -25,19 +25,13 @@
         android:text="@string/profile_desc"
         android:textSize="30sp"/>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/fotoProfilo"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-            android:contentDescription="@string/profile_pic_desc"
-            app:srcCompat="@drawable/farmer"
-            />
-    </RelativeLayout>
-
+    <ImageView
+        android:id="@+id/fotoProfilo"
+        android:layout_width="match_parent"
+        android:layout_height="150sp"
+        android:contentDescription="@string/profile_pic_desc"
+        app:srcCompat="@drawable/farmer" />
 
     <ScrollView
         android:layout_width="match_parent"

@@ -31,6 +31,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import es.dmoral.toasty.Toasty;
+
 
 public class LoginActivity extends AppCompatActivity  {
 
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity  {
     pro.rane.foodadvisor.SessionManager session;
     String username;
     String password;
+    private static boolean DEBUG = false;
 
 
     @Override
@@ -58,7 +61,22 @@ public class LoginActivity extends AppCompatActivity  {
         progress = (ProgressBar) findViewById(R.id.progressBar7);
         progress.setVisibility(View.INVISIBLE);
 
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+        if(DEBUG)Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+
+        txtUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
+        txtPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Utility.hideKeyboard(v);
+            }
+        });
+
         if (session.isLoggedIn()){
             // Activity start
             Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
@@ -142,7 +160,7 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(getApplicationContext(),"Login fallito.\nL'email o la password non sono corrette",Toast.LENGTH_SHORT).show();
+                Toasty.error(getApplicationContext(),"Login fallito.\nL'email o la password non sono corrette",Toast.LENGTH_SHORT).show();
                 progress.setVisibility(View.INVISIBLE);
                 btnLogin.setVisibility(View.VISIBLE);
                 btnRegister.setVisibility(View.VISIBLE);
