@@ -31,7 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="150sp"
         android:contentDescription="@string/profile_pic_desc"
-        app:srcCompat="@drawable/farmer" />
+        app:srcCompat="@drawable/farmer"
+        android:visibility="invisible"/>
 
     <ScrollView
         android:layout_width="match_parent"

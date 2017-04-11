@@ -61,8 +61,9 @@ public class ProfileFragment extends Fragment {
         //Toast.makeText(getContext(),user.get(SessionManager.KEY_ID),Toast.LENGTH_SHORT).show();
 
         ImageLoader imageLoader = ImageLoader.getInstance();
-        // TODO: 08/04/2017 temporaneo
-        imageLoader.displayImage("http://foodadvisor.rane.pro:8080/getUserImage?user_id=".concat(user.get(SessionManager.KEY_ID)),foto);
+
+        imageLoader.displayImage(user.get(SessionManager.KEY_PHOTO),foto);
+        foto.setVisibility(View.VISIBLE);
 
         return rootView;
     }

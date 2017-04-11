@@ -18,9 +18,13 @@ package pro.rane.foodadvisor;
  String email = user.get(SessionManager.KEY_EMAIL);
  */
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -57,9 +61,6 @@ public class SessionManager {
     public static final String KEY_ID = "id";
     public static final String KEY_PHOTO = "photo";
 
-    // TODO: 08/04/2017 photo handling
-    private static  Bitmap profileImage;
-    private static final String imgUri ="http://foodadvisor.rane.pro:8080/getUserImage?user_id=";
 
 
     // Constructor
@@ -69,23 +70,11 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    // TODO: 08/04/2017 modificare e far si che faccia storage
-    public Bitmap getProfileImage(String id) {
-        ImageLoader imageLoader = ImageLoader.getInstance();
-
-        imageLoader.loadImage(imgUri.concat(id), new SimpleImageLoadingListener() {
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                profileImage = loadedImage;
-            }
-        });
-        return profileImage;
-    }
 
     /**
      * Create login session
      * */
-    public void createLoginSession(String azienda,String name,String second_name, String email,String description,String id){
+    public void createLoginSession(String azienda,String name,String second_name, String email,String description,String id,String photo){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -94,7 +83,7 @@ public class SessionManager {
         editor.putString(KEY_AZIENDA,azienda);
         editor.putString(KEY_SECOND_NAME,second_name);
         editor.putString(KEY_DESCRIPTION,description);
-        //editor.putString(KEY_PHOTO,photo);
+        editor.putString(KEY_PHOTO,photo);
         editor.putString(KEY_ID,id);
         // commit changes
         editor.commit();
@@ -132,6 +121,8 @@ public class SessionManager {
         user.put(KEY_SECOND_NAME, pref.getString(KEY_SECOND_NAME, null));
         user.put(KEY_DESCRIPTION, pref.getString(KEY_DESCRIPTION, null));
         user.put(KEY_ID, pref.getString(KEY_ID, null));
+        user.put(KEY_PHOTO,pref.getString(KEY_PHOTO,null));
+
         return user;
     }
 

@@ -2,6 +2,7 @@ package pro.rane.foodadvisor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -74,11 +78,16 @@ public class NavigationActivity extends AppCompatActivity
         username.setText(user.get(SessionManager.KEY_AZIENDA));
         email.setText(user.get(SessionManager.KEY_EMAIL));
 
-        profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_image);
+        profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_imageCircle);
+        // TODO: 11/04/17  finire implementazione nav header 
+            /*
+        Bitmap bmp = ImageLoader.getInstance().loadImageSync(user.get(SessionManager.KEY_PHOTO));
 
+        bmp.setWidth(profile_photo.getWidth());
+        bmp.setHeight(profile_photo.getHeight());
 
-        final ImageLoader imageLoader = ImageLoader.getInstance();
-        // TODO: 08/04/2017 photohandling
+        profile_photo.setImageBitmap(bmp);*/
+
     }
 
 
