@@ -4,8 +4,10 @@ package pro.rane.foodadvisor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
@@ -27,6 +30,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class NewProductFragment extends Fragment{
@@ -46,6 +52,12 @@ public class NewProductFragment extends Fragment{
     private ProgressBar pb;
     private Button btnNewProduct;
     private Button btnGetLocation;
+    private Button btnPhoto;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private ImageView imgNewPrd;
+    String photo;
 
     public NewProductFragment(){
         //must be empty
@@ -57,13 +69,15 @@ public class NewProductFragment extends Fragment{
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_new_product, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_new_product, container, false);
         //if you want to lock screen for always Portrait mode
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         session = new pro.rane.foodadvisor.SessionManager(getContext());
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        imgNewPrd = (ImageView) rootView.findViewById(R.id.imageLoaded);
 
         pb = (ProgressBar) rootView.findViewById(R.id.loadingBar);
         pb.setVisibility(View.INVISIBLE);
@@ -105,7 +119,7 @@ public class NewProductFragment extends Fragment{
                         btnGetLocation.setVisibility(View.INVISIBLE);
                         locationListener = new MyLocationListener();
                         try {
-                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,1, locationListener);
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,0, locationListener);
                         }catch (SecurityException e){
                             e.printStackTrace();
                         }
@@ -125,6 +139,21 @@ public class NewProductFragment extends Fragment{
                 }
             });
 
+
+
+        btnPhoto = (Button) rootView.findViewById(R.id.btnPhoto);
+        btnPhoto.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+            }
+        });
+
+
         btnNewProduct = (Button) rootView.findViewById(R.id.new_product_button);
         btnNewProduct.setOnClickListener(new OnClickListener() {
             @Override
@@ -141,7 +170,7 @@ public class NewProductFragment extends Fragment{
                 }
 
                 if (latitude== 0.0f && longitude == 0.0f){
-                    Toast.makeText(getActivity().getApplicationContext(),"Attendere valore coordinate",Toast.LENGTH_SHORT).show();
+                    Toasty.warning(getActivity().getApplicationContext(),"Attendere valore coordinate",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -166,7 +195,8 @@ public class NewProductFragment extends Fragment{
                     req.put("description",productDesc);
                     req.put("longitude",longitude);
                     req.put("latitude",latitude);
-                    req.put("photo","null");
+                    // TODO: 12/04/17 correggere o la funzione bitmapto string o la funzione di presa foto o il tocorrectcase
+                    req.put("photo",/*Utility.toCorrectCase(photo)*/"null");
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -187,6 +217,17 @@ public class NewProductFragment extends Fragment{
 
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            photo = Utility.BitMapToString(imageBitmap);
+            imgNewPrd.setImageBitmap(imageBitmap);
+            imgNewPrd.setVisibility(View.VISIBLE);
+        }
     }
 
 

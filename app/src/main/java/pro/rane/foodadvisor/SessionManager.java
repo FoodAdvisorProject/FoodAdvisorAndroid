@@ -18,23 +18,12 @@ package pro.rane.foodadvisor;
  String email = user.get(SessionManager.KEY_EMAIL);
  */
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
-
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Bitmap;
-import android.view.View;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
-// TODO: 31/03/17 funzione di catch foto
 public class SessionManager {
     // Shared Preferences
     SharedPreferences pref;

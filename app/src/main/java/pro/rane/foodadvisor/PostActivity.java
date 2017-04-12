@@ -28,7 +28,7 @@ import net.glxn.qrgen.android.QRCode;
 
 import java.io.UnsupportedEncodingException;
 
-
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class PostActivity  extends AppCompatActivity {
@@ -66,8 +66,6 @@ public class PostActivity  extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.i("VOLLEY", response);
-                // TODO: 07/04/17 gestione eventuali errori
-                //loadingText.setText(R.string.ok_response);
                 Bitmap myBitmap = QRCode.from(response).bitmap();
                 qrcode.setImageBitmap(myBitmap);
                 ViewGroup.LayoutParams params = qrcode.getLayoutParams();
@@ -83,6 +81,11 @@ public class PostActivity  extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("VOLLEY", error.toString());
+                new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Errore comunicazione server")
+                        .setContentText("Qualcosa non ha funzionato!\nDescrizione errore:".concat(error.toString()))
+                        .show();
+                finish();
             }
         }) {
             @Override

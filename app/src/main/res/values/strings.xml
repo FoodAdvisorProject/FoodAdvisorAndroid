@@ -107,6 +107,7 @@
     <string name="permessi_fotocamera">Permessi fotocamera</string>
     <string name="permessi_gps">Permessi GPS</string>
     <string name="disclamer_setting">Senza questi permessi l\'app non funzionerà correttamente, perfavore abiliti i permessi non segnati.</string>
+    <string name="product_new_photo">Foto nuovo prodotto</string>
 
 
 </resources>
