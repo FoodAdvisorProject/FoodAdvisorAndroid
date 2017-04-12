@@ -2,6 +2,7 @@ package pro.rane.foodadvisor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -18,12 +19,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.HashMap;
 
 import es.dmoral.toasty.Toasty;
@@ -35,7 +38,7 @@ public class NavigationActivity extends AppCompatActivity
     Toolbar toolbar = null;
     pro.rane.foodadvisor.SessionManager session;
 
-    de.hdodenhof.circleimageview.CircleImageView profile_photo;
+    CircularImageView profile_photo;
     TextView username;
     TextView email;
 
@@ -78,16 +81,9 @@ public class NavigationActivity extends AppCompatActivity
         username.setText(user.get(SessionManager.KEY_AZIENDA));
         email.setText(user.get(SessionManager.KEY_EMAIL));
 
-        profile_photo = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.profile_imageCircle);
-        // TODO: 11/04/17  finire implementazione nav header 
-            /*
-        Bitmap bmp = ImageLoader.getInstance().loadImageSync(user.get(SessionManager.KEY_PHOTO));
-
-        bmp.setWidth(profile_photo.getWidth());
-        bmp.setHeight(profile_photo.getHeight());
-
-        profile_photo.setImageBitmap(bmp);*/
-
+        profile_photo = (CircularImageView) hView.findViewById(R.id.profile_imageCircle);
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(user.get(SessionManager.KEY_PHOTO),profile_photo);
     }
 
 
@@ -122,8 +118,7 @@ public class NavigationActivity extends AppCompatActivity
         return true;
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
+    
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
