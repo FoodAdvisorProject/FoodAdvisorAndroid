@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 
@@ -231,25 +233,25 @@ public class RegisterActivity extends AppCompatActivity {
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
                 user.put("is_enterprise","1");
-                user.put("enterprise_description","Phone:"+phoneText.getText().toString()+"\n"+ description.getText().toString()+"\nIVA: "+ivaText.getText().toString());
+                user.put("enterprise_description","Telefono:"+phoneText.getText().toString()+ description.getText().toString()+"IVA: "+ivaText.getText().toString());
                 // TODO: 10/03/2017  fotografie implementare
-                user.put("photo",/*Rest.BitMapToString(bitmap)*/"null");
+                user.put("photo",/*Utility.BitMapToString(bitmap)*/"null");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             String URL="http://foodadvisor.rane.pro:8080/addUser";
-            final String requestBody = URLEncoder.encode(user.toString(),"UTF-8");
+            final String requestBody = Utility.toCorrectCase(user.toString());
             Log.e("VOLLEY",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.i("VOLLEY", response);
+                    Log.e("VOLLEY", "Response:"+ response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.e("VOLLEY","Errore: "+error.getMessage()+ error.toString());
                 }
             }) {
                 @Override
@@ -269,12 +271,14 @@ public class RegisterActivity extends AppCompatActivity {
 
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    String responseString = "";
-                    if (response != null) {
-                        responseString = String.valueOf(response.statusCode);
-                        // can get more details such as response.headers
+                    if(response.statusCode==400){
+                        new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("Errore comunicazione server")
+                                .setContentText("Qualcosa non ha funzionato!\nCodice errore:"+response.statusCode)
+                                .show();
+                        finish();
                     }
-                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                    return super.parseNetworkResponse(response);
                 }
             };
             requestQueue.add(stringRequest);
