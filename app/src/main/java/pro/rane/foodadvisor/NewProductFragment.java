@@ -1,19 +1,19 @@
 package pro.rane.foodadvisor;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,8 +25,10 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -35,7 +37,7 @@ import es.dmoral.toasty.Toasty;
 import static android.app.Activity.RESULT_OK;
 
 
-public class NewProductFragment extends Fragment{
+public class NewProductFragment extends Fragment {
 
     pro.rane.foodadvisor.SessionManager session;
     float latitude = 0.0f;
@@ -51,7 +53,6 @@ public class NewProductFragment extends Fragment{
 
     private ProgressBar pb;
     private Button btnNewProduct;
-    private Button btnGetLocation;
     private Button btnPhoto;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -59,7 +60,7 @@ public class NewProductFragment extends Fragment{
     private ImageView imgNewPrd;
     String photo;
 
-    public NewProductFragment(){
+    public NewProductFragment() {
         //must be empty
     }
 
@@ -73,9 +74,53 @@ public class NewProductFragment extends Fragment{
         //if you want to lock screen for always Portrait mode
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        txtLat = (TextView) rootView.findViewById(R.id.latitude);
+        txtLng = (TextView) rootView.findViewById(R.id.longitude);
+        txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
+        txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
+
         session = new pro.rane.foodadvisor.SessionManager(getContext());
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: 13/04/2017 a questo punto devo chiedere i permessi
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            //return
+            Toasty.error(getContext(),"Permessi non pervenuti",Toast.LENGTH_LONG).show();
+        }
+        Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        if(loc!=null){
+            longitude = (float) loc.getLongitude();
+            latitude = (float) loc.getLatitude();
+            txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
+            txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
+        }else{
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                pb.setVisibility(View.VISIBLE);
+                locationListener = new MyLocationListener();
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,1, locationListener);
+            } else {
+                new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Il GPS è spento")
+                        .setContentText("FoodAdvisor ha bisogno del GPS per funzionanre correttamente!")
+                        .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                }).show();
+            }
+        }
 
         imgNewPrd = (ImageView) rootView.findViewById(R.id.imageLoaded);
 
@@ -103,41 +148,7 @@ public class NewProductFragment extends Fragment{
             }
         });
 
-        txtLat = (TextView) rootView.findViewById(R.id.latitude);
-        txtLng = (TextView) rootView.findViewById(R.id.longitude);
-        txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
-        txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
 
-        btnGetLocation = (Button) rootView.findViewById(R.id.btnLocation);
-        btnGetLocation.setOnClickListener(new OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        pb.setVisibility(View.VISIBLE);
-                        btnGetLocation.setVisibility(View.INVISIBLE);
-                        locationListener = new MyLocationListener();
-                        try {
-                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,0, locationListener);
-                        }catch (SecurityException e){
-                            e.printStackTrace();
-                        }
-                    } else {
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
-                                .setTitleText("Il GPS è spento")
-                                .setContentText("FoodAdvisor ha bisogno del GPS per funzionanre correttamente!")
-                                .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(intent);
-                            }
-                        }).show();
-                    }
-                }
-            });
 
 
 
@@ -175,7 +186,6 @@ public class NewProductFragment extends Fragment{
                 }
 
                 btnNewProduct.setVisibility(View.INVISIBLE);
-                btnGetLocation.setVisibility(View.INVISIBLE);
                 pb.setVisibility(View.VISIBLE);
 
 
@@ -195,7 +205,7 @@ public class NewProductFragment extends Fragment{
                     req.put("description",productDesc);
                     req.put("longitude",longitude);
                     req.put("latitude",latitude);
-                    // TODO: 12/04/17 correggere o la funzione bitmapto string o la funzione di presa foto o il tocorrectcase
+                    // TODO: 12/04/17 correggere o la funzione bitmaptostring o la funzione di presa foto o il tocorrectcase
                     req.put("photo",/*Utility.toCorrectCase(photo)*/"null");
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -205,7 +215,6 @@ public class NewProductFragment extends Fragment{
 
                 pb.setVisibility(View.INVISIBLE);
                 btnNewProduct.setVisibility(View.VISIBLE);
-                btnGetLocation.setVisibility(View.VISIBLE);
 
                 Intent startPostAct= new Intent(getActivity(), PostActivity.class);
                 startPostAct.putExtra("url", url);
@@ -214,8 +223,6 @@ public class NewProductFragment extends Fragment{
 
             }
         });
-
-
         return rootView;
     }
 
@@ -238,10 +245,6 @@ public class NewProductFragment extends Fragment{
         @Override
         public void onLocationChanged(Location loc) {
             pb.setVisibility(View.INVISIBLE);
-            btnGetLocation.setVisibility(View.VISIBLE);
-            /*Toast.makeText(getActivity().getBaseContext(),"Coordinate settate:\nLat: " +
-                            loc.getLatitude()+ "\nLng: " + loc.getLongitude(),
-                    Toast.LENGTH_SHORT).show();*/
             longitude = (float) loc.getLongitude();
             latitude = (float) loc.getLatitude();
             txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));

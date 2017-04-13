@@ -4,6 +4,7 @@ package pro.rane.foodadvisor;
 import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -62,6 +64,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -115,18 +120,46 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
         pb = (ProgressBar) rootView.findViewById(R.id.progrBar3);
         newTranBtn = (Button) rootView.findViewById(R.id.btnTran);
         cameraLayout = (ViewGroup) rootView.findViewById(R.id.camera_layout);
-
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener();
+
         saveBitmap = (Button) rootView.findViewById(R.id.saveBitmap);
         imageQr = (ImageView) rootView.findViewById(R.id.bitmapQr);
 
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: 13/04/2017 a questo punto devo chiedere i permessi
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            //return
+            Toasty.error(getContext(),"Permessi non pervenuti",Toast.LENGTH_LONG).show();
+        }
+        Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
-        } catch (SecurityException e) {
-            e.printStackTrace();
+        if(loc!=null){
+            longitude = (float) loc.getLongitude();
+            latitude = (float) loc.getLatitude();
+            Toasty.success(getContext(),"Coordinate settate",Toast.LENGTH_SHORT).show();
+        }else{
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                pb.setVisibility(View.VISIBLE);
+                locationListener = new MyLocationListener();
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,1, locationListener);
+            } else {
+                new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Il GPS è spento")
+                        .setContentText("FoodAdvisor ha bisogno del GPS per funzionanre correttamente!")
+                        .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                }).show();
+            }
         }
 
         pb.setVisibility(View.INVISIBLE);
@@ -245,19 +278,15 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
 
                 if (response.contains("Error")) {
                     codeQr="error";
-                    Toast.makeText(getContext(), "risposta server " + response.toString(), Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(), "Impossibile aggiungere transazione" + response.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Risposta server " + response, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Impossibile aggiungere transazione" + response, Toast.LENGTH_LONG).show();
 
                 }else {
                     codeQr = response;
                     saveBitmap.setVisibility(View.VISIBLE);
                     pb.setVisibility(View.INVISIBLE);
-                    try {
-                        QR = generateQrCode(codeQr);
-                        imageQr.setImageBitmap(QR);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
-                    }
+                    QR  = QRCode.from(codeQr).bitmap();
+                    imageQr.setImageBitmap(QR);
                 }
 
             }
@@ -336,7 +365,6 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
             longitude = ((float) loc.getLongitude());
         }
 
-        //Non necessarie ai nostri fini
         @Override
         public void onProviderDisabled(String provider) {
         }

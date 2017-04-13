@@ -27,6 +27,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
+// TODO: 13/04/2017 chiedere autorizzazione scrittura memoria 
+// TODO: 13/04/2017 chiedere autorizzazione scrittura fotocamera (magari nel main fragment) 
 
 class Utility {
 

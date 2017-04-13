@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import net.glxn.qrgen.android.QRCode;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -40,6 +41,7 @@ public class PostActivity  extends AppCompatActivity {
     private ImageView qrcode;
     private final static int qrDisplayedSize = 1000;
 
+    // TODO: 13/04/2017 il QRCode va salvato all'interno della memoria 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class PostActivity  extends AppCompatActivity {
                 Bitmap myBitmap = QRCode.from(response).bitmap();
                 qrcode.setImageBitmap(myBitmap);
                 ViewGroup.LayoutParams params = qrcode.getLayoutParams();
-                params.width =  qrDisplayedSize;
+                params.width = qrDisplayedSize;
                 params.height = qrDisplayedSize;
                 qrcode.setLayoutParams(params);
                 loadingText.setText(getString(R.string.prod_id_desc).concat(response));
@@ -77,6 +79,7 @@ public class PostActivity  extends AppCompatActivity {
                 backButton.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -105,10 +108,15 @@ public class PostActivity  extends AppCompatActivity {
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                String responseString;
-                responseString = String.valueOf(response.statusCode);
 
-                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                if(response.statusCode==400){
+                    new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Errore comunicazione server")
+                            .setContentText("Qualcosa non ha funzionato!\nCodice errore:"+response.statusCode)
+                            .show();
+                    finish();
+                }
+                return super.parseNetworkResponse(response);
             }
         };
         requestQueue.add(stringRequest);

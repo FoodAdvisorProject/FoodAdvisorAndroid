@@ -35,8 +35,8 @@ import es.dmoral.toasty.Toasty;
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    NavigationView  navigationView = null;
-    Toolbar toolbar = null;
+    NavigationView  navigationView;
+    Toolbar toolbar;
     pro.rane.foodadvisor.SessionManager session;
 
     CircularImageView profile_photo;

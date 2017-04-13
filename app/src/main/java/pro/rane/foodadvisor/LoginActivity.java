@@ -6,7 +6,6 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 
 import android.graphics.Bitmap;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 
@@ -24,8 +23,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -34,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -52,7 +48,7 @@ public class LoginActivity extends AppCompatActivity  {
     String username;
     String password;
     private static boolean DEBUG = false;
-    private static  Bitmap profileImage;
+    private static final String TAG = "LoginActivity";
     private static final String imgUri ="http://foodadvisor.rane.pro:8080/getUserImage?user_id=";
 
 
@@ -152,15 +148,12 @@ public class LoginActivity extends AppCompatActivity  {
             public void onResponse(final JSONObject response) {
                 try {
                     String user_id = response.getString("user_id");
-                    String photoLoc="";
                     ImageLoader imageLoader = ImageLoader.getInstance();
                     imageLoader.loadImage(imgUri.concat(user_id), new SimpleImageLoadingListener() {
                             @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                                 ContextWrapper cw = new ContextWrapper(getApplicationContext());
-                                // path to /data/data/yourapp/app_data/imageDir
                                 File directory = cw.getDir("images", Context.MODE_PRIVATE);
-                                // Create imageDir
                                 File mypath=new File(directory,"profile.jpg");
 
                                 FileOutputStream fos = null;
@@ -182,6 +175,8 @@ public class LoginActivity extends AppCompatActivity  {
                                         fos.close();
                                     } catch (IOException e) {
                                         e.printStackTrace();
+                                    } catch (NullPointerException e){
+                                        Log.e(TAG,e.toString());
                                     }
                                 }
                             }
