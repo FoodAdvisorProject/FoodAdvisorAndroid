@@ -30,26 +30,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-import com.google.android.gms.location.LocationServices;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.google.zxing.qrcode.encoder.ByteMatrix;
+
 
 import net.glxn.qrgen.android.QRCode;
 
@@ -60,7 +56,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -74,6 +70,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeReadListener {
 
     private static final int MY_PERMISSION_REQUEST_CAMERA = 0;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
 
     private pro.rane.foodadvisor.SessionManager session;
@@ -126,14 +123,9 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
         imageQr = (ImageView) rootView.findViewById(R.id.bitmapQr);
 
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: 13/04/2017 a questo punto devo chiedere i permessi
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            //return
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             Toasty.error(getContext(),"Permessi non pervenuti",Toast.LENGTH_LONG).show();
         }
         Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -392,7 +384,7 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
 
         try{
 
-            OutputStream stream = null;
+            OutputStream stream;
             stream = new FileOutputStream(file);
 
             bitmapImage.compress(Bitmap.CompressFormat.JPEG,100,stream);
@@ -429,4 +421,38 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
         }
         return bmp;
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permesso accordato, sta senza pensieri
+                } else {
+                    // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                }
+                return;
+            }
+            case MY_PERMISSION_REQUEST_CAMERA:{
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permesso accordato, sta senza pensieri
+                } else {
+                    // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.CAMERA},
+                            MY_PERMISSION_REQUEST_CAMERA);
+                }
+
+            }
+        }
+    }
+
 }
