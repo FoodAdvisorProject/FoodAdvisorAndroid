@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,8 +45,7 @@ public class NewProductFragment extends Fragment {
     pro.rane.foodadvisor.SessionManager session;
     float latitude = 0.0f;
     float longitude = 0.0f;
-    private TextView txtLat;
-    private TextView txtLng;
+    private TextView txtLatLng;
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -63,6 +63,7 @@ public class NewProductFragment extends Fragment {
     String photo;
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
 
     public NewProductFragment() {
         //must be empty
@@ -78,10 +79,9 @@ public class NewProductFragment extends Fragment {
         //if you want to lock screen for always Portrait mode
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        txtLat = (TextView) rootView.findViewById(R.id.latitude);
-        txtLng = (TextView) rootView.findViewById(R.id.longitude);
-        txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
-        txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
+        txtLatLng = (TextView) rootView.findViewById(R.id.coordinates);
+        txtLatLng.setText(getString(R.string.latitude).concat(Float.toString(latitude)).concat(" ").concat(getString(R.string.longitude).concat(Float.toString(longitude))));
+
 
         session = new pro.rane.foodadvisor.SessionManager(getContext());
 
@@ -102,8 +102,7 @@ public class NewProductFragment extends Fragment {
         if(loc!=null){
             longitude = (float) loc.getLongitude();
             latitude = (float) loc.getLatitude();
-            txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
-            txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
+            txtLatLng.setText(getString(R.string.latitude).concat(Float.toString(latitude)).concat(" ").concat(getString(R.string.longitude).concat(Float.toString(longitude))));
         }else{
             if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 pb.setVisibility(View.VISIBLE);
@@ -159,9 +158,29 @@ public class NewProductFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Per proseguire è necessario avere i permessi della fotocamera!")
+                            .setConfirmText("Ho capito!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    ActivityCompat.requestPermissions(getActivity(),
+                                            new String[]{Manifest.permission.CAMERA},
+                                            MY_PERMISSIONS_REQUEST_CAMERA);
+                                }
+                            })
+                            .show();
+
+                }else{
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
                 }
             }
         });
@@ -247,14 +266,22 @@ public class NewProductFragment extends Fragment {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permesso accordato, sta senza pensieri
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Permessi accordati")
+                            .setContentText("Grazie mille!")
+                            .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                        }
+                    }).show();
+
                 } else {
                     // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
                 }
-                return;
             }
         }
     }
@@ -268,8 +295,7 @@ public class NewProductFragment extends Fragment {
             pb.setVisibility(View.INVISIBLE);
             longitude = (float) loc.getLongitude();
             latitude = (float) loc.getLatitude();
-            txtLat.setText(getString(R.string.latitude).concat(Float.toString(latitude)));
-            txtLng.setText(getString(R.string.longitude).concat(Float.toString(longitude)));
+            txtLatLng.setText(getString(R.string.latitude).concat(Float.toString(latitude)).concat(" ").concat(getString(R.string.longitude).concat(Float.toString(longitude))));
         }
 
         @Override

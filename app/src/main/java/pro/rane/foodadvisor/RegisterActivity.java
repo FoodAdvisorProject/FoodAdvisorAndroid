@@ -275,8 +275,12 @@ public class RegisterActivity extends AppCompatActivity {
                         new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("Errore comunicazione server")
                                 .setContentText("Qualcosa non ha funzionato!\nCodice errore:"+response.statusCode)
-                                .show();
-                        finish();
+                                .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                            }
+                        }).show();
                     }
                     return super.parseNetworkResponse(response);
                 }
