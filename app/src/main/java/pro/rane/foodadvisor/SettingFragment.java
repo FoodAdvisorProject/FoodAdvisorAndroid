@@ -39,7 +39,7 @@ public class SettingFragment extends Fragment{
         gpsPerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 12/04/17 richiesta permessi GPS
+                // TODO: 12/04/17 richiesta permessi GPS se assenti
                 Toasty.success(getContext(),"Richiesta permessi", Toast.LENGTH_SHORT).show();
                 gpsPerm.setClickable(false);
             }
@@ -48,7 +48,7 @@ public class SettingFragment extends Fragment{
         cameraPerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 12/04/17 richiesta permessi fotocamera
+                // TODO: 12/04/17 richiesta permessi fotocamera se assenti
                 Toasty.success(getContext(),"Richiesta permessi", Toast.LENGTH_SHORT).show();
                 cameraPerm.setClickable(false);
             }
