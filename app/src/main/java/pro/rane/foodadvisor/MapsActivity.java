@@ -327,7 +327,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                                 getInfoContents(marker);
                             }
                         });
-                image.setImageResource(R.drawable.logo);
+              //  image.setImageResource(R.drawable.logo);
             } else {
                 image.setImageResource(R.drawable.logo);
                 imgSeller.setImageResource(R.drawable.logo);
