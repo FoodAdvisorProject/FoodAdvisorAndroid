@@ -4,6 +4,7 @@ import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import es.dmoral.toasty.Toasty;
 
 public class SettingFragment extends Fragment{
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
     pro.rane.foodadvisor.SessionManager session;
     public SettingFragment(){
     }
@@ -35,26 +38,56 @@ public class SettingFragment extends Fragment{
 
         gpsPerm.setChecked(ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED);
         cameraPerm.setChecked(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED);
-        
         gpsPerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 12/04/17 richiesta permessi GPS se assenti
-                Toasty.success(getContext(),"Richiesta permessi", Toast.LENGTH_SHORT).show();
-                gpsPerm.setClickable(false);
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
             }
         });
         
         cameraPerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 12/04/17 richiesta permessi fotocamera se assenti
-                Toasty.success(getContext(),"Richiesta permessi", Toast.LENGTH_SHORT).show();
-                cameraPerm.setClickable(false);
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
             }
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toasty.success(getContext(),"Permessi garantiti", Toast.LENGTH_LONG).show();
+                    gpsPerm.setClickable(false);
+                } else {
+                    Toasty.error(getContext(),"Permessi negati", Toast.LENGTH_LONG).show();
+                    gpsPerm.setChecked(false);
+                    gpsPerm.setClickable(true);
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toasty.success(getContext(),"Permessi garantiti", Toast.LENGTH_LONG).show();
+                   cameraPerm.setClickable(false);
+                } else {
+                    Toasty.error(getContext(),"Permessi negati", Toast.LENGTH_LONG).show();
+                    cameraPerm.setChecked(false);
+                    cameraPerm.setClickable(true);
+                }
+            }
+        }
     }
 
 }

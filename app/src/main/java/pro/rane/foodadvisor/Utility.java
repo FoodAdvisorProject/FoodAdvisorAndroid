@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -20,11 +21,13 @@ import com.android.volley.toolbox.Volley;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 // TODO: 13/04/2017 chiedere autorizzazione scrittura memoria
@@ -56,6 +59,31 @@ class Utility {
             e.printStackTrace();
         }
         return hashtext;
+    }
+    
+    // saveImage: Data una foto bitmap e un nome da dare a tale foto, salva in memoria esterna tale foto
+    // nota che per vedere le immagini in galleria si può usare questa funzione
+    /*
+    sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+    */
+    // TODO: 17/04/2017 da testare
+    private void saveImage(Bitmap finalBitmap,String name) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images");
+        if(!myDir.mkdirs())
+            Log.e("SAVED_FUNC","mkdirs error");
+        String fname = name+".jpg";
+        File file = new File(myDir, fname);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -105,7 +133,7 @@ class Utility {
         }
     }
 
-    public static void hideKeyboard(View view) {
+    static void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
