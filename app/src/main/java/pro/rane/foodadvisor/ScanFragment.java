@@ -189,7 +189,6 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
             public void onClick(View v) {
                 if (latitude == 0.0f && longitude == 0.0f) {
                     Toast.makeText(getContext(), "Coordinate ancora non caricate, Attendere", Toast.LENGTH_SHORT).show();
-                //   getLastBestLocation();
                     return;
                 }
                 newTranBtn.setVisibility(View.INVISIBLE);
@@ -259,7 +258,7 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
     // TODO: 05/04/2017 finire di implementare
     private void addTransaction() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        final String url = "http://foodadvisor.rane.pro:8080/addTransaction?";
+        final String url = "http://foodadvisor.rane.pro:8080/addTransaction";
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -339,12 +338,6 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
     }
 
 
-  /*  private void getLastBestLocation() {
-
-            latitude =(float)45.465454;
-            longitude =(float)9.186515999999983;
-
-    }*/
     /*----------Listener class to get coordinates ------------- */
    private class MyLocationListener implements LocationListener {
         @Override
