@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.json.JSONException;
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity  {
     pro.rane.foodadvisor.SessionManager session;
     String username;
     String password;
-    private static boolean DEBUG = false;
+    private final static boolean DEBUG = false;
     private static final String TAG = "LoginActivity";
     private static final String imgUri ="http://foodadvisor.rane.pro:8080/getUserImage?user_id=";
 
@@ -148,6 +149,7 @@ public class LoginActivity extends AppCompatActivity  {
             public void onResponse(final JSONObject response) {
                 try {
                     String user_id = response.getString("user_id");
+                    Log.d("DEBUG","User_id :"+user_id);
                     ImageLoader imageLoader = ImageLoader.getInstance();
                     imageLoader.loadImage(imgUri.concat(user_id), new SimpleImageLoadingListener() {
                             @Override
@@ -172,7 +174,9 @@ public class LoginActivity extends AppCompatActivity  {
                                     e.printStackTrace();
                                 } finally {
                                     try {
-                                        fos.close();
+                                        if (fos != null) {
+                                            fos.close();
+                                        }
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     } catch (NullPointerException e){
@@ -180,7 +184,23 @@ public class LoginActivity extends AppCompatActivity  {
                                     }
                                 }
                             }
-                        });
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            try {
+                                session.createLoginSession(response.getString("login"), response.getString("name"), response.getString("second_name"), response.getString("email"), response.getString("enterprise_description"), response.getString("user_id"), "drawable://"+R.drawable.farmer);
+                                // Activity start
+                                Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
+                                startActivity(i);
+                                finish();
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+
+                        }
+
+
+                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();

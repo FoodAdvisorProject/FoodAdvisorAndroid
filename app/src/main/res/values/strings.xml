@@ -100,7 +100,7 @@
     <string name="credits_friends_desc">A real special thanks to our friends:</string>
     <string name="credits_friends" >Marino Spitoni (Design)\nCyril Glerum-Imbert (Logo)\nSilvia Iacomelli (Promotional video)</string>
     <string name="scannerizza_qrcode">Scannerizza QRCODE</string>
-    <string name="prod_id_desc">Id prodotto:</string>
+    <string name="prod_id_desc">Id :</string>
     <string name="carica_immagine">carica immagine</string>
     <string name="descrizione">Descrizione</string>
     <string name="edit_img">Modifica immagine</string>
@@ -108,6 +108,7 @@
     <string name="permessi_gps">Permessi GPS</string>
     <string name="disclamer_setting">Senza questi permessi l\'app non funzionerà correttamente, perfavore abiliti i permessi non segnati.</string>
     <string name="product_new_photo">Foto nuovo prodotto</string>
+    <string name="save_image">Salva Immagine</string>
 
 
 </resources>

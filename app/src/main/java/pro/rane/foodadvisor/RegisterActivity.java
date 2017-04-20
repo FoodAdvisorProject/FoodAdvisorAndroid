@@ -247,11 +247,33 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     Log.e("VOLLEY", "Response:"+ response);
+                    new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Ok")
+                            .setContentText("Registazione effettuata!\nRisposta dal server:"+response)
+                            .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("VOLLEY","Errore: "+error.getMessage()+ error.toString());
+                    new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Errore comunicazione server")
+                            .setContentText("Qualcosa non ha funzionato!\n")
+                            .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                        }
+                    }).show();
+
                 }
             }) {
                 @Override
@@ -272,7 +294,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
                     if(response.statusCode==400){
-                        new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                        new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("Errore comunicazione server")
                                 .setContentText("Qualcosa non ha funzionato!\nCodice errore:"+response.statusCode)
                                 .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -286,9 +308,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             };
             requestQueue.add(stringRequest);
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
         }
 
     }

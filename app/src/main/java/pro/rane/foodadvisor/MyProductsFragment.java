@@ -1,5 +1,6 @@
 package pro.rane.foodadvisor;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,6 +29,16 @@ public class MyProductsFragment extends Fragment {
     pro.rane.foodadvisor.SessionManager session;
     ProgressBar loading_bar;
     TextView products;
+
+
+    // TODO: 10/03/2017 photo handling
+    /* TODO: 11/03/2017 implementare funzione "segui il tuo prodotto" : ovvero una chiamata di user mode direttamente sul prodotto senza passare per lo scan.
+        NB tale cosa a livello di layout sarà un bottone
+     */
+    private final static String imgURL = "http://foodadvisor.rane.pro:8080/getArticleImage?article_id=";
+    //devo usare questa chiamata rest per inviare le immagini
+    String[] article_ids;
+    Bitmap[] images;
 
 
     public MyProductsFragment() {
@@ -77,10 +88,11 @@ public class MyProductsFragment extends Fragment {
 
     private void showArticles(String res){
         String list = "";
-        // TODO: 10/03/2017 photo handling
         try {
             JSONArray articles = new JSONArray(res);
             JSONObject a;
+            article_ids = new String[articles.length()];
+            images = new Bitmap[articles.length()];
             for(int i = 0; i<articles.length();i++){
                 a = articles.getJSONObject(i);
                 list+="Nome prodotto: "+ a.get("name").toString() +"\nDescrizione: "+a.get("description").toString() +"\nId articolo: "+ a.get("article_id")+"\n\n";
@@ -92,9 +104,4 @@ public class MyProductsFragment extends Fragment {
         loading_bar.setVisibility(View.INVISIBLE);
         products.setVisibility(View.VISIBLE);
     }
-
-    /* TODO: 11/03/2017 implementare funzione "segui il tuo prodotto" : ovvero una chiamata di user mode direttamente sul prodotto senza passare per lo scan.
-        NB tale cosa a livello di layout sarà un bottone
-     */
-
 }

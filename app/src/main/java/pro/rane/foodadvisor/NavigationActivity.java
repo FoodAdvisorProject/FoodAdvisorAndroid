@@ -186,6 +186,7 @@ public class NavigationActivity extends AppCompatActivity
     }
     public void logout(View view){
         session.logoutUser();
+        Toasty.success(getApplicationContext(),"Logout eseguito",Toast.LENGTH_SHORT).show();
         finish();
     }
 }

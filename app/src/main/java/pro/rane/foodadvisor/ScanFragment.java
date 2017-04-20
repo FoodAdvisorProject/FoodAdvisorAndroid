@@ -7,14 +7,14 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -39,13 +39,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
 
 import net.glxn.qrgen.android.QRCode;
 
@@ -58,7 +51,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -207,9 +199,8 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
             public void onClick(View v) {
                 if(!codeQr.equals("error")) {
                     saveToInternalStorage(QR);
-                    Toast.makeText(getContext(), "Salvataggio avvenuto, controllare nelle immagini", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getContext(), "ERROR Salvataggio non avvenuto", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Salvataggio non avvenuto", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -235,7 +226,7 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
                 try {
                     seller_id = getResponse[0].getString("buyer_id");
                     article_id = getResponse[0].getString("article_id");
-                    Toast.makeText(getContext(),"seller: "+seller_id,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(),"seller: "+seller_id,Toast.LENGTH_LONG).show();
                     addTransaction();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -245,8 +236,12 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                //solo per debug
-                //Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(),"Transazione non riconosciuta!",Toast.LENGTH_SHORT).show();
+
+                qrCodeReaderView.setQRDecodingEnabled(true);
+                cameraLayout.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.INVISIBLE);
+                newTranBtn.setVisibility(View.VISIBLE);
             }
         });
 
@@ -255,7 +250,7 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
 
     }
 
-    // TODO: 05/04/2017 finire di implementare
+
     private void addTransaction() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         final String url = "http://foodadvisor.rane.pro:8080/addTransaction";
@@ -269,10 +264,23 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
 
                 if (response.contains("Error")) {
                     codeQr="error";
-                    Toast.makeText(getContext(), "Risposta server " + response, Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(), "Impossibile aggiungere transazione" + response, Toast.LENGTH_LONG).show();
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Errore")
+                            .setContentText("Impossibile aggiungere la transazione.\n Descrizione errore: "+response)
+                            .show();
+
+                    qrCodeReaderView.setQRDecodingEnabled(true);
+                    cameraLayout.setVisibility(View.VISIBLE);
+                    pb.setVisibility(View.INVISIBLE);
+                    newTranBtn.setVisibility(View.VISIBLE);
 
                 }else {
+
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Transazione eseguita")
+                            .setContentText("La transazione è stata eseguita!\nSalva il tuo qrcode, stampalo \n e mettilo sul prodotto!")
+                            .show();
+
                     codeQr = response;
                     saveBitmap.setVisibility(View.VISIBLE);
                     pb.setVisibility(View.INVISIBLE);
@@ -285,6 +293,15 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("VOLLEY", error.toString());
+                new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Errore")
+                        .setContentText("Impossibile aggiungere la transazione.\n Descrizione errore: "+error.toString())
+                        .show();
+
+                qrCodeReaderView.setQRDecodingEnabled(true);
+                cameraLayout.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.INVISIBLE);
+                newTranBtn.setVisibility(View.VISIBLE);
             }
         }) {
             @Override
@@ -334,7 +351,6 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
         resultTextView.setText(text);
         pointsOverlayView.setPoints(points);
         newTranBtn.setVisibility(View.VISIBLE);
-        qrCodeReaderView.stopCamera();
     }
 
 
@@ -343,7 +359,7 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
         @Override
         public void onLocationChanged(Location loc) {
 
-            Toast.makeText(getActivity().getBaseContext(),"Coordinate settate:\nLat: " +
+            Toasty.success(getActivity().getBaseContext(),"Coordinate settate:\nLat: " +
                             loc.getLatitude()+ "\nLng: " + loc.getLongitude(),
                     Toast.LENGTH_SHORT).show();
             latitude = ((float) loc.getLatitude());
@@ -368,7 +384,6 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
 
     private void saveToInternalStorage(Bitmap bitmapImage){
 
-
         ContextWrapper wrapper = new ContextWrapper(getContext().getApplicationContext());
 
         File file = wrapper.getDir("Images",MODE_PRIVATE);
@@ -376,7 +391,6 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
         file = new File(file, codeQr+".jpg");
 
         try{
-
             OutputStream stream;
             stream = new FileOutputStream(file);
 
@@ -384,47 +398,25 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
             stream.flush();
             stream.close();
 
-        }catch (IOException e) // Catch the exception
-        {
+        }catch (IOException e){
             e.printStackTrace();
         }
-
-        // Parse the gallery image url to uri
-        Uri savedImageURI = Uri.parse(file.getAbsolutePath());
-        Toast.makeText(getContext(), "File Salvato in: " + savedImageURI.toString(), Toast.LENGTH_LONG).show();
-
-
-    }
-
-    public static Bitmap generateQrCode(String myCodeText) throws WriterException {
-        Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<EncodeHintType, ErrorCorrectionLevel>();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H); // H = 30% damage
-
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-
-        int size = 256;
-
-        BitMatrix bitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
-        int width = bitMatrix.getWidth();
-        Bitmap bmp = Bitmap.createBitmap(width, width, Bitmap.Config.RGB_565);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < width; y++) {
-                bmp.setPixel(y, x, bitMatrix.get(x,y)==false ? Color.BLACK : Color.WHITE);
-            }
-        }
-        return bmp;
+        MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmapImage, "Id transazione:"+ codeQr , "Created by FoodAdvisor");
+        Toasty.success(getContext(), "File Salvato, controlla la galleria", Toast.LENGTH_LONG).show();
+        saveBitmap.setVisibility(View.INVISIBLE);
     }
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permesso accordato, sta senza pensieri
+                    Toasty.success(getContext(),"Permesso GPS accordato",Toast.LENGTH_SHORT).show();
                 } else {
                     // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
                     ActivityCompat.requestPermissions(getActivity(),
@@ -436,7 +428,7 @@ public class ScanFragment extends Fragment implements QRCodeReaderView.OnQRCodeR
             case MY_PERMISSION_REQUEST_CAMERA:{
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permesso accordato, sta senza pensieri
+                    Toasty.success(getContext(),"Permesso fotocamera accordato",Toast.LENGTH_SHORT).show();
                 } else {
                     // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
                     ActivityCompat.requestPermissions(getActivity(),

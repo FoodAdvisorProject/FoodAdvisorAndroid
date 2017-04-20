@@ -1,7 +1,9 @@
 package pro.rane.foodadvisor;
 
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.android.volley.AuthFailureError;
@@ -26,10 +29,15 @@ import com.android.volley.toolbox.Volley;
 
 import net.glxn.qrgen.android.QRCode;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 
 public class PostActivity  extends AppCompatActivity {
@@ -41,7 +49,7 @@ public class PostActivity  extends AppCompatActivity {
     private ImageView qrcode;
     private final static int qrDisplayedSize = 1000;
 
-    // TODO: 13/04/2017 il QRCode va salvato all'interno della memoria 
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +86,7 @@ public class PostActivity  extends AppCompatActivity {
                 qrcode.setVisibility(View.VISIBLE);
                 backButton.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
+                saveToInternalStorage(myBitmap,response);
             }
 
         }, new Response.ErrorListener() {
@@ -124,6 +133,30 @@ public class PostActivity  extends AppCompatActivity {
 
     public void comeBack(View view){
         finish();
+    }
+
+    private void saveToInternalStorage(Bitmap bitmapImage,String name){
+
+        ContextWrapper wrapper = new ContextWrapper(this.getApplicationContext());
+
+        File file = wrapper.getDir("Images",MODE_PRIVATE);
+
+        file = new File(file, name+".jpg");
+
+        try{
+            OutputStream stream;
+            stream = new FileOutputStream(file);
+
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG,100,stream);
+            stream.flush();
+            stream.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        MediaStore.Images.Media.insertImage(getContentResolver(), bitmapImage, "Id transazione:"+ name , "Created by FoodAdvisor");
+        Toasty.success(this, "File Salvato, controlla la galleria", Toast.LENGTH_LONG).show();
+
     }
 
 
