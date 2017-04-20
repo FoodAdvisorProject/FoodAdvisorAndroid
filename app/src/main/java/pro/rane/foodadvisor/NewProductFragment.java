@@ -1,7 +1,6 @@
 package pro.rane.foodadvisor;
 
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -107,7 +106,7 @@ public class NewProductFragment extends Fragment {
             if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 pb.setVisibility(View.VISIBLE);
                 locationListener = new MyLocationListener();
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000,1, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100,0, locationListener);
             } else {
                 new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Il GPS è spento")
@@ -201,7 +200,7 @@ public class NewProductFragment extends Fragment {
                     return;
                 }
 
-                if (latitude== 0.0f && longitude == 0.0f){
+                if (latitude == 0.0f && longitude == 0.0f){
                     Toasty.warning(getActivity().getApplicationContext(),"Attendere valore coordinate",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -215,9 +214,9 @@ public class NewProductFragment extends Fragment {
                 HashMap<String, String> user = session.getUserDetails();
                 String id = user.get(SessionManager.KEY_ID);
 
-                String url = "http://foodadvisor.rane.pro:8080/addArticle";
+                final String url = "http://foodadvisor.rane.pro:8080/addArticle";
 
-                Toast.makeText(getActivity().getBaseContext(),"Url : "+url,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity().getBaseContext(),"Url : "+url,Toast.LENGTH_SHORT).show();
 
                 JSONObject req = new JSONObject();
                 try{
@@ -241,7 +240,6 @@ public class NewProductFragment extends Fragment {
                 startPostAct.putExtra("url", url);
                 startPostAct.putExtra("req",req.toString());
                 startActivity(startPostAct);
-
             }
         });
         return rootView;
@@ -278,14 +276,23 @@ public class NewProductFragment extends Fragment {
 
                 } else {
                     // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Errore!")
+                            .setContentText("L'applicazione non può funzionare senza GPS!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    ActivityCompat.requestPermissions(getActivity(),
+                                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                                }
+                            })
+                            .show();
                 }
             }
         }
     }
-
 
 
     /*----------Listener class to get coordinates ------------- */
