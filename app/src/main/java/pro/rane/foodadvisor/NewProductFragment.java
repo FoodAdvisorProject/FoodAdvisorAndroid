@@ -87,6 +87,12 @@ public class NewProductFragment extends Fragment {
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
+        editTextproductName = (EditText) rootView.findViewById(R.id.prodName);
+        editTextproductDesc = (EditText) rootView.findViewById(R.id.prodDesc);
+
+        pb = (ProgressBar) rootView.findViewById(R.id.loadingBar);
+        pb.setVisibility(View.INVISIBLE);
+
 
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
@@ -95,9 +101,15 @@ public class NewProductFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            Toasty.error(getContext(),"Permessi non pervenuti",Toast.LENGTH_LONG).show();
+            //Toasty.error(getContext(),"Permessi non pervenuti",Toast.LENGTH_LONG).show();
         }
-        Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location loc;
+        try {
+            loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }catch (Exception e){
+            loc = null;
+            e.printStackTrace();
+        }
 
         if(loc!=null){
             longitude = (float) loc.getLongitude();
@@ -107,11 +119,25 @@ public class NewProductFragment extends Fragment {
             if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 pb.setVisibility(View.VISIBLE);
                 locationListener = new MyLocationListener();
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100,0, locationListener);
+                try {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                }catch (SecurityException e){
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Mancano i permessi")
+                            .setContentText("FoodAdvisor ha bisogno del GPS per funzionare correttamente!")
+                            .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    }).show();
+                }
             } else {
                 new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Il GPS è spento")
-                        .setContentText("FoodAdvisor ha bisogno del GPS per funzionanre correttamente!")
+                        .setContentText("FoodAdvisor ha bisogno del GPS per funzionare correttamente!")
                         .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
@@ -125,11 +151,6 @@ public class NewProductFragment extends Fragment {
 
         imgNewPrd = (ImageView) rootView.findViewById(R.id.imageLoaded);
 
-        pb = (ProgressBar) rootView.findViewById(R.id.loadingBar);
-        pb.setVisibility(View.INVISIBLE);
-
-        editTextproductName = (EditText) rootView.findViewById(R.id.prodName);
-        editTextproductDesc = (EditText) rootView.findViewById(R.id.prodDesc);
 
         editTextproductName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -148,7 +169,6 @@ public class NewProductFragment extends Fragment {
                 }
             }
         });
-
 
 
 
