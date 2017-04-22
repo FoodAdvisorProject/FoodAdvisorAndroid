@@ -1,31 +1,26 @@
 package pro.rane.foodadvisor;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.app.AlertDialog;
+import android.widget.ProgressBar;
 
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -33,10 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
@@ -53,12 +46,17 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText ivaText;
     private EditText description;
     private Button loadPhotoBtn;
+    private Button registerBtn;
+    private ProgressBar progressBar;
     byte img[];
     Bitmap bitmap=null;
+    private String stringedPhoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        progressBar = (ProgressBar) findViewById((R.id.progressBarReg));
         aziendaName = (EditText) findViewById(R.id.aziendaName);
         nomeTit = (EditText) findViewById(R.id.nomeTit);
         cognomeTit = (EditText) findViewById(R.id.cognomeTit);
@@ -78,6 +76,21 @@ public class RegisterActivity extends AppCompatActivity {
 
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(iob, 0);
+            }
+        });
+
+        registerBtn = (Button) findViewById(R.id.btnReg);
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerBtn.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                try {
+                    register(v);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -208,34 +221,34 @@ public class RegisterActivity extends AppCompatActivity {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
                 img = bos.toByteArray();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             Toasty.success(this,"Immagine selezionata").show();
             loadPhotoBtn.setText(R.string.edit_img);
+            stringedPhoto = Utility.BitMapToString(bitmap);
         }else{
             Toasty.error(this,"Immagine non selezionata").show();
         }
 
     }
 
-    // TODO: 21/04/2017 controllare 
+
     public void register(View view) throws UnsupportedEncodingException {
         if(controll()){
             JSONObject user = new JSONObject();
             try {
                 user.put("login_name", aziendaName.getText().toString() );
-                user.put("login_passw", Utility.md5(passText.getText().toString()) );
+                // TODO: 22/04/2017 rimuovere spazi appena il server viene corretto
+                user.put("login_passw  ", Utility.md5(passText.getText().toString()) );
                 user.put("email", emailTit.getText().toString().replace("@","%40") );
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );
                 user.put("is_enterprise","1");
-                user.put("enterprise_description","Telefono:"+phoneText.getText().toString()+ description.getText().toString()+"IVA: "+ivaText.getText().toString());
+                user.put("enterprise_description","Telefono azienda "+phoneText.getText().toString()+"%0AIVA"+ivaText.getText().toString()+"%0A"+description.getText().toString());
                 // TODO: 10/03/2017  fotografie implementare
-                user.put("photo",/*Utility.BitMapToString(bitmap)*/"null");
+                user.put("photo",/*stringedPhoto*/"null");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -247,9 +260,11 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     Log.e("VOLLEY", "Response:"+ response);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    registerBtn.setVisibility(View.VISIBLE);
                     new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                             .setTitleText("Ok")
-                            .setContentText("Registazione effettuata!\nRisposta dal server:"+response)
+                            .setContentText("Registazione effettuata!\nId nuovo utente:"+response)
                             .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
@@ -263,7 +278,6 @@ public class RegisterActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY","Errore: "+error.getMessage()+ error.toString());
                     new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Errore comunicazione server")
                             .setContentText("Qualcosa non ha funzionato!\n")
@@ -274,6 +288,20 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }).show();
 
+                    String body="";
+                    //get status code here
+                    String statusCode = String.valueOf(error.networkResponse.statusCode);
+                    //get response body and parse with appropriate encoding
+                    if(error.networkResponse.data!=null) {
+                        try {
+                            body = new String(error.networkResponse.data,"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    progressBar.setVisibility(View.INVISIBLE);
+                    registerBtn.setVisibility(View.VISIBLE);
+                    Log.e("VOLLEY","Status code:"+statusCode+" Body: "+body);
                 }
             }) {
                 @Override
@@ -290,27 +318,8 @@ public class RegisterActivity extends AppCompatActivity {
                         return null;
                     }
                 }
-
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    if(response.statusCode==400){
-                        new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("Errore comunicazione server")
-                                .setContentText("Qualcosa non ha funzionato!\nCodice errore:"+response.statusCode)
-                                .setConfirmText("Ho capito!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                            }
-                        }).show();
-                    }
-                    return super.parseNetworkResponse(response);
-                }
             };
             requestQueue.add(stringRequest);
         }
-
     }
-
-
 }
