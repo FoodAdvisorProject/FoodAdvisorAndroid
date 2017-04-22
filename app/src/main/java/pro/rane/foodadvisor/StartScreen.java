@@ -3,6 +3,7 @@ package pro.rane.foodadvisor;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,11 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class StartScreen extends AppCompatActivity {
-    //pro.rane.foodadvisor.SessionManager session;
+
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
-    private Button userButton;
-    private Button prodButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,6 @@ public class StartScreen extends AppCompatActivity {
         ImageLoader.getInstance().init(config);
         pro.rane.foodadvisor.SessionManager session = new pro.rane.foodadvisor.SessionManager(getApplicationContext());
         if (session.isLoggedIn()){
-            //Se l'utente è già loggato passo direttamente al Navigation Drawer
             Intent i = new Intent(getApplicationContext(), NavigationActivity.class);
             startActivity(i);
             finish();
@@ -41,8 +41,8 @@ public class StartScreen extends AppCompatActivity {
 
         tx.setTypeface(custom_font);
 
-        userButton = (Button) findViewById(R.id.user);
-        prodButton = (Button) findViewById(R.id.producer);
+        Button userButton = (Button) findViewById(R.id.user);
+        Button prodButton = (Button) findViewById(R.id.producer);
 
         userButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,20 +71,35 @@ public class StartScreen extends AppCompatActivity {
     //Gestore risposta GPS
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permesso accordato, sta senza pensieri
+                    new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Ok")
+                            .setContentText("I permessi sono stati accordati")
+                            .setConfirmText("Fantastico!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                        }
+                    }).show();
                 } else {
-                    // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Errore!")
+                            .setContentText("I permessi non sono stati accordati\nL'applicazione non può funzionare senza")
+                            .setConfirmText("Fantastico!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            ActivityCompat.requestPermissions(StartScreen.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                        }
+                    }).show();
                 }
-                return;
             }
         }
     }
@@ -96,6 +111,5 @@ public class StartScreen extends AppCompatActivity {
     public void producerPath(View view){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        finish();
     }
 }

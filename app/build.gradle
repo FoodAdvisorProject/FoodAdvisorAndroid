@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "pro.rane.foodadvisor"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 3
+        versionCode 4
         versionName "NervousNerd"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,12 +28,11 @@ dependencies {
     })
     //controllare la versione di libreria (funziona comunque ma segna inconsistenze con il target di versione minimo)
     compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.2'
-    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.android.support:support-vector-drawable:24.0.0'
-    compile 'com.google.android.gms:play-services:10.0.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-vector-drawable:25.3.1'
+    compile 'com.google.android.gms:play-services:10.2.1'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.zxing:core:2.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'

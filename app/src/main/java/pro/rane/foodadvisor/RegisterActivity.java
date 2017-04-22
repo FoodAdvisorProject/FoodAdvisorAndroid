@@ -222,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-
+    // TODO: 21/04/2017 controllare 
     public void register(View view) throws UnsupportedEncodingException {
         if(controll()){
             JSONObject user = new JSONObject();
