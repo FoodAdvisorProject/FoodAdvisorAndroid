@@ -109,6 +109,7 @@
     <string name="disclamer_setting">Senza questi permessi l\'app non funzionerà correttamente, perfavore abiliti i permessi non segnati.</string>
     <string name="product_new_photo">Foto nuovo prodotto</string>
     <string name="save_image">Salva Immagine</string>
+    <string name="viaggio_prodotto">Viaggio prodotto</string>
 
 
 </resources>
