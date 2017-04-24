@@ -110,6 +110,7 @@
     <string name="product_new_photo">Foto nuovo prodotto</string>
     <string name="save_image">Salva Immagine</string>
     <string name="viaggio_prodotto">Viaggio prodotto</string>
+    <string name="product_image">Immagine Prodotto</string>
 
 
 </resources>

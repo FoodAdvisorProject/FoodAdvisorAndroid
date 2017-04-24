@@ -49,8 +49,8 @@ public class MyProductsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         session = new pro.rane.foodadvisor.SessionManager(getActivity().getApplicationContext());
         session.checkLogin();
         HashMap<String, String> user = session.getUserDetails();
@@ -96,6 +96,7 @@ public class MyProductsFragment extends Fragment {
             for(int i = 0; i<articles.length();i++){
                 a = articles.getJSONObject(i);
                 list+="Nome prodotto: "+ a.get("name").toString() +"\nDescrizione: "+a.get("description").toString() +"\nId articolo: "+ a.get("article_id")+"\n\n";
+                article_ids[i]=a.getString("article_id");
             }
         } catch (JSONException e) {
             e.printStackTrace();
