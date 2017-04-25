@@ -1,14 +1,15 @@
 package pro.rane.foodadvisor;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,25 +22,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MyProductsFragment extends Fragment {
     private String url;
     pro.rane.foodadvisor.SessionManager session;
     ProgressBar loading_bar;
-    TextView products;
-
-
-    // TODO: 10/03/2017 photo handling
-    /* TODO: 11/03/2017 implementare funzione "segui il tuo prodotto" : ovvero una chiamata di user mode direttamente sul prodotto senza passare per lo scan.
-        NB tale cosa a livello di layout sarà un bottone
-     */
-    private final static String imgURL = "http://foodadvisor.rane.pro:8080/getArticleImage?article_id=";
-    //devo usare questa chiamata rest per inviare le immagini
-    String[] article_ids;
-    Bitmap[] images;
-
+    List<Product> productsList;
+    RecyclerView rv;
+    RequestQueue queue;
 
     public MyProductsFragment() {
         //must be empty
@@ -55,19 +49,20 @@ public class MyProductsFragment extends Fragment {
         session.checkLogin();
         HashMap<String, String> user = session.getUserDetails();
         url = "http://foodadvisor.rane.pro:8080/getUserArticles?user_id=" + user.get(SessionManager.KEY_ID);
-
-
         View rootView = inflater.inflate(R.layout.fragment_my_products, container, false);
-        products = (TextView) rootView.findViewById(R.id.userProducts);
         loading_bar = (ProgressBar) rootView.findViewById(R.id.progressBar5);
         loading_bar.setVisibility(View.VISIBLE);
-        products.setVisibility(View.INVISIBLE);
+        queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        rv = (RecyclerView)rootView.findViewById(R.id.rv);
+        rv.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(llm);
         getArticles();
         return rootView;
     }
 
     private void getArticles(){
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -87,22 +82,19 @@ public class MyProductsFragment extends Fragment {
     }
 
     private void showArticles(String res){
-        String list = "";
+        productsList = new ArrayList<>();
         try {
             JSONArray articles = new JSONArray(res);
             JSONObject a;
-            article_ids = new String[articles.length()];
-            images = new Bitmap[articles.length()];
             for(int i = 0; i<articles.length();i++){
                 a = articles.getJSONObject(i);
-                list+="Nome prodotto: "+ a.get("name").toString() +"\nDescrizione: "+a.get("description").toString() +"\nId articolo: "+ a.get("article_id")+"\n\n";
-                article_ids[i]=a.getString("article_id");
+                productsList.add(new Product(a.get("name").toString(),a.get("description").toString(),a.get("article_id").toString()));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        products.setText(list);
+        RVAdapter adapter = new RVAdapter(productsList,getContext(),queue);
+        rv.setAdapter(adapter);
         loading_bar.setVisibility(View.INVISIBLE);
-        products.setVisibility(View.VISIBLE);
     }
 }

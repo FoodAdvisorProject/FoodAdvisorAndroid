@@ -111,6 +111,8 @@
     <string name="save_image">Salva Immagine</string>
     <string name="viaggio_prodotto">Viaggio prodotto</string>
     <string name="product_image">Immagine Prodotto</string>
+    <string name="product_name">Nome:</string>
+    <string name="product_description">Descrizione:</string>
 
 
 </resources>
