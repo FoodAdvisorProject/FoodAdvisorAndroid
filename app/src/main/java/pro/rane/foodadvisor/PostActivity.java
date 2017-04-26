@@ -70,8 +70,9 @@ public class PostActivity  extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         final String requestBody = Utility.toCorrectCase(req);
-        //Decommentare solo per il debug
-        //Toast.makeText(getBaseContext(),requestBody, Toast.LENGTH_SHORT).show();
+
+        //Toast.makeText(this,requestBody, Toast.LENGTH_SHORT).show();
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -93,11 +94,16 @@ public class PostActivity  extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("VOLLEY", error.toString());
-                new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(PostActivity.this, SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Errore comunicazione server")
-                        .setContentText("Qualcosa non ha funzionato!\nDescrizione errore:".concat(error.toString()))
-                        .show();
-                finish();
+                        .setContentText("Qualcosa non ha funzionato!")
+                        .setConfirmText("Ok").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                        finish();
+                    }
+                }).show();
             }
         }) {
             @Override
@@ -118,13 +124,18 @@ public class PostActivity  extends AppCompatActivity {
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
-                if(response.statusCode==400){
-                    new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                /*if(response.statusCode==400){
+                    new SweetAlertDialog(PostActivity.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Errore comunicazione server")
                             .setContentText("Qualcosa non ha funzionato!\nCodice errore:"+response.statusCode)
-                            .show();
-                    finish();
-                }
+                            .setConfirmText("Ho capito").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                            finish();
+                        }
+                    }).show();
+                }*/
                 return super.parseNetworkResponse(response);
             }
         };

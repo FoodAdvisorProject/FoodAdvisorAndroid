@@ -61,7 +61,7 @@ public class NewProductFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private ImageView imgNewPrd;
-    String photo;
+    String photo = "null";
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
@@ -69,7 +69,6 @@ public class NewProductFragment extends Fragment {
     private static final int MAX_SIZE_IMG = 5;
 
     public NewProductFragment() {
-        //must be empty
     }
 
 
