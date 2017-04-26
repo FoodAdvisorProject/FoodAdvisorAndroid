@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,8 @@ public class NewProductFragment extends Fragment {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
+    // TODO: 26/04/2017 cambiare a 256 quando il server è fixato
+    private static final int MAX_SIZE_IMG = 5;
 
     public NewProductFragment() {
         //must be empty
@@ -92,6 +95,10 @@ public class NewProductFragment extends Fragment {
 
         pb = (ProgressBar) rootView.findViewById(R.id.loadingBar);
         pb.setVisibility(View.INVISIBLE);
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            Toasty.error(getContext(),"Permessi archiviazione non abilitati.\nControlla le impostazioni!",Toast.LENGTH_LONG).show();
 
 
         if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -177,7 +184,6 @@ public class NewProductFragment extends Fragment {
         btnPhoto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -195,7 +201,6 @@ public class NewProductFragment extends Fragment {
                                 }
                             })
                             .show();
-
                 }else{
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -246,13 +251,11 @@ public class NewProductFragment extends Fragment {
                     req.put("description",productDesc);
                     req.put("longitude",longitude);
                     req.put("latitude",latitude);
-                    // TODO: 12/04/17 correggere o la funzione bitmaptostring o la funzione di presa foto o il tocorrectcase
-                    req.put("photo",/*Utility.toCorrectCase(photo)*/"null");
+                    req.put("photo",photo);
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
 
-                //Toast.makeText(getBaseContext(),req.toString(),Toast.LENGTH_SHORT).show();
 
                 pb.setVisibility(View.INVISIBLE);
                 btnNewProduct.setVisibility(View.VISIBLE);
@@ -270,9 +273,10 @@ public class NewProductFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap src = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = Bitmap.createScaledBitmap(src,MAX_SIZE_IMG,MAX_SIZE_IMG,false);
             photo = Utility.BitMapToString(imageBitmap);
-            imgNewPrd.setImageBitmap(imageBitmap);
+            imgNewPrd.setImageBitmap(src);
             imgNewPrd.setVisibility(View.VISIBLE);
         }
     }

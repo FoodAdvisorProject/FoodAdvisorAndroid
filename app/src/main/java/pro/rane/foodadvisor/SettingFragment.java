@@ -18,12 +18,14 @@ import es.dmoral.toasty.Toasty;
 public class SettingFragment extends Fragment{
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
+    private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_MEM = 3;
     pro.rane.foodadvisor.SessionManager session;
     public SettingFragment(){
     }
 
     private Switch gpsPerm;
     private Switch cameraPerm;
+    private  Switch extPerm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,12 +35,15 @@ public class SettingFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         gpsPerm = (Switch) rootView.findViewById(R.id.checkedGPS);
         cameraPerm = (Switch) rootView.findViewById(R.id.checkedCamera);
+        extPerm = (Switch) rootView.findViewById(R.id.checkedWrite);
 
 
         gpsPerm.setChecked(ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED);
         cameraPerm.setChecked(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED);
+        extPerm.setChecked(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED);
         gpsPerm.setClickable(!(ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED));
-        cameraPerm.setClickable(!(ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED));
+        cameraPerm.setClickable(!(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED));
+        extPerm.setClickable(!(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED));
 
         gpsPerm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +60,16 @@ public class SettingFragment extends Fragment{
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSIONS_REQUEST_CAMERA);
+            }
+        });
+
+
+        extPerm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_EXTERNAL_MEM);
             }
         });
 
@@ -87,6 +102,18 @@ public class SettingFragment extends Fragment{
                     Toasty.error(getContext(),"Permessi negati", Toast.LENGTH_LONG).show();
                     cameraPerm.setChecked(false);
                     cameraPerm.setClickable(true);
+                }
+            }
+
+            case MY_PERMISSIONS_REQUEST_EXTERNAL_MEM: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toasty.success(getContext(),"Permessi garantiti", Toast.LENGTH_LONG).show();
+                    extPerm.setClickable(false);
+                } else {
+                    Toasty.error(getContext(),"Permessi negati", Toast.LENGTH_LONG).show();
+                    extPerm.setChecked(false);
+                    extPerm.setClickable(true);
                 }
             }
         }
