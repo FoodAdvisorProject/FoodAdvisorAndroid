@@ -103,8 +103,8 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
                 JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, lifeURL,null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        // TODO: 25/04/2017 riabilitare appena capisco cosa la map activity vuole che gli passi
-                        Toasty.success(context,response.toString(), Toast.LENGTH_LONG).show();
+
+                       // Toasty.success(context,response.toString(), Toast.LENGTH_LONG).show();
                         Intent mapActivity = new Intent(context, MapsActivity.class);
                         mapActivity.putExtra("info", response.toString());
                         context.startActivity(mapActivity);
