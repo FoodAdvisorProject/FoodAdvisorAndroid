@@ -60,6 +60,7 @@ import org.json.JSONObject;
 
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback {
 
@@ -68,16 +69,18 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     private GoogleMap mMap;
     private String info;
-    private String[][] coordinates;
+    private String[][][] coordinates;
     private Marker[] markerT;
     private Marker marker;
     private Hashtable<String, JSONObject> markers;
     private ImageLoader imageLoader;
     private DisplayImageOptions options;
-    private JSONArray trip;
+    private JSONArray trip[];
     public static JSONObject article;
     private GoogleApiClient client;
    private JSONObject creator=null;
+    private int contatore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,23 +93,53 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             info = b.getString("info");
 
         try {
-            JSONArray temp= new JSONArray(info);
-            trip = new JSONArray();
-            for (int i = temp.length()-1; i>=0; i--) {
-                trip.put(temp.get(i));
-            }
-            getInfoArticle(trip.getJSONObject(0).getString("article_id"));
-            SystemClock.sleep(4000);
-            coordinates = new String[trip.length()][2];
-           // Toast.makeText(getApplicationContext(),getInfoArticle(trip.getJSONObject(0).getString("article_id")), Toast.LENGTH_SHORT).show();
-            for (int i = 0;i<trip.length();i++){
-                coordinates[i][0] = trip.getJSONObject(i).getString(LATITUDE);
-                coordinates[i][1] = trip.getJSONObject(i).getString(LONGITUDE);
+            JSONArray temp = new JSONArray(info);
+            contatore = temp.length();
+            trip = new JSONArray[contatore];
+            coordinates = new String[contatore][1][2];
+            for (int j = 0; j < contatore; j++) {
+                JSONArray temp2 = temp.getJSONArray(j);
 
+                for (int i = temp2.length() - 1; i >= 0; i--) {
+                    trip[j] = temp2;
+                }
+
+
+                coordinates[j] = new String [trip[j].length()][2];
+                // Toast.makeText(getApplicationContext(),getInfoArticle(trip.getJSONObject(0).getString("article_id")), Toast.LENGTH_SHORT).show();
+
+                for (int i = 0; i < trip[j].length(); i++) {
+                    coordinates[j][i][0] = trip[j].getJSONObject(i).getString(LATITUDE);
+                    coordinates[j][i][1] = trip[j].getJSONObject(i).getString(LONGITUDE);
+
+                }
             }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        try {
+            getInfoArticle(trip[0].getJSONObject(0).getString("article_id"));
+            SystemClock.sleep(4000);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /*
+        int totM = 0;
+        for (int x = 0; x < contatore; x++) {
+            totM = totM + trip[x].length();
+            Toast.makeText(getApplicationContext(), "totM " + totM, Toast.LENGTH_SHORT).show();
+
+        }
+        for(int i =0;i<contatore;i++){
+            for(int j=0;j<coordinates[i].length;j++) {
+                Toast.makeText(getApplicationContext(),"percorso "+i+ " coordinate "+j +" latitudine "+coordinates[i][j][0]+" longitudine "+coordinates[i][j][1], Toast.LENGTH_SHORT).show();
+            }
+        }*/
+
         initImageLoader();
         imageLoader = ImageLoader.getInstance();
         markers = new Hashtable<String, JSONObject>();
@@ -120,7 +153,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         mapFragment.getMapAsync(this);
 
 
+
     }
+
     public void getInfoArticle(String id){
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(
                 Request.Method.GET, "http://foodadvisor.rane.pro:8080/getArticle?article_id="+id, null,
@@ -155,55 +190,68 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         mMap.setOnInfoWindowClickListener(this);
         View marker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
         TextView numTxt = (TextView) marker.findViewById(R.id.info_marker);
-        markerT=new Marker[trip.length()];
-        Polyline line;
-       // Toast.makeText(getApplicationContext(),"INFO_ART 2 "+info_art, Toast.LENGTH_SHORT).show();
-        try {
-            buyer=trip.getJSONObject(0).getJSONObject("buyer");
-            creator=trip.getJSONObject(0).getJSONObject("buyer");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        int totM=0;
+        for (int x=0;x<contatore;x++) {
+            totM = totM + trip[x].length();
+         //   Toast.makeText(getApplicationContext(), "totM " + totM, Toast.LENGTH_SHORT).show();
         }
-        try {
-            numTxt.setText("Start Point");
-            markerT[0]=mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(coordinates[0][0]), Double.parseDouble(coordinates[0][1])))
-                    .title("Creation of "+article.getString("name"))
-                    .snippet("Description: "+article.getString("description")+"\n"+"Made by: "+creator.getString("name")+"\n"+"Company description: "+creator.getString("enterprise_description"))
-                    .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
-                   // .anchor(0.2f, 0f)
-            );
-            markers.put(markerT[0].getId(),creator);
+        Random rnd = new Random();
+        markerT = new Marker[totM];
+        int contatoreM=0;
+        for(int z=0; z<contatore;z++) {
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+           int color = Color.argb(255, rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255));
 
-        for (a = 1; a <trip.length(); a++) {
-            numTxt.setText("Point " + a.toString());
-
+           Polyline line;
+           // Toast.makeText(getApplicationContext(),"INFO_ART 2 "+info_art, Toast.LENGTH_SHORT).show();
            try {
-                markerT[a]=mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(coordinates[a][0]), Double.parseDouble(coordinates[a][1])))
-                        .title("Transaction number "+a.toString()+" of "+article.getString("name"))
-                        .snippet("Description: "+article.getString("description")+"\n"+"Made by: "+creator.getString("name")+"\n"+"Company description: "+creator.getString("enterprise_description"))
-                        .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
-                );
-              line = mMap.addPolyline(new PolylineOptions()
-                       .add(new LatLng(Double.parseDouble(coordinates[a-1][0]), Double.parseDouble(coordinates[a-1][1])),new LatLng(Double.parseDouble(coordinates[a][0]), Double.parseDouble(coordinates[a][1])))
-                       .width(5)
-                       .color(Color.BLUE));
-
-               buyer=trip.getJSONObject(a).getJSONObject("buyer");
-               markers.put(markerT[a].getId(),buyer);
-             //  Toast.makeText(getApplicationContext(),"partenza "+markers.get(markerT[a].getId()).toString(), Toast.LENGTH_SHORT).show();
+               buyer = trip[z].getJSONObject(0).getJSONObject("buyer");
+               creator = trip[z].getJSONObject(0).getJSONObject("buyer");
+           } catch (JSONException e) {
+               e.printStackTrace();
+           }
+           try {
+               numTxt.setText("Start Point");
+               markerT[contatoreM] = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(coordinates[z][0][0]), Double.parseDouble(coordinates[z][0][1])))
+                               .title("Creation of " + article.getString("name"))
+                               .snippet("Description: " + article.getString("description") + "\n" + "Made by: " + creator.getString("name") + "\n" + "Company description: " + creator.getString("enterprise_description"))
+                               .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
+                       // .anchor(0.2f, 0f)
+               );
+               markers.put(markerT[contatoreM].getId(), creator);
 
            } catch (JSONException e) {
-                e.printStackTrace();
+               e.printStackTrace();
            }
-        }
 
-       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerT[0].getPosition(), 5));
+           for (a = 1; a < trip[z].length(); a++) {
+               numTxt.setText("Point " + a.toString());
+
+               try {
+                   markerT[contatoreM+a] = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(coordinates[z][a][0]), Double.parseDouble(coordinates[z][a][1])))
+                           .title("Transaction number " + a.toString() + " of " + article.getString("name"))
+                           .snippet("Description: " + article.getString("description") + "\n" + "Made by: " + creator.getString("name") + "\n" + "Company description: " + creator.getString("enterprise_description"))
+                           .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, marker)))
+                   );
+                   line = mMap.addPolyline(new PolylineOptions()
+                           .add(new LatLng(Double.parseDouble(coordinates[z][a - 1][0]), Double.parseDouble(coordinates[z][a - 1][1])), new LatLng(Double.parseDouble(coordinates[z][a][0]), Double.parseDouble(coordinates[z][a][1])))
+                           .width(6)
+                           .color(color));
+
+                   buyer = trip[z].getJSONObject(a).getJSONObject("buyer");
+                   markers.put(markerT[contatoreM+a].getId(), buyer);
+                   //  Toast.makeText(getApplicationContext(),"partenza "+markers.get(markerT[a].getId()).toString(), Toast.LENGTH_SHORT).show();
+
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
+           }
+           contatoreM=contatoreM +  trip[z].length()-1;
+
+
+       }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerT[contatoreM].getPosition(), 5));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-
 
     }
     @Override
@@ -387,4 +435,5 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
         ImageLoader.getInstance().init(config);
     }
+
 }

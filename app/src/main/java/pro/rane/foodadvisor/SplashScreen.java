@@ -99,7 +99,7 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
         Intent startActivity = new Intent(this, c);
-        startActivity.putExtra("info", info);
+        startActivity.putExtra("info", "["+info+"]");
         startActivity(startActivity);
         finish();
     }

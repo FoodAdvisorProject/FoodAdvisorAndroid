@@ -105,10 +105,10 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
                     public void onResponse(JSONArray response) {
                         // TODO: 25/04/2017 riabilitare appena capisco cosa la map activity vuole che gli passi
                         Toasty.success(context,response.toString(), Toast.LENGTH_LONG).show();
-                      /*  Intent mapActivity = new Intent(context, MapsActivity.class);
+                        Intent mapActivity = new Intent(context, MapsActivity.class);
                         mapActivity.putExtra("info", response.toString());
                         context.startActivity(mapActivity);
-                        */
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
