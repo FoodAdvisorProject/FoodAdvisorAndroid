@@ -84,8 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerBtn.setVisibility(View.INVISIBLE);
-                progressBar.setVisibility(View.VISIBLE);
                 try {
                     register(v);
                 } catch (UnsupportedEncodingException e) {
@@ -237,11 +235,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void register(View view) throws UnsupportedEncodingException {
         if(controll()){
+            registerBtn.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             JSONObject user = new JSONObject();
             try {
-                user.put("login_name", aziendaName.getText().toString() );
-                // TODO: 22/04/2017 rimuovere spazi appena il server viene corretto
-                user.put("login_passw  ", Utility.md5(passText.getText().toString()) );
+                user.put("login_name", aziendaName.getText().toString());
+                user.put("login_passw", Utility.md5(passText.getText().toString()) );
                 user.put("email", emailTit.getText().toString().replace("@","%40") );
                 user.put("name", nomeTit.getText().toString() );
                 user.put("second_name", cognomeTit.getText().toString() );

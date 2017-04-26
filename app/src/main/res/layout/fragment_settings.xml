@@ -54,6 +54,19 @@
         android:layout_alignStart="@+id/textView8"
         android:switchMinWidth="75sp"/>
 
+    <Switch
+        android:id="@+id/checkedWrite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/permessi_external"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:layout_marginTop="28dp"
+        android:layout_alignStart="@+id/textView8"
+        android:switchMinWidth="75sp"
+        android:layout_below="@+id/checkedCamera"
+        android:layout_centerHorizontal="true" />
+
+
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
