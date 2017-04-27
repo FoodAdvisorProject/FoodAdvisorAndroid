@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -99,12 +102,11 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
             @Override
             public void onClick(View v) {
                 final String lifeURL = "http://foodadvisor.rane.pro:8080/getArticleLife?article_id=".concat(products.get(holder.getAdapterPosition()).prodId).concat("&seller_id=0");
-
+                //Log.e("REQUEST",lifeURL);
                 JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, lifeURL,null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
-                       // Toasty.success(context,response.toString(), Toast.LENGTH_LONG).show();
+                        //Log.e("RESPONSE",response.toString());
                         Intent mapActivity = new Intent(context, MapsActivity.class);
                         mapActivity.putExtra("info", response.toString());
                         context.startActivity(mapActivity);

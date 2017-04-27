@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.android.volley.AuthFailureError;
@@ -22,7 +21,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -34,15 +32,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import es.dmoral.toasty.Toasty;
 
 
 public class PostActivity  extends AppCompatActivity {
     private String req;
-    private static final String TAG = "Debug";
     private TextView loadingText;
     private ProgressBar progressBar;
     private Button backButton;
@@ -124,18 +119,6 @@ public class PostActivity  extends AppCompatActivity {
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
-                /*if(response.statusCode==400){
-                    new SweetAlertDialog(PostActivity.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Errore comunicazione server")
-                            .setContentText("Qualcosa non ha funzionato!\nCodice errore:"+response.statusCode)
-                            .setConfirmText("Ho capito").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismissWithAnimation();
-                            finish();
-                        }
-                    }).show();
-                }*/
                 return super.parseNetworkResponse(response);
             }
         };
@@ -166,7 +149,16 @@ public class PostActivity  extends AppCompatActivity {
             e.printStackTrace();
         }
         MediaStore.Images.Media.insertImage(getContentResolver(), bitmapImage, "Id transazione:"+ name , "Created by FoodAdvisor");
-        Toasty.success(this, "File Salvato, controlla la galleria", Toast.LENGTH_LONG).show();
+
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("File Salvato!")
+                .setContentText("Stampa dalla galleria il QRcode e mettilo sul tuo prodotto!")
+                .setConfirmText("Ho capito").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+            }
+        }).show();
 
     }
 
