@@ -246,8 +246,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.put("second_name", cognomeTit.getText().toString() );
                 user.put("is_enterprise","1");
                 user.put("enterprise_description","Telefono azienda "+phoneText.getText().toString()+"%0AIVA"+ivaText.getText().toString()+"%0A"+description.getText().toString());
-                // TODO: 10/03/2017  fotografie implementare
-                user.put("photo",/*stringedPhoto*/"null");
+                user.put("photo",stringedPhoto);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

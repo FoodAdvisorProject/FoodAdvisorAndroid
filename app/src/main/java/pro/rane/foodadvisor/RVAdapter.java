@@ -123,6 +123,29 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
                 queue.add(request);
             }
         });
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String lifeURL = "http://foodadvisor.rane.pro:8080/deleteArticle?article_id=".concat(products.get(holder.getAdapterPosition()).prodId).concat("&seller_id=0");
+                //Log.e("REQUEST",lifeURL);
+                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, lifeURL,null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        //Log.e("RESPONSE",response.toString());
+                        Toasty.success(context,"Cancellazione avvenuta con successo",Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toasty.error(context,"La richiesta non è andata a buon fine\nRiprova più tardi",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                queue.add(request);
+            }
+        });
     }
 
     @Override
@@ -137,6 +160,7 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
         TextView productId;
         ImageView productImg;
         Button productBtn;
+        Button deleteBtn;
         ProgressBar pb;
 
         ProductViewHolder(View itemView) {
@@ -147,6 +171,7 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
             productId   = (TextView) itemView.findViewById(R.id.productId);
             productImg = (ImageView)itemView.findViewById(R.id.productImg);
             productBtn = (Button) itemView.findViewById(R.id.followBtn);
+            deleteBtn =(Button) itemView.findViewById(R.id.deleteBtn);
             pb =  (ProgressBar) itemView.findViewById(R.id.loadingImage);
         }
     }

@@ -12,57 +12,68 @@
     android:layout_marginTop="15sp"
     android:layout_marginBottom="15sp"
     >
+
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="315dp"
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/productImg"
             android:layout_width="wrap_content"
             android:layout_height="100sp"
-            android:id="@+id/productImg"
-            android:src="@drawable/farmer"
-            android:layout_gravity="center"
-            android:contentDescription="@string/product_image"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15sp"
-            android:layout_marginEnd="15sp"
+            android:layout_gravity="center"
             android:layout_marginBottom="15sp"
-            android:layout_marginStart="15sp"/>
+            android:layout_marginEnd="15sp"
+            android:layout_marginStart="15sp"
+            android:layout_marginTop="15sp"
+            android:contentDescription="@string/product_image"
+            android:src="@drawable/farmer" />
 
         <TextView
             android:id="@+id/productName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/product_name"
-            android:layout_below="@id/productImg"/>
+            android:layout_below="@id/productImg"
+            android:text="@string/product_name" />
 
         <TextView
+            android:id="@+id/productDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/productDesc"
-            android:text="@string/product_description"
-            android:layout_below="@+id/productName"/>
+            android:layout_below="@+id/productName"
+            android:text="@string/product_description" />
 
         <TextView
+            android:id="@+id/productId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/prod_id_desc"
-            android:id="@+id/productId"
-            android:gravity="bottom"
             android:layout_below="@+id/productDesc"
-            />
+            android:gravity="bottom"
+            android:text="@string/prod_id_desc" />
 
         <Button
             android:id="@+id/followBtn"
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/productId"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:gravity="bottom"
-            android:layout_below="@+id/productId"
-            android:text="@string/viaggio_prodotto"
-            android:layout_centerHorizontal="true"/>
+            android:text="@string/viaggio_prodotto" />
+
+        <Button
+            android:id="@+id/deleteBtn"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="bottom"
+            android:text="Cancella Prodotto"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/productImg" />
 
         <ProgressBar
             android:id="@+id/loadingImage"
