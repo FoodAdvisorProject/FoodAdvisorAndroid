@@ -65,7 +65,6 @@ public class NewProductFragment extends Fragment {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
-    // TODO: 26/04/2017 cambiare a 256 quando il server è fixato
     private static final int MAX_SIZE_IMG = 256;
 
     public NewProductFragment() {

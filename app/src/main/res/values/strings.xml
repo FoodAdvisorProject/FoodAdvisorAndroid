@@ -114,6 +114,7 @@
     <string name="product_name">Nome:</string>
     <string name="product_description">Descrizione:</string>
     <string name="permessi_external">Permessi archiviazione</string>
+    <string name="delete_product">Cancella Prodotto</string>
 
 
 </resources>

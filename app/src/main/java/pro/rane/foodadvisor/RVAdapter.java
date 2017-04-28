@@ -101,6 +101,8 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
         holder.productBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.productBtn.setVisibility(View.INVISIBLE);
+                holder.routeProd.setVisibility(View.VISIBLE);
                 final String lifeURL = "http://foodadvisor.rane.pro:8080/getArticleLife?article_id=".concat(products.get(holder.getAdapterPosition()).prodId).concat("&seller_id=0");
                 //Log.e("REQUEST",lifeURL);
                 JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, lifeURL,null, new Response.Listener<JSONArray>() {
@@ -110,12 +112,16 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
                         Intent mapActivity = new Intent(context, MapsActivity.class);
                         mapActivity.putExtra("info", response.toString());
                         context.startActivity(mapActivity);
+                        holder.productBtn.setVisibility(View.VISIBLE);
+                        holder.routeProd.setVisibility(View.INVISIBLE);
 
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toasty.error(context,"La richiesta non è andata a buon fine\nRiprova più tardi",Toast.LENGTH_SHORT).show();
+                        holder.productBtn.setVisibility(View.VISIBLE);
+                        holder.routeProd.setVisibility(View.INVISIBLE);
                     }
                 });
 
@@ -162,6 +168,7 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
         Button productBtn;
         Button deleteBtn;
         ProgressBar pb;
+        ProgressBar routeProd;
 
         ProductViewHolder(View itemView) {
             super(itemView);
@@ -173,6 +180,7 @@ class RVAdapter extends RecyclerView.Adapter<RVAdapter.ProductViewHolder>{
             productBtn = (Button) itemView.findViewById(R.id.followBtn);
             deleteBtn =(Button) itemView.findViewById(R.id.deleteBtn);
             pb =  (ProgressBar) itemView.findViewById(R.id.loadingImage);
+            routeProd = (ProgressBar) itemView.findViewById(R.id.routeProd);
         }
     }
 

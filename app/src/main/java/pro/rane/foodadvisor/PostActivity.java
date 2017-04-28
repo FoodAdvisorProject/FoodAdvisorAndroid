@@ -20,18 +20,21 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
 import net.glxn.qrgen.android.QRCode;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -64,25 +67,43 @@ public class PostActivity  extends AppCompatActivity {
         backButton.setVisibility(View.INVISIBLE);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        final String requestBody = Utility.toCorrectCase(req);
+        JSONObject par =null;
+        try {
+             par = new JSONObject(req);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        //Toast.makeText(this,requestBody, Toast.LENGTH_SHORT).show();
+        final JSONObject finalPar = par;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-                Bitmap myBitmap = QRCode.from(response).bitmap();
-                qrcode.setImageBitmap(myBitmap);
-                ViewGroup.LayoutParams params = qrcode.getLayoutParams();
-                params.width = qrDisplayedSize;
-                params.height = qrDisplayedSize;
-                qrcode.setLayoutParams(params);
-                loadingText.setText(getString(R.string.prod_id_desc).concat(response));
-                qrcode.setVisibility(View.VISIBLE);
-                backButton.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
-                saveToInternalStorage(myBitmap,response);
+                Log.e("RESPONSE", response);
+                if (response.split(" ")[0].equals("Error:")){
+                    new SweetAlertDialog(PostActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Errore!")
+                            .setContentText(response)
+                            .setConfirmText("Ok").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                            finish();
+                        }
+                    }).show();
+                }else {
+                    Bitmap myBitmap = QRCode.from(response).bitmap();
+                    qrcode.setImageBitmap(myBitmap);
+                    ViewGroup.LayoutParams params = qrcode.getLayoutParams();
+                    params.width = qrDisplayedSize;
+                    params.height = qrDisplayedSize;
+                    qrcode.setLayoutParams(params);
+                    loadingText.setText(getString(R.string.prod_id_desc).concat(response));
+                    qrcode.setVisibility(View.VISIBLE);
+                    backButton.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    saveToInternalStorage(myBitmap,response);
+                }
             }
 
         }, new Response.ErrorListener() {
@@ -107,13 +128,20 @@ public class PostActivity  extends AppCompatActivity {
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
+            protected Map<String,String> getParams() throws AuthFailureError{
+                Map<String, String> params = new HashMap<>();
                 try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
+                    assert finalPar != null;
+                    params.put("name", finalPar.getString("name"));
+                    params.put("creator_id",finalPar.getString("creator_id"));
+                    params.put("description",finalPar.getString("description"));
+                    params.put("longitude",finalPar.getString("longitude"));
+                    params.put("latitude",finalPar.getString("latitude"));
+                    params.put("photo",finalPar.getString("photo"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                return params;
             }
 
             @Override

@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class MyProductsFragment extends Fragment {
     private String url;
@@ -67,8 +69,20 @@ public class MyProductsFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        showArticles(response);
-                        Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
+                        if (response.split(" ")[0].equals("Error!:")){
+                            new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Errore!")
+                                    .setContentText(response)
+                                    .setConfirmText("Ok").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            }).show();
+                        }else{
+                            showArticles(response);
+                            Log.d(this.getClass().getSimpleName() ,"RESPONSE VALUE: "+ response);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override

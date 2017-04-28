@@ -93,23 +93,4 @@ class Utility {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static Bitmap generateQrCode(String myCodeText) throws WriterException {
-        Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<EncodeHintType, ErrorCorrectionLevel>();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H); // H = 30% damage
-
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-
-        int size = 256;
-
-        BitMatrix bitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
-        int width = bitMatrix.getWidth();
-        Bitmap bmp = Bitmap.createBitmap(width, width, Bitmap.Config.RGB_565);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < width; y++) {
-                bmp.setPixel(y, x, bitMatrix.get(x,y)==false ? Color.BLACK : Color.WHITE);
-            }
-        }
-        return bmp;
-    }
-
 }
