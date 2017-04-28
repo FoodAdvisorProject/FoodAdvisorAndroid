@@ -2,18 +2,15 @@ package pro.rane.foodadvisor;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,12 +19,6 @@ import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
 import java.util.HashMap;
 
 import es.dmoral.toasty.Toasty;
@@ -68,6 +59,7 @@ public class NavigationActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+        drawer.openDrawer(GravityCompat.START); // TODO: 28/04/2017 testare
         toggle.syncState();
 
 
@@ -90,13 +82,9 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onResume(){
-        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             Toasty.warning(this, "GPS non attivo", Toast.LENGTH_SHORT, true).show();
-            super.onResume();
-       }else {
-            super.onResume();
-        }
-
+        super.onResume();
     }
 
     @Override
@@ -126,7 +114,7 @@ public class NavigationActivity extends AppCompatActivity
 
     
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
