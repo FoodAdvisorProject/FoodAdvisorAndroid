@@ -4,7 +4,7 @@
     <string name="observer">Utente</string>
     <string name="tracker">Login per aziende</string>
     <string name="title_activity_settings">Impostazioni</string>
-    <string name="loading">Caricamento in corso...</string>
+    <string name="loading">Caricamento in corso…</string>
 
     <string name="action_register">Registrati</string>
     <string name="title_activity_maps">Tracciamento</string>
@@ -115,6 +115,7 @@
     <string name="product_description">Descrizione:</string>
     <string name="permessi_external">Permessi archiviazione</string>
     <string name="delete_product">Cancella Prodotto</string>
+    <string name="helper_arrow">Helper arrow</string>
 
 
 </resources>

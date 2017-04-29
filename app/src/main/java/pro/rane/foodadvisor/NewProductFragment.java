@@ -94,20 +94,7 @@ public class NewProductFragment extends Fragment {
         pb = (ProgressBar) rootView.findViewById(R.id.loadingBar);
         pb.setVisibility(View.INVISIBLE);
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-            Toasty.error(getContext(),"Permessi archiviazione non abilitati.\nControlla le impostazioni!",Toast.LENGTH_LONG).show();
 
-
-        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            //Toasty.error(getContext(),"Permessi non pervenuti",Toast.LENGTH_LONG).show();
-        }
         Location loc;
         try {
             loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -134,8 +121,9 @@ public class NewProductFragment extends Fragment {
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
                             sDialog.dismissWithAnimation();
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(intent);
+                            ActivityCompat.requestPermissions(getActivity(),
+                                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
                         }
                     }).show();
                 }
@@ -229,6 +217,26 @@ public class NewProductFragment extends Fragment {
                     return;
                 }
 
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED){
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Per proseguire è necessario avere i permessi di archiviazione!")
+                            .setConfirmText("Ho capito!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    SettingFragment fragment = new SettingFragment();
+                                    android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                    fragmentTransaction.replace(R.id.fragment_container,fragment);
+                                    fragmentTransaction.commit();
+                                }
+                            })
+                            .show();
+                    return;
+                }
+
                 btnNewProduct.setVisibility(View.INVISIBLE);
                 pb.setVisibility(View.VISIBLE);
 
@@ -296,7 +304,18 @@ public class NewProductFragment extends Fragment {
                             sDialog.dismissWithAnimation();
                         }
                     }).show();
-
+                    Location loc;
+                    try {
+                        loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }catch (SecurityException e){
+                        loc = null;
+                        e.printStackTrace();
+                    }
+                    if(loc!=null){
+                        longitude = (float) loc.getLongitude();
+                        latitude = (float) loc.getLatitude();
+                        txtLatLng.setText(getString(R.string.latitude).concat(Float.toString(latitude)).concat(" ").concat(getString(R.string.longitude).concat(Float.toString(longitude))));
+                    }
                 } else {
                     // permission denied, non possiamo disabilitare il GPS quindi dovrebbe continuare chiederlo
                     new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
